@@ -1,0 +1,3 @@
+[submodule "themes/hugo-bootstrap-5"]
+	path = themes/hugo-bootstrap-5
+	url = https://github.com/NotWoods/hugo-bootstrap-5.git
