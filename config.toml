@@ -1,6 +1,6 @@
-baseURL = "http://example.org/"
+baseURL = "https://www.pastafariancalendar.com/"
 languageCode = "en-us"
-title = "My New Hugo Site"
+title = "Pastafarian Calendar"
 
 defaultContentLanguage = "en"
 
@@ -10,21 +10,20 @@ theme = "hugo-bootstrap-5"
 [languages.en]
   languageName = "English"
 
-  # Replace the default footer message with a localized message
-  # copyright = "Hugo template made with ❤ by Xzya"
+  copyright = "Pastafarian Calendar made with ❤ by mjradwin"
 
-  [[languages.en.menu.main]]
-    url = "/"
-    name = "Home"
-    weight = 1
-  [[languages.en.menu.main]]
-    url = "/about/"
-    name = "About"
-    weight = 2
-  [[languages.en.menu.main]]
-    url = "/contact/"
-    name = "Contact"
-    weight = 3
+  #[[languages.en.menu.main]]
+  #  url = "/"
+  #  name = "Home"
+  #  weight = 1
+  #[[languages.en.menu.main]]
+  #  url = "/about/"
+  #  name = "About"
+  #  weight = 2
+  #[[languages.en.menu.main]]
+  #  url = "/contact/"
+  #  name = "Contact"
+  #  weight = 3
 
 # Links format
 
@@ -36,7 +35,7 @@ theme = "hugo-bootstrap-5"
   mainSections = ["post"]
 
   # Default author
-  author = "John Doe"
+  author = "Michael Radwin"
 
   # Date format (default: Jan 2, 2006)
   # date_format = "Jan 2, 2006"
