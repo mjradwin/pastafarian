@@ -29,7 +29,7 @@ icalStream.write('\r\n');
 
 for (const [monthDay, subj] of Object.entries(pastafarian)) {
   const {ev, month} = makeEvent(2016, monthDay, subj);
-  const ical = new IcalEvent(ev, {dtstamp: '20210709T233240Z'});
+  const ical = new IcalEvent(ev, {dtstamp: '20210709T233241Z'});
   const lines = ical.getLongLines();
   const triggerIdx = lines.findIndex((line) => line.startsWith('TRIGGER'));
   lines[triggerIdx] = 'TRIGGER:P0DT9H0M0S';
