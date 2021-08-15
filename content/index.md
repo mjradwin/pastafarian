@@ -1,5 +1,5 @@
 ---
-title: "🍝 🏴‍☠️ 🙏 Pastafarian Holy Days 🙏 🏴‍☠️ 🍝"
+title: "Pastafarian Holy Days 🙏 🏴‍☠️ 🍝"
 draft: false
 ---
 
