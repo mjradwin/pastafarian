@@ -12,7 +12,7 @@ web/desktop application. Subscribers to these feeds receive perpetual updates.
 <a class="btn btn-outline-primary btn-sm me-2 mb-2 download" title="Subscribe to Pastafarian Calendar for Apple iPhone, iPad, macOS" href="webcal://www.pastafariancalendar.com/feed.ics">
 <svg class="icon icon-sm align-top"><use xlink:href="/sprite.svg#icon-appleinc"></use></svg> Apple</a>
 
-<a class="btn btn-outline-primary btn-sm me-2 mb-2 download" title="Add Pastafarian Calendar to Google Calendar" href="https://www.google.com/calendar/render?cid=https%3A%2F%2Fwww.pastafariancalendar.com%2Ffeed.ics">
+<a class="btn btn-outline-primary btn-sm me-2 mb-2 download" title="Add Pastafarian Calendar to Google Calendar" href="https://www.google.com/calendar/render?cid=http%3A%2F%2Fwww.pastafariancalendar.com%2Ffeed.ics">
 <svg class="icon icon-sm align-top"><use xlink:href="/sprite.svg#icon-google"></use></svg> Google</a>
 </p>
 
