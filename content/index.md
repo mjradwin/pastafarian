@@ -5,11 +5,18 @@ draft: false
 
 Pastafarian perpetual calendar.
 
-[Download or subscribe - iCalendar feed](webcal://www.pastafariancalendar.com/feed.ics)
+Click the buttons below to download/subscribe in your device or
+web/desktop application. Subscribers to these feeds receive perpetual updates.
 
+<p>
+<a class="btn btn-outline-primary btn-sm me-2 mb-2 download" title="Subscribe to Pastafarian Calendar for Apple iPhone, iPad, macOS" href="webcal://www.pastafariancalendar.com/feed.ics">
+<svg class="icon icon-sm align-top"><use xlink:href="/sprite.svg#icon-appleinc"></use></svg> Apple</a>
+
+<a class="btn btn-outline-primary btn-sm me-2 mb-2 download" title="Add Pastafarian Calendar to Google Calendar" href="https://www.google.com/calendar/render?cid=https%3A%2F%2Fwww.pastafariancalendar.com%2Ffeed.ics">
+<svg class="icon icon-sm align-top"><use xlink:href="/sprite.svg#icon-google"></use></svg> Google</a>
+</p>
 
 Or, copy the entire iCalendar URL here:
-
 
 <div class="input-group input-group-sm mb-3">
 <input type="text" class="form-control" id="grabLink"
