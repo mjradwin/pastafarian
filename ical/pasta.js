@@ -8,7 +8,6 @@ const pastafarian = YAML.parse(file);
 
 const emojiRegex = /([\u0300-\uFFFF ]+)$/;
 const memo = 'Pastafarian Holy Day';
-// const location = new Location(0, 0, false, 'UTC', memo);
 
 const icalStream = fs.createWriteStream('pastafarian.ics');
 
@@ -17,7 +16,7 @@ const caldesc = 'Pastafarian Calendar of Special Days from pastafarians.org.au';
 const preamble = [
   'BEGIN:VCALENDAR',
   'VERSION:2.0',
-  `PRODID:-//pastafariancalendar.com/NONSGML Pastafarian Calendar v1.1//EN`,
+  `PRODID:-//pastafariancalendar.com/NONSGML Pastafarian Calendar v1.2//EN`,
   'CALSCALE:GREGORIAN',
   'METHOD:PUBLISH',
   'X-PUBLISHED-TTL:PT14D',
@@ -27,18 +26,20 @@ const preamble = [
 icalStream.write(preamble);
 icalStream.write('\r\n');
 
+const options = {
+  dtstamp: IcalEvent.makeDtstamp(new Date()),
+};
+
 for (const [monthDay, subj] of Object.entries(pastafarian)) {
   const {ev, month} = makeEvent(2016, monthDay, subj);
-  const ical = new IcalEvent(ev, {dtstamp: '20210709T233241Z'});
+  ev.uid = `pastafarian-${monthDay}`;
+  const ical = new IcalEvent(ev, options);
+  ical.locationName = memo;
   const lines = ical.getLongLines();
   const triggerIdx = lines.findIndex((line) => line.startsWith('TRIGGER'));
   lines[triggerIdx] = 'TRIGGER:P0DT9H0M0S';
   const catIdx = lines.findIndex((line) => line.startsWith('CATEGORIES'));
   lines[catIdx] = `CATEGORIES:Holiday`;
-
-  const uidIdx = lines.findIndex((line) => line.startsWith('UID'));
-
-  lines[uidIdx] = lines[uidIdx].replace(/hebcal/, 'pastafarian');
 
   const alarmIdx = lines.findIndex((line) => line.startsWith('BEGIN:VALARM'));
   lines.splice(alarmIdx, 0,
@@ -57,7 +58,7 @@ function makeEvent(gyear, monthDay, title) {
   const month = parseInt(monthStr, 10);
   const dt = new Date(gyear, month - 1, +mday);
   const summary = cleanStr(title);
-  const ev = new Event(new HDate(dt), summary, flags.USER_EVENT, {memo});
+  const ev = new Event(new HDate(dt), summary, flags.USER_EVENT);
   return {ev, month};
 }
 
@@ -67,6 +68,9 @@ function makeEvent(gyear, monthDay, title) {
  */
 function cleanStr(s) {
   const s2 = s.trim().replace(/\.$/, '').replace(/\s+/g, ' ').trim();
+  if (s2 === '42 Day 4️⃣2️⃣') {
+    return '4️⃣2️⃣ 42 Day 4️⃣2️⃣';
+  }
   const matches = emojiRegex.exec(s2);
   if (matches) {
     return matches[1].trim() + ' ' + s2;
