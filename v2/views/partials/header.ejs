@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="<%=lang%>"><head>
+<meta charset="utf-8">
+<title><%= title %></title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<%- await include('bootstrap-css.ejs') -%>
+<%- await include('hebrew-font.ejs') -%>
+<%- await include('merriweather.ejs') -%>
+<style>
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+  font-family: 'Merriweather', serif;
+  font-style: normal;
+  font-weight: 400;
+}
+a {
+  color: #007bff;
+  text-decoration: none;
+  background-color: transparent;
+}
+a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+a:not([href]):not([tabindex]) {
+  color: inherit;
+  text-decoration: none;
+}
+a:not([href]):not([tabindex]):hover, a:not([href]):not([tabindex]):focus {
+  color: inherit;
+  text-decoration: none;
+}
+a:not([href]):not([tabindex]):focus {
+  outline: 0;
+}
+.icon {
+  display: inline-block;
+  width: 1.3rem;
+  height: 1.3rem;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+.mt-n1 {
+  margin-top: -0.25rem !important;
+}
+.icon.icon-sm {
+  width: 1.0rem;
+  height: 1.0rem;
+}
+.hebcal-footer {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  margin-top: 40px;
+  color: #777;
+  text-align: center;
+  border-top: 1px solid #e5e5e5;
+}
+.hebcal-footer p {
+  margin-bottom: 2px;
+}
+.bullet-list-inline {
+  padding-left: 0;
+  margin-left: -3px;
+  list-style: none;
+}
+.bullet-list-inline > li {
+  display: inline-block;
+  padding-right: 3px;
+  padding-left: 3px;
+}
+.bullet-list-inline li:after{content:"\00a0\00a0\00b7"}
+.bullet-list-inline li:last-child:after{content:""}
+.label{text-transform:none}
+:lang(he) {
+  font-family:'SBL Hebrew',David,serif;
+  font-size:115%;
+  direction:rtl;
+}
+:lang(he) small {
+  font-size: 0.875em;
+}
+@media print{
+ a[href]:after{content:""}
+}
+@media (min-width: 768px) {
+  input#sitesearch {
+    width: 132px;
+  }
+}
+.text-burgundy{color:#941003}
+</style>
