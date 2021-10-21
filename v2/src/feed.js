@@ -1,56 +1,52 @@
+/* eslint-disable require-jsdoc */
+import dayjs from 'dayjs';
 import {Event, flags, HDate} from '@hebcal/core';
-import {IcalEvent} from '@hebcal/icalendar';
-import {pastafarian} from './events';
+import {IcalEvent, icalEventsToString} from '@hebcal/icalendar';
+import {makeEvent} from './events';
 
-const memo = 'Pastafarian Holy Day';
-
-const title = 'Pastafarian Holy Days';
-const caldesc = 'Pastafarian Calendar of Special Days from pastafarians.org.au';
-const preamble = [
-  'BEGIN:VCALENDAR',
-  'VERSION:2.0',
-  `PRODID:-//pastafariancalendar.com/NONSGML Pastafarian Calendar v1.2//EN`,
-  'CALSCALE:GREGORIAN',
-  'METHOD:PUBLISH',
-  'X-PUBLISHED-TTL:PT14D',
-  `X-WR-CALNAME:${title}`,
-  `X-WR-CALDESC:${caldesc}`,
-].map(IcalEvent.fold).join('\r\n');
-icalStream.write(preamble);
-icalStream.write('\r\n');
-
-const options = {
-  dtstamp: IcalEvent.makeDtstamp(new Date()),
-};
-
-for (const [monthDay, subj] of Object.entries(pastafarian)) {
-  const {ev, month} = makeEvent(2016, monthDay, subj);
-  ev.uid = `pastafarian-${monthDay}`;
-  const ical = new IcalEvent(ev, options);
-  ical.locationName = memo;
-  const lines = ical.getLongLines();
-  const triggerIdx = lines.findIndex((line) => line.startsWith('TRIGGER'));
-  lines[triggerIdx] = 'TRIGGER:P0DT9H0M0S';
-  const catIdx = lines.findIndex((line) => line.startsWith('CATEGORIES'));
-  lines[catIdx] = `CATEGORIES:Holiday`;
-
-  const alarmIdx = lines.findIndex((line) => line.startsWith('BEGIN:VALARM'));
-  lines.splice(alarmIdx, 0,
-      'CLASS:PUBLIC',
-      `RRULE:FREQ=YEARLY;INTERVAL=1;BYMONTH=${month}`,
-  );
-  icalStream.write(ical.toString());
-  icalStream.write('\r\n');
+export async function icalFeed(ctx) {
+  const now = new Date();
+  const dtstamp = IcalEvent.makeDtstamp(now);
+  const options = {dtstamp};
+  const startDt = dayjs('2016-01-01');
+  const endDt = dayjs('2017-01-01');
+  const icals = [];
+  for (let d = startDt; d.isBefore(endDt); d = d.add(1, 'day')) {
+    const event = makeEvent(d);
+    const title = event.emoji ?
+      `${event.emoji} ${event.subject} ${event.emoji}` :
+      event.subject;
+    const ev = new PastaEvent(d, title, event);
+    const ical = new IcalEvent(ev, options);
+    const lines = ical.getLongLines();
+    const alarmIdx = lines.findIndex((line) => line.startsWith('BEGIN:VALARM'));
+    const month = d.month() + 1;
+    lines.splice(alarmIdx, 0,
+        'CLASS:PUBLIC',
+        `RRULE:FREQ=YEARLY;INTERVAL=1;BYMONTH=${month}`,
+    );
+    icals.push(ical);
+  }
+  ctx.lastModified = now;
+  ctx.set('Cache-Control', 'max-age=604800'); // 7 days
+  ctx.type = 'text/calendar; charset=utf-8';
+  ctx.body = await icalEventsToString(icals, {
+    title: 'Pastafarian Holy Days',
+    caldesc: 'Pastafarian Calendar of Special Days from pastafarians.org.au',
+    prodid: '-//pastafariancalendar.com/NONSGML Pastafarian Calendar v1.3//EN',
+    publishedTTL: 'PT14D',
+    dtstamp,
+  });
 }
 
-icalStream.write('END:VCALENDAR\r\n');
-icalStream.close();
-
-function makeEvent(gyear, monthDay, title) {
-  const [monthStr, mday] = monthDay.split('-');
-  const month = parseInt(monthStr, 10);
-  const dt = new Date(gyear, month - 1, +mday);
-  const summary = cleanStr(title);
-  const ev = new Event(new HDate(dt), summary, flags.USER_EVENT);
-  return {ev, month};
+class PastaEvent extends Event {
+  constructor(d, desc, pastaEvent) {
+    super(new HDate(d.toDate()), desc, flags.USER_EVENT);
+    this.uid = 'pastafarian-' + d.format('MM-DD');
+    this.locationName = 'Pastafarian Holy Day';
+    this.alarm = 'P0DT9H0M0S';
+    this.category = 'Holiday';
+    this.pastaEvent = pastaEvent;
+    // this.memo = 'https://www.pastafariancalendar.com' + this.pastaEvent.url;
+  }
 }

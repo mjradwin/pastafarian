@@ -11,7 +11,7 @@ const reIsoDate = /^\d\d\d\d-\d\d-\d\d/;
 /**
  * Parse a string YYYY-MM-DD and return Date
  * @param {string} str
- * @return {Date}
+ * @return {dayjs.Dayjs}
  */
 export function isoDateStringToDate(str) {
   if (!reIsoDate.test(str)) {
@@ -24,7 +24,7 @@ export function isoDateStringToDate(str) {
   if (yy < 100) {
     dt.setFullYear(yy);
   }
-  return dt;
+  return dayjs(dt);
 }
 
 /**
@@ -33,11 +33,14 @@ export function isoDateStringToDate(str) {
  * @return {any[]}
  */
 export function makeEvents(start, end) {
-  const startDt = dayjs(isoDateStringToDate(start));
-  const endDt = dayjs(isoDateStringToDate(end)).add(1, 'day');
+  const startDt = start ? isoDateStringToDate(start) : dayjs();
+  const endDt0 = end ? isoDateStringToDate(end) : dayjs();
+  const endDt = endDt0.add(1, 'day');
   const events = [];
   for (let d = startDt; d.isBefore(endDt); d = d.add(1, 'day')) {
     const event = makeEvent(d);
+    delete event.emoji;
+    delete event.subject;
     events.push(event);
   }
   return events;
@@ -51,31 +54,34 @@ const emojiRegex = /([\u0300-\uFFFF ]+)$/;
  */
 export function makeEvent(d) {
   const monthDay = d.format('MM-DD');
-  const subj = pastafarian[monthDay];
+  const rawSubject = pastafarian[monthDay];
   const ymd = d.format('YYYY-MM-DD');
+  const [subject, emoji] = cleanStr(rawSubject);
   const event = {
     start: ymd,
-    title: cleanStr(subj),
-    url: '/' + makeAnchor(subj) + '-' + ymd,
+    title: emoji ? `${emoji} ${subject}` : subject,
+    url: '/' + makeAnchor(subject) + '-' + ymd,
+    subject,
+    emoji,
   };
   return event;
 }
 
 /**
- * @return {string}
+ * @return {string[]}
  * @param {string} s
  */
 function cleanStr(s) {
   const s2 = s.trim().replace(/\.$/, '').replace(/\s+/g, ' ').trim();
   if (s2 === '42 Day 4️⃣2️⃣') {
-    return '4️⃣2️⃣ 42 Day';
+    return ['42 Day', '4️⃣2️⃣'];
   }
   const matches = emojiRegex.exec(s2);
   if (matches) {
     const s3 = s2.replace(emojiRegex, '');
-    return matches[1].trim() + ' ' + s3;
+    return [s3, matches[1].trim()];
   }
-  return s2;
+  return [s2, ''];
 }
 
 /**

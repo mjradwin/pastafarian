@@ -8,7 +8,8 @@ import pino from 'pino';
 import render from 'koa-ejs';
 import serve from 'koa-static';
 import zlib from 'zlib';
-import {makeEvents, makeEvent} from './events';
+import {makeEvents, makeEvent, isoDateStringToDate} from './events';
+import {icalFeed} from './feed';
 
 const isProduction = process.env.NODE_ENV === 'production';
 const DOCUMENT_ROOT = isProduction ? '/var/www/html' : path.join(__dirname, '..', 'static');
@@ -57,7 +58,7 @@ app.use(error({
 
 const CACHE_CONTROL_IMMUTABLE = 'public, max-age=31536000, s-maxage=31536000, immutable';
 
-const reIsoDate = /^\d\d\d\d-\d\d-\d\d/;
+const reIsoDate = /^\d\d\d\d-\d\d-\d\d$/;
 
 app.use(async function router(ctx, next) {
   const rpath = ctx.request.path;
@@ -83,13 +84,28 @@ app.use(async function router(ctx, next) {
       today,
       ev,
     });
+  } else if (rpath === '/privacy') {
+    return ctx.render('privacy', {title: 'Privacy Policy | Pastafarian Calendar'});
+  } else if (rpath === '/about') {
+    return ctx.render('about', {title: 'Privacy Policy | Pastafarian Calendar'});
   } else if (rpath.startsWith('/events.json')) {
     ctx.lastModified = new Date();
     const q = ctx.request.query;
     ctx.body = makeEvents(q.start, q.end);
     return;
   } else if (rpath.startsWith('/feed.ics')) {
-  } else if (rpath.startsWith('/2')) {
+    return icalFeed(ctx);
+  } else if (rpath.length > 10) {
+    const tail = rpath.substring(rpath.length - 10);
+    if (reIsoDate.test(tail)) {
+      const d = isoDateStringToDate(tail);
+      const ev = makeEvent(d);
+      return ctx.render('event', {
+        title: `${ev.title} | Pastafarian Calendar`,
+        d,
+        ev,
+      });
+    }
   }
   await next();
 });
