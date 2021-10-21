@@ -1,4 +1,5 @@
 import compress from 'koa-compress';
+import dayjs from 'dayjs';
 import error from 'koa-error';
 import Koa from 'koa';
 import koaLogger from 'koa-pino-logger';
@@ -7,7 +8,7 @@ import pino from 'pino';
 import render from 'koa-ejs';
 import serve from 'koa-static';
 import zlib from 'zlib';
-import { makeEvents } from './events';
+import {makeEvents, makeEvent} from './events';
 
 const isProduction = process.env.NODE_ENV === 'production';
 const DOCUMENT_ROOT = isProduction ? '/var/www/html' : path.join(__dirname, '..', 'static');
@@ -75,14 +76,19 @@ app.use(async function router(ctx, next) {
     ctx.set('Cache-Control', CACHE_CONTROL_IMMUTABLE);
     // let serve() handle this file
   } else if (rpath === '/') {
+    const today = dayjs();
+    const ev = makeEvent(today);
     return ctx.render('homepage', {
       title: 'Pastafarian Holy Days 🙏 🏴‍☠️ 🍝 | Pastafarian Calendar',
+      today,
+      ev,
     });
   } else if (rpath.startsWith('/events.json')) {
     ctx.lastModified = new Date();
     const q = ctx.request.query;
     ctx.body = makeEvents(q.start, q.end);
     return;
+  } else if (rpath.startsWith('/feed.ics')) {
   } else if (rpath.startsWith('/2')) {
   }
   await next();

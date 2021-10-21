@@ -4,7 +4,7 @@ import YAML from 'yaml';
 import dayjs from 'dayjs';
 
 const yamlStr = fs.readFileSync('../data/pastafarian.yaml', 'utf8');
-const pastafarian = YAML.parse(yamlStr);
+export const pastafarian = YAML.parse(yamlStr);
 
 const reIsoDate = /^\d\d\d\d-\d\d-\d\d/;
 
@@ -37,14 +37,7 @@ export function makeEvents(start, end) {
   const endDt = dayjs(isoDateStringToDate(end)).add(1, 'day');
   const events = [];
   for (let d = startDt; d.isBefore(endDt); d = d.add(1, 'day')) {
-    const monthDay = d.format('MM-DD');
-    const subj = pastafarian[monthDay];
-    const ymd = d.format('YYYY-MM-DD');
-    const event = {
-      start: ymd,
-      title: cleanStr(subj),
-      url: '/' + makeAnchor(subj) + '-' + ymd,
-    };
+    const event = makeEvent(d);
     events.push(event);
   }
   return events;
@@ -53,10 +46,26 @@ export function makeEvents(start, end) {
 const emojiRegex = /([\u0300-\uFFFF ]+)$/;
 
 /**
+ * @param {dayjs.Dayjs} d
+ * @return {any}
+ */
+export function makeEvent(d) {
+  const monthDay = d.format('MM-DD');
+  const subj = pastafarian[monthDay];
+  const ymd = d.format('YYYY-MM-DD');
+  const event = {
+    start: ymd,
+    title: cleanStr(subj),
+    url: '/' + makeAnchor(subj) + '-' + ymd,
+  };
+  return event;
+}
+
+/**
  * @return {string}
  * @param {string} s
  */
- function cleanStr(s) {
+function cleanStr(s) {
   const s2 = s.trim().replace(/\.$/, '').replace(/\s+/g, ' ').trim();
   if (s2 === '42 Day 4️⃣2️⃣') {
     return '4️⃣2️⃣ 42 Day';
@@ -77,7 +86,7 @@ const emojiRegex = /([\u0300-\uFFFF ]+)$/;
  * @param {string} s
  * @return {string}
  */
- export function makeAnchor(s) {
+function makeAnchor(s) {
   return s.toLowerCase()
       .replace(/'/g, '')
       .replace(/[^\w]/g, '-')
