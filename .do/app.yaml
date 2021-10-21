@@ -1,4 +1,10 @@
+domains:
+- domain: pastafariancalendar.com
+  type: PRIMARY
+- domain: www.pastafariancalendar.com
+  type: ALIAS
 name: pastafarian
+region: nyc
 services:
 - environment_slug: node-js
   github:
