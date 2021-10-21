@@ -16,13 +16,19 @@ const app = new Koa();
 app.context.launchDate = new Date();
 
 const logDir = isProduction ? '/var/log/koa' : '.';
-const transport = pino.destination({
+/*
+const transport = pino.transport({
   target: 'pino/file',
   level: isProduction ? 'info' : 'debug',
   options: {destination: logDir + '/access.log'},
 });
+*/
+const destination = pino.destination({
+  dest: logDir + '/access.log',
+  level: isProduction ? 'info' : 'debug',
+});
 
-app.use(koaLogger(transport));
+app.use(koaLogger(destination));
 
 app.use(compress({
   gzip: true,
@@ -50,6 +56,8 @@ app.use(error({
 
 const CACHE_CONTROL_IMMUTABLE = 'public, max-age=31536000, s-maxage=31536000, immutable';
 
+const reIsoDate = /^\d\d\d\d-\d\d-\d\d/;
+
 app.use(async function router(ctx, next) {
   const rpath = ctx.request.path;
   if (rpath === '/robots.txt') {
@@ -75,6 +83,7 @@ app.use(async function router(ctx, next) {
     const q = ctx.request.query;
     ctx.body = makeEvents(q.start, q.end);
     return;
+  } else if (rpath.startsWith('/2')) {
   }
   await next();
 });

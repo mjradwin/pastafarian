@@ -1,6 +1,7 @@
 import createError from 'http-errors';
 import fs from 'fs';
 import YAML from 'yaml';
+import dayjs from 'dayjs';
 
 const yamlStr = fs.readFileSync('../data/pastafarian.yaml', 'utf8');
 const pastafarian = YAML.parse(yamlStr);
@@ -32,21 +33,19 @@ export function isoDateStringToDate(str) {
  * @return {any[]}
  */
 export function makeEvents(start, end) {
-  const startDt = isoDateStringToDate(start);
-  const endDt = isoDateStringToDate(end);
-  const year = startDt.getFullYear();
+  const startDt = dayjs(isoDateStringToDate(start));
+  const endDt = dayjs(isoDateStringToDate(end)).add(1, 'day');
   const events = [];
-  for (const [monthDay, subj] of Object.entries(pastafarian)) {
-    const [monthStr, mday] = monthDay.split('-');
-    const month = parseInt(monthStr, 10);
-    const dt = new Date(year, month - 1, +mday);
-    if (dt >= startDt && dt <= endDt) {
-      const event = {
-        start: `${year}-${monthDay}`,
-        title: cleanStr(subj),
-      };
-      events.push(event);
-    }
+  for (let d = startDt; d.isBefore(endDt); d = d.add(1, 'day')) {
+    const monthDay = d.format('MM-DD');
+    const subj = pastafarian[monthDay];
+    const ymd = d.format('YYYY-MM-DD');
+    const event = {
+      start: ymd,
+      title: cleanStr(subj),
+      url: '/' + makeAnchor(subj) + '-' + ymd,
+    };
+    events.push(event);
   }
   return events;
 }
@@ -60,11 +59,29 @@ const emojiRegex = /([\u0300-\uFFFF ]+)$/;
  function cleanStr(s) {
   const s2 = s.trim().replace(/\.$/, '').replace(/\s+/g, ' ').trim();
   if (s2 === '42 Day 4️⃣2️⃣') {
-    return '4️⃣2️⃣ 42 Day 4️⃣2️⃣';
+    return '4️⃣2️⃣ 42 Day';
   }
   const matches = emojiRegex.exec(s2);
   if (matches) {
-    return matches[1].trim() + ' ' + s2;
+    const s3 = s2.replace(emojiRegex, '');
+    return matches[1].trim() + ' ' + s3;
   }
   return s2;
+}
+
+/**
+ * Helper function to transform a string to make it more usable in a URL or filename.
+ * Converts to lowercase and replaces non-word characters with hyphen ('-').
+ * @example
+ * makeAnchor('Rosh Chodesh Adar II') // 'rosh-chodesh-adar-ii'
+ * @param {string} s
+ * @return {string}
+ */
+ export function makeAnchor(s) {
+  return s.toLowerCase()
+      .replace(/'/g, '')
+      .replace(/[^\w]/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-/g, '')
+      .replace(/-$/g, '');
 }

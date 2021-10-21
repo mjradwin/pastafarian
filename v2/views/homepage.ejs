@@ -24,16 +24,20 @@
 <header>
 <h2>Pastafarian Holy Days 🙏 🏴‍☠️ 🍝</h2>
 </header>
-<p>Pastafarian perpetual calendar.</p>
 <p>Click the buttons below to download/subscribe in your device or
 web/desktop application. Subscribers to these feeds receive perpetual updates.</p>
-<p>
+</div><!-- .col -->
+</div><!-- .row -->
+<div class="row">
+<div class="col-auto">
 <a class="btn btn-outline-primary btn-sm me-2 mb-2 download" title="Subscribe to Pastafarian Calendar for Apple iPhone, iPad, macOS" href="webcal://www.pastafariancalendar.com/feed.ics">
 <svg class="icon icon-sm align-top"><use xlink:href="/i/sprite.svg#icon-appleinc"></use></svg> Apple</a>
+</div><!-- .col-auto -->
+<div class="col-auto">
 <a class="btn btn-outline-primary btn-sm me-2 mb-2 download" title="Add Pastafarian Calendar to Google Calendar" href="https://www.google.com/calendar/render?cid=http%3A%2F%2Fwww.pastafariancalendar.com%2Ffeed.ics">
 <svg class="icon icon-sm align-top"><use xlink:href="/i/sprite.svg#icon-google"></use></svg> Google</a>
-</p>
-<p>Or, copy the entire iCalendar URL here:</p>
+</div><!-- .col-auto -->
+<div class="col-auto">
 <div class="input-group input-group-sm mb-3">
 <input type="text" class="form-control" id="grabLink"
 value="https://www.pastafariancalendar.com/feed.ics">
@@ -42,11 +46,13 @@ value="https://www.pastafariancalendar.com/feed.ics">
 Copy
 </button>
 </div>
-
+</div><!-- .col-auto -->
+</div><!-- .row -->
+<div class="row">
+<div class="col">
 <div id='calendar-container'>
-  <div id='calendar'></div>
+<div id='calendar'></div>
 </div>
-
 </div><!-- .col -->
 </div><!-- .row -->
 </div><!-- #content -->
@@ -76,16 +82,16 @@ document.addEventListener('DOMContentLoaded', function() {
     initialView: 'dayGridMonth',
     headerToolbar: {
       left: 'title',
-      right: 'prev,next',
+      right: 'today prev,next',
     },
     events: '/events.json',
   });
   calendar.render();
   document.addEventListener('keydown', function(e) {
     if (e.keyCode == 37) {
-        calendar.prev();
+      calendar.prev();
     } else if (e.keyCode == 39) {
-        calendar.next();
+      calendar.next();
     }
   });
 });

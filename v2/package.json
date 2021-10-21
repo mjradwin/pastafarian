@@ -20,6 +20,7 @@
     "eslint-config-google": "^0.14.0"
   },
   "dependencies": {
+    "dayjs": "^1.10.7",
     "ejs": "^3.1.6",
     "http-errors": "^1.8.0",
     "koa": "^2.13.4",
