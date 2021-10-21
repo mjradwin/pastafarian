@@ -1,10 +1,14 @@
-import createError from 'http-errors';
-import fs from 'fs';
-import YAML from 'yaml';
-import dayjs from 'dayjs';
+'use strict';
 
-const yamlStr = fs.readFileSync('../data/pastafarian.yaml', 'utf8');
-export const pastafarian = YAML.parse(yamlStr);
+Object.defineProperty(exports, '__esModule', { value: true });
+
+const createError = require('http-errors');
+const fs = require('fs');
+const YAML = require('yaml');
+const dayjs = require('dayjs');
+
+const yamlStr = fs.readFileSync('./data/pastafarian.yaml', 'utf8');
+const pastafarian = YAML.parse(yamlStr);
 
 const reIsoDate = /^\d\d\d\d-\d\d-\d\d/;
 
@@ -13,7 +17,7 @@ const reIsoDate = /^\d\d\d\d-\d\d-\d\d/;
  * @param {string} str
  * @return {dayjs.Dayjs}
  */
-export function isoDateStringToDate(str) {
+function isoDateStringToDate(str) {
   if (!reIsoDate.test(str)) {
     throw createError(400, `Date must match format YYYY-MM-DD: ${str}`);
   }
@@ -32,7 +36,7 @@ export function isoDateStringToDate(str) {
  * @param {string} end
  * @return {any[]}
  */
-export function makeEvents(start, end) {
+function makeEvents(start, end) {
   const startDt = start ? isoDateStringToDate(start) : dayjs();
   const endDt0 = end ? isoDateStringToDate(end) : dayjs();
   const endDt = endDt0.add(1, 'day');
@@ -52,7 +56,7 @@ const emojiRegex = /([\u0300-\uFFFF ]+)$/;
  * @param {dayjs.Dayjs} d
  * @return {any}
  */
-export function makeEvent(d) {
+function makeEvent(d) {
   const monthDay = d.format('MM-DD');
   const rawSubject = pastafarian[monthDay];
   const ymd = d.format('YYYY-MM-DD');
@@ -100,3 +104,7 @@ function makeAnchor(s) {
       .replace(/^-/g, '')
       .replace(/-$/g, '');
 }
+
+exports.isoDateStringToDate = isoDateStringToDate;
+exports.makeEvents = makeEvents;
+exports.makeEvent = makeEvent;

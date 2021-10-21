@@ -1,10 +1,14 @@
+'use strict';
 /* eslint-disable require-jsdoc */
-import dayjs from 'dayjs';
-import {Event, flags, HDate} from '@hebcal/core';
-import {IcalEvent, icalEventsToString} from '@hebcal/icalendar';
-import {makeEvent} from './events';
 
-export async function icalFeed(ctx) {
+Object.defineProperty(exports, '__esModule', {value: true});
+
+const dayjs = require('dayjs');
+const {Event, flags, HDate} = require('@hebcal/core');
+const {IcalEvent, icalEventsToString} = require('@hebcal/icalendar');
+const {makeEvent} = require('./events');
+
+async function icalFeed(ctx) {
   const now = new Date();
   const dtstamp = IcalEvent.makeDtstamp(now);
   const options = {dtstamp};
@@ -50,3 +54,5 @@ class PastaEvent extends Event {
     // this.memo = 'https://www.pastafariancalendar.com' + this.pastaEvent.url;
   }
 }
+
+exports.icalFeed = icalFeed;

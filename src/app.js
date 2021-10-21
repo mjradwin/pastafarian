@@ -1,15 +1,17 @@
-import compress from 'koa-compress';
-import dayjs from 'dayjs';
-import error from 'koa-error';
-import Koa from 'koa';
-import koaLogger from 'koa-pino-logger';
-import path from 'path';
-import pino from 'pino';
-import render from 'koa-ejs';
-import serve from 'koa-static';
-import zlib from 'zlib';
-import {makeEvents, makeEvent, isoDateStringToDate} from './events';
-import {icalFeed} from './feed';
+'use strict';
+
+const compress = require('koa-compress');
+const dayjs = require('dayjs');
+const error = require('koa-error');
+const Koa = require('koa');
+const koaLogger = require('koa-pino-logger');
+const path = require('path');
+const pino = require('pino');
+const render = require('koa-ejs');
+const serve = require('koa-static');
+const zlib = require('zlib');
+const {makeEvents, makeEvent, isoDateStringToDate} = require('./events');
+const {icalFeed} = require('./feed');
 
 const isProduction = process.env.NODE_ENV === 'production';
 const DOCUMENT_ROOT = isProduction ? '/var/www/html' : path.join(__dirname, '..', 'static');
