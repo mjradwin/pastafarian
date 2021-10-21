@@ -7,16 +7,18 @@ import pino from 'pino';
 import render from 'koa-ejs';
 import serve from 'koa-static';
 import zlib from 'zlib';
+import { makeEvents } from './events';
 
-const DOCUMENT_ROOT = '/var/www/html';
+const isProduction = process.env.NODE_ENV === 'production';
+const DOCUMENT_ROOT = isProduction ? '/var/www/html' : path.join(__dirname, '..', 'static');
 
 const app = new Koa();
 app.context.launchDate = new Date();
 
-const logDir = process.env.NODE_ENV === 'production' ? '/var/log/koa' : '.';
-const transport = pino.transport({
+const logDir = isProduction ? '/var/log/koa' : '.';
+const transport = pino.destination({
   target: 'pino/file',
-  level: process.env.NODE_ENV == 'production' ? 'info' : 'debug',
+  level: isProduction ? 'info' : 'debug',
   options: {destination: logDir + '/access.log'},
 });
 
@@ -65,7 +67,14 @@ app.use(async function router(ctx, next) {
     ctx.set('Cache-Control', CACHE_CONTROL_IMMUTABLE);
     // let serve() handle this file
   } else if (rpath === '/') {
-    return ctx.render('homepage');
+    return ctx.render('homepage', {
+      title: 'Pastafarian Holy Days 🙏 🏴‍☠️ 🍝 | Pastafarian Calendar',
+    });
+  } else if (rpath.startsWith('/events.json')) {
+    ctx.lastModified = new Date();
+    const q = ctx.request.query;
+    ctx.body = makeEvents(q.start, q.end);
+    return;
   }
   await next();
 });
