@@ -65,8 +65,7 @@ app.use(async function router(ctx, next) {
   } else if (rpath === '/i' || rpath === '/i/') {
     ctx.lastModified = ctx.launchDate;
     return ctx.render('dir-hidden');
-  } else if (rpath === '/favicon.ico' || rpath.startsWith('/i/') || rpath === '/apple-touch-icon.png') {
-    ctx.state.trackPageview = false;
+  } else if (rpath === '/favicon.ico' || rpath.startsWith('/i/') || rpath.endsWith('.png')) {
     ctx.set('Cache-Control', CACHE_CONTROL_IMMUTABLE);
     // let serve() handle this file
   } else if (rpath === '/') {
@@ -83,6 +82,7 @@ app.use(async function router(ctx, next) {
     return ctx.render('about', {title: 'Privacy Policy | Pastafarian Calendar'});
   } else if (rpath.startsWith('/events.json')) {
     ctx.lastModified = new Date();
+    ctx.set('Cache-Control', 'max-age=604800'); // 7 days
     const q = ctx.request.query;
     ctx.body = makeEvents(q.start, q.end);
     return;
