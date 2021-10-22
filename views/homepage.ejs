@@ -64,6 +64,7 @@ iCalendar (.ics) files.</p>
 </div><!-- .col -->
 </div><!-- .row -->
 </div><!-- #content -->
+<%- await include('partials/footer.ejs') _%>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/main.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
 <script>
@@ -104,4 +105,6 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 </script>
-<%- await include('partials/footer.ejs') _%>
+</body>
+</html>
+<!-- generated <%= new Date().toISOString() %> -->
