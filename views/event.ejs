@@ -1,16 +1,38 @@
 <%- await include('partials/header.ejs') -%>
 <body>
+<nav class="navbar navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">
+      <img src="/i/fsm_calendar.svg" alt="" width="24" height="24" class="d-inline-block align-text-top">
+      Pastafarian Calendar
+    </a>
+  </div>
+</nav>
 <div class="container">
 <div id="content" class="mt-3">
 <div class="row">
 <div class="col">
 <header>
-<h2><span class="text-nowrap"><%=ev.emoji%> <%=ev.subject%> <%=ev.emoji%></span>
-<small class="text-muted">&middot; <span class="text-nowrap"><%=d.format('D MMMM')%></span></small></h2>
+<h2><%=ev.emoji%> <%=ev.subject%>&nbsp;<%=ev.emoji%>
+<small class="text-muted">&middot; <span class="text-nowrap"><%=d.format('MMMM D')%></span></small></h2>
 </header>
 <p class="lead"><span class="text-nowrap"><%=ev.subject%></span> is a Pastafarian Holy Day which occurs on
-<time datetime="<%=d.format('YYYY-MM-DD')%>" class="text-nowrap"><%=d.format('dddd, D MMMM YYYY')%></time>.</p>
+<time datetime="<%=d.format('YYYY-MM-DD')%>" class="text-nowrap"><%=d.format('dddd, MMMM D, YYYY')%></time>.</p>
 <p>R’amen!</p>
+<div class="post-navigation d-flex justify-content-between">
+<div class="pe-3">
+  <a class="previous-post btn btn-outline-secondary" href="<%=prev.url%>" title="<%=prev.subject%>">
+    <span class="arrow">←</span>
+    <span class="title"><%=prev.subject%> <%=prev.emoji%></span>
+  </a>
+</div>
+<div class="pb-3">
+  <a class="next-post btn btn-outline-secondary" href="<%=next.url%>" title="<%=next.subject%>">
+    <span class="title"><%=next.emoji%> <%=next.subject%></span>
+    <span class="arrow">→</span>
+  </a>
+</div>
+</div>
 </div><!-- .col -->
 </div><!-- .row -->
 </div><!-- #content -->

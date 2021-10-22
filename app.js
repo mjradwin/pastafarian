@@ -100,6 +100,8 @@ app.use(async function router(ctx, next) {
         title: `${ev.title} | Pastafarian Calendar`,
         d,
         ev,
+        prev: makeEvent(d.add(-1, 'day')),
+        next: makeEvent(d.add(1, 'day')),
       });
     }
   }
