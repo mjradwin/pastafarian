@@ -5,11 +5,11 @@
 <div class="row">
 <div class="col">
 <header>
-<h2><%=ev.emoji%> <%=ev.subject%> <%=ev.emoji%>
-<small class="text-muted">&middot; <%=d.format('D MMMM')%></small></h2>
+<h2><span class="text-nowrap"><%=ev.emoji%> <%=ev.subject%> <%=ev.emoji%></span>
+<small class="text-muted">&middot; <span class="text-nowrap"><%=d.format('D MMMM')%></span></small></h2>
 </header>
-<p class="lead"><%=ev.subject%> is a Pastafarian Holy Day which occurs on
-<time datetime="<%=d.format('YYYY-MM-DD')%>"><%=d.format('dddd, D MMMM YYYY')%></time>.</p>
+<p class="lead"><span class="text-nowrap"><%=ev.subject%></span> is a Pastafarian Holy Day which occurs on
+<time datetime="<%=d.format('YYYY-MM-DD')%>" class="text-nowrap"><%=d.format('dddd, D MMMM YYYY')%></time>.</p>
 <p>R’amen!</p>
 </div><!-- .col -->
 </div><!-- .row -->

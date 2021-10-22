@@ -28,7 +28,6 @@
     "koa-pino-logger": "^3.0.0",
     "koa-send": "^5.0.1",
     "koa-static": "^5.0.0",
-    "pino": "^7.0.3",
     "yaml": "^1.10.2"
   }
 }

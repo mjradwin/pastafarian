@@ -6,20 +6,15 @@ const error = require('koa-error');
 const Koa = require('koa');
 const koaLogger = require('koa-pino-logger');
 const path = require('path');
-const pino = require('pino');
 const render = require('koa-ejs');
 const serve = require('koa-static');
 const zlib = require('zlib');
 const {makeEvents, makeEvent, isoDateStringToDate} = require('./events');
 const {icalFeed} = require('./feed');
 
-const isProduction = process.env.NODE_ENV === 'production';
-const DOCUMENT_ROOT = isProduction ? '/var/www/html' : path.join(__dirname, '..', 'static');
-
 const app = new Koa();
 app.context.launchDate = new Date();
 
-const logDir = isProduction ? '/var/log/koa' : '.';
 /*
 const transport = pino.transport({
   target: 'pino/file',
@@ -27,12 +22,8 @@ const transport = pino.transport({
   options: {destination: logDir + '/access.log'},
 });
 */
-const destination = pino.destination({
-  dest: logDir + '/access.log',
-  level: isProduction ? 'info' : 'debug',
-});
 
-app.use(koaLogger(destination));
+app.use(koaLogger());
 
 app.use(compress({
   gzip: true,
@@ -112,6 +103,7 @@ app.use(async function router(ctx, next) {
   await next();
 });
 
+const DOCUMENT_ROOT = path.join(__dirname, 'static');
 app.use(serve(DOCUMENT_ROOT, {defer: false}));
 
 const port = process.env.NODE_PORT || 8080;
