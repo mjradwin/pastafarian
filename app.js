@@ -9,7 +9,7 @@ const path = require('path');
 const render = require('koa-ejs');
 const serve = require('koa-static');
 const zlib = require('zlib');
-const {makeEvents, makeEvent, isoDateStringToDate} = require('./events');
+const {makeEvents, makeEvent, eventDetail} = require('./events');
 const {icalFeed} = require('./feed');
 
 const app = new Koa();
@@ -94,15 +94,7 @@ app.use(async function router(ctx, next) {
   } else if (rpath.length > 10) {
     const tail = rpath.substring(rpath.length - 10);
     if (reIsoDate.test(tail)) {
-      const d = isoDateStringToDate(tail);
-      const ev = makeEvent(d);
-      return ctx.render('event', {
-        title: `${ev.title} | Pastafarian Calendar`,
-        d,
-        ev,
-        prev: makeEvent(d.add(-1, 'day')),
-        next: makeEvent(d.add(1, 'day')),
-      });
+      return eventDetail(ctx, tail);
     }
   }
   await next();

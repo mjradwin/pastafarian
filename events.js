@@ -1,6 +1,6 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', { value: true });
+Object.defineProperty(exports, '__esModule', {value: true});
 
 const createError = require('http-errors');
 const fs = require('fs');
@@ -67,6 +67,7 @@ function makeEvent(d) {
     url: '/' + makeAnchor(subject) + '-' + ymd,
     subject,
     emoji,
+    d,
   };
   return event;
 }
@@ -105,6 +106,37 @@ function makeAnchor(s) {
       .replace(/-$/g, '');
 }
 
+/**
+ * @param {any} ctx
+ * @param {string} isoDateStr
+ * @return {any}
+ */
+async function eventDetail(ctx, isoDateStr) {
+  const d = isoDateStringToDate(isoDateStr);
+  const ev = makeEvent(d);
+  ctx.set('Cache-Control', 'public');
+  return ctx.render('event', {
+    title: `${ev.title} | Pastafarian Calendar`,
+    d,
+    ev,
+    prev: makeEvent(d.add(-1, 'day')),
+    next: makeEvent(d.add(1, 'day')),
+    jsonLD: {
+      '@context': 'https://schema.org',
+      '@type': 'Event',
+      'name': ev.title + ' ' + d.format('YYYY'),
+      'startDate': d.format('YYYY-MM-DD'),
+      'endDate': d.format('YYYY-MM-DD'),
+      'description': `Pastafarian Holy Day of ${ev.subject} observed by the Church of the Flying Spaghetti Monster`,
+      'location': {
+        '@type': 'VirtualLocation',
+        'url': 'https://www.pastafariancalendar.com' + ev.url,
+      },
+    },
+  });
+}
+
 exports.isoDateStringToDate = isoDateStringToDate;
 exports.makeEvents = makeEvents;
 exports.makeEvent = makeEvent;
+exports.eventDetail = eventDetail;
