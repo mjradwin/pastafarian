@@ -3,6 +3,10 @@ domains:
   type: PRIMARY
 - domain: www.pastafariancalendar.com
   type: ALIAS
+envs:
+- key: TZ
+  scope: RUN_AND_BUILD_TIME
+  value: America/New_York
 name: pastafarian
 region: nyc
 services:

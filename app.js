@@ -71,18 +71,21 @@ app.use(async function router(ctx, next) {
   } else if (rpath === '/') {
     const today = dayjs();
     const ev = makeEvent(today);
+    ctx.set('Cache-Control', 'public');
     return ctx.render('homepage', {
       title: 'Pastafarian Holy Days 🙏 🏴‍☠️ 🍝 | Pastafarian Calendar',
       today,
       ev,
     });
   } else if (rpath === '/privacy') {
+    ctx.set('Cache-Control', 'public');
     return ctx.render('privacy', {title: 'Privacy Policy | Pastafarian Calendar'});
   } else if (rpath === '/about') {
+    ctx.set('Cache-Control', 'public');
     return ctx.render('about', {title: 'Privacy Policy | Pastafarian Calendar'});
   } else if (rpath.startsWith('/events.json')) {
     ctx.lastModified = new Date();
-    ctx.set('Cache-Control', 'max-age=604800'); // 7 days
+    ctx.set('Cache-Control', 'public, max-age=604800'); // 7 days
     const q = ctx.request.query;
     ctx.body = makeEvents(q.start, q.end);
     return;

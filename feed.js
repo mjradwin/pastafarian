@@ -32,7 +32,7 @@ async function icalFeed(ctx) {
     icals.push(ical);
   }
   ctx.lastModified = now;
-  ctx.set('Cache-Control', 'max-age=604800'); // 7 days
+  ctx.set('Cache-Control', 'public, max-age=604800'); // 7 days
   ctx.type = 'text/calendar; charset=utf-8';
   ctx.body = await icalEventsToString(icals, {
     title: 'Pastafarian Holy Days',
