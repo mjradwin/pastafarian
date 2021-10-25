@@ -1,4 +1,6 @@
 <%- await include('partials/header.ejs') -%>
+<meta name="description" content="<%=ev.subject%> on <%=today.format('dddd, MMMM D, YYYY')%>. Perpetual calendar of Pastafarian holidays, observed by adherents of the Church of the Flying Spaghetti Monster">
+<meta name="author" content="Michael J. Radwin">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/main.min.css">
 <style>
 .fc-event {
@@ -9,6 +11,7 @@
 .fc-event .fc-event-title {
   color: #000;
   background-color: #fff;
+  font-size: 1.25em;
 }
 .fc-event-time, .fc-event-title {
   padding: 0 1px;
@@ -26,8 +29,14 @@
 </header>
 <p class="lead"><time datetime="<%=today.format('YYYY-MM-DD')%>"><%=today.format('dddd, MMMM D, YYYY')%></time>
 &middot; <a href="<%=ev.url%>" class="text-nowrap"><%=ev.emoji%> <%=ev.subject%> <%=ev.emoji%></a></p>
-<p>Want the Pastafarian Holy Days calendar? Click the buttons below to
-download/subscribe in your device or web/desktop application.</p>
+<p class="lead">Pastafarian holidays are observed by adherents of Pastafarianism,
+a social movement that promotes a light-hearted view of religion. <sup><a
+title="Flying Spaghetti Monster from Wikipedia, the free encyclopedia"
+href="https://en.wikipedia.org/wiki/Flying_Spaghetti_Monster">[1]</a></sup></p>
+<p>Subscribe to the Pastafarian Holy Days calendar feed for perpetual updates.
+Works on iPhone, iPad, Microsoft Outlook, Android (via Google Calendar),
+macOS Desktop Calendar, Windows 10 calendar, or to any desktop program that
+supports iCalendar (.ics) files.</p>
 </div><!-- .col -->
 </div><!-- .row -->
 <div class="row">
@@ -47,14 +56,6 @@ Copy
 </button>
 </div>
 </div><!-- .col-md -->
-</div><!-- .row -->
-<div class="row">
-<div class="col">
-<p class="small">Subscribers to these feeds receive perpetual updates.
-Works on Microsoft Outlook, iPhone, iPad, macOS Desktop Calendar,
-Android (via Google Calendar), or to any desktop program that supports
-iCalendar (.ics) files.</p>
-</div><!-- .col -->
 </div><!-- .row -->
 <div class="row">
 <div class="col">
