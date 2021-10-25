@@ -9,6 +9,7 @@ const path = require('path');
 const render = require('koa-ejs');
 const serve = require('koa-static');
 const zlib = require('zlib');
+const {basename} = require('path');
 const {makeEvents, makeEvent, eventDetail} = require('./events');
 const {icalFeed} = require('./feed');
 
@@ -73,16 +74,13 @@ app.use(async function router(ctx, next) {
     const ev = makeEvent(today);
     ctx.set('Cache-Control', 'public');
     return ctx.render('homepage', {
-      title: 'Pastafarian Holy Days 🙏 🏴‍☠️ 🍝 | Pastafarian Calendar',
       today,
       ev,
     });
-  } else if (rpath === '/privacy') {
+  } else if (rpath === '/privacy' || rpath === '/about') {
+    const page = basename(rpath);
     ctx.set('Cache-Control', 'public');
-    return ctx.render('privacy', {title: 'Privacy Policy | Pastafarian Calendar'});
-  } else if (rpath === '/about') {
-    ctx.set('Cache-Control', 'public');
-    return ctx.render('about', {title: 'Privacy Policy | Pastafarian Calendar'});
+    return ctx.render(page);
   } else if (rpath.startsWith('/events.json')) {
     ctx.lastModified = new Date();
     ctx.set('Cache-Control', 'public, max-age=604800'); // 7 days
