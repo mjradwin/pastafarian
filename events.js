@@ -45,6 +45,7 @@ function makeEvents(start, end) {
     const event = makeEvent(d);
     delete event.emoji;
     delete event.subject;
+    delete event.d;
     events.push(event);
   }
   return events;
