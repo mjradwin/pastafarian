@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var calendarEl = document.getElementById('calendar');
   var calendar = new FullCalendar.Calendar(calendarEl, {
     timeZone: 'UTC',
-    initialView: 'dayGridMonth',
+    initialView: window.outerWidth < 768 ? 'listMonth' : 'dayGridMonth',
     headerToolbar: {
       left: 'title',
       right: 'today prev,next',
@@ -106,6 +106,8 @@ document.addEventListener('DOMContentLoaded', function() {
       calendar.next();
     }
   });
+  window['pastaFullCalendar'] = calendar;
+  // calendar.changeView('dayGridMonth');
 });
 </script>
 </body>
