@@ -72,7 +72,7 @@ app.use(async function router(ctx, next) {
   } else if (rpath === '/') {
     const today = dayjs();
     const ev = makeEvent(today);
-    ctx.set('Cache-Control', 'public');
+    ctx.set('Cache-Control', 'private');
     return ctx.render('homepage', {
       today,
       ev,
