@@ -12,6 +12,7 @@ const zlib = require('zlib');
 const {basename} = require('path');
 const {makeEvents, makeEvent, eventDetail} = require('./events');
 const {icalFeed} = require('./feed');
+const {sitemap} = require('./sitemap');
 
 const app = new Koa();
 app.context.launchDate = new Date();
@@ -87,6 +88,8 @@ app.use(async function router(ctx, next) {
     const q = ctx.request.query;
     ctx.body = makeEvents(q.start, q.end);
     return;
+  } else if (rpath.startsWith('/sitemap')) {
+    return sitemap(ctx);
   } else if (rpath.startsWith('/feed.ics')) {
     return icalFeed(ctx);
   } else if (rpath.length > 10) {
