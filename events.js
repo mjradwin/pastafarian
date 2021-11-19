@@ -122,22 +122,34 @@ async function eventDetail(ctx, isoDateStr) {
     ev,
     prev: makeEvent(d.add(-1, 'day')),
     next: makeEvent(d.add(1, 'day')),
-    jsonLD: {
-      '@context': 'https://schema.org',
-      '@type': 'Event',
-      'name': ev.title + ' ' + d.format('YYYY'),
-      'startDate': d.format('YYYY-MM-DD'),
-      'endDate': d.format('YYYY-MM-DD'),
-      'description': `Pastafarian Holy Day of ${ev.subject} observed by the Church of the Flying Spaghetti Monster`,
-      'location': {
-        '@type': 'VirtualLocation',
-        'url': 'https://www.pastafariancalendar.com' + ev.url,
-      },
-    },
+    jsonLD: eventJsonLD(ev),
   });
+}
+
+/**
+ * @param {any} ev
+ * @return {any}
+ */
+function eventJsonLD(ev) {
+  const d = ev.d;
+  const url = 'https://www.pastafariancalendar.com' + ev.url;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Event',
+    'name': ev.title + ' ' + d.format('YYYY'),
+    'startDate': d.format('YYYY-MM-DD'),
+    'endDate': d.format('YYYY-MM-DD'),
+    'description': `Pastafarian Holy Day of ${ev.subject} observed by the Church of the Flying Spaghetti Monster`,
+    'url': url,
+    'location': {
+      '@type': 'VirtualLocation',
+      'url': url,
+    },
+  };
 }
 
 exports.isoDateStringToDate = isoDateStringToDate;
 exports.makeEvents = makeEvents;
 exports.makeEvent = makeEvent;
 exports.eventDetail = eventDetail;
+exports.eventJsonLD = eventJsonLD;

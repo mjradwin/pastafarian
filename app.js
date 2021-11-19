@@ -10,7 +10,7 @@ const render = require('koa-ejs');
 const serve = require('koa-static');
 const zlib = require('zlib');
 const {basename} = require('path');
-const {makeEvents, makeEvent, eventDetail} = require('./events');
+const {makeEvents, makeEvent, eventDetail, eventJsonLD} = require('./events');
 const {icalFeed} = require('./feed');
 const {sitemap} = require('./sitemap');
 
@@ -72,11 +72,18 @@ app.use(async function router(ctx, next) {
     // let serve() handle this file
   } else if (rpath === '/') {
     const today = dayjs();
-    const ev = makeEvent(today);
+    const events = [today, today.add(1, 'day'), today.add(2, 'day')].map((d) => makeEvent(d));
+    const ev = events[0];
+    const jsonLD = events.map(eventJsonLD);
+    for (const item of jsonLD) {
+      delete item.description;
+      delete item.location;
+    }
     ctx.set('Cache-Control', 'private');
     return ctx.render('homepage', {
       today,
       ev,
+      jsonLD,
     });
   } else if (rpath === '/privacy' || rpath === '/about') {
     const page = basename(rpath);

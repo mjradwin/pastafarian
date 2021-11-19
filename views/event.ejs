@@ -1,5 +1,5 @@
 <%- await include('partials/header.ejs') -%>
-<script type="application/ld+json"><%-JSON.stringify(jsonLD)%></script>
+<script type="application/ld+json"><%-JSON.stringify(jsonLD, null, 1)%></script>
 <body>
 <%- await include('partials/navbar.ejs') -%>
 <div class="container">
