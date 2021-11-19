@@ -124,6 +124,7 @@ async function eventDetail(ctx, isoDateStr) {
     prev: makeEvent(d.add(-1, 'day')),
     next: makeEvent(d.add(1, 'day')),
     jsonLD: eventJsonLD(ev),
+    today: dayjs(),
   });
 }
 

@@ -10,7 +10,7 @@
 <h2><%=ev.emoji%> <%=ev.subject%>&nbsp;<%=ev.emoji%>
 <small class="text-muted">&middot; <time datetime="<%=d.format('YYYY-MM-DD')%>" class="text-nowrap"><%=d.format('MMMM D')%></time></small></h2>
 </header>
-<p class="lead"><span class="text-nowrap"><%=ev.subject%></span> is a Pastafarian Holy Day which occurs on
+<p class="lead"><span class="text-nowrap"><%=ev.subject%></span> is a Pastafarian Holy Day which <%=d.isBefore(today, 'day') ? 'occurred' : 'occurs'%> on
 <time datetime="<%=d.format('YYYY-MM-DD')%>" class="text-nowrap"><%=d.format('dddd, MMMM D, YYYY')%></time>.</p>
 <p>R’amen!</p>
 <div class="post-navigation d-flex justify-content-between">
