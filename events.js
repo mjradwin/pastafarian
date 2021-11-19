@@ -115,9 +115,10 @@ function makeAnchor(s) {
 async function eventDetail(ctx, isoDateStr) {
   const d = isoDateStringToDate(isoDateStr);
   const ev = makeEvent(d);
+  const titleDate = d.format('MMM D, YYYY');
   ctx.set('Cache-Control', 'public');
   return ctx.render('event', {
-    title: `${ev.title} | Pastafarian Calendar`,
+    title: `${ev.title} | ${titleDate} | Pastafarian Calendar`,
     d,
     ev,
     prev: makeEvent(d.add(-1, 'day')),
