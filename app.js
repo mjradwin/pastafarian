@@ -77,7 +77,6 @@ app.use(async function router(ctx, next) {
     const jsonLD = events.map(eventJsonLD);
     for (const item of jsonLD) {
       delete item.description;
-      delete item.location;
     }
     ctx.set('Cache-Control', 'private');
     return ctx.render('homepage', {
