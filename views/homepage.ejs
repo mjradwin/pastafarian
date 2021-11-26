@@ -1,5 +1,5 @@
 <%- await include('partials/header.ejs', {
-  title: 'Pastafarian Holy Days 🙏 🏴‍☠️ 🍝 | Pastafarian Calendar',
+  title: 'Pastafarian Holiday Calendar 🍝 🙏 🏴‍☠️',
 }) -%>
 <meta name="description" content="<%=ev.subject%> on <%=today.format('dddd, MMMM D, YYYY')%>. Perpetual calendar of Pastafarian holidays, observed by adherents of the Church of the Flying Spaghetti Monster">
 <meta name="author" content="Michael J. Radwin">
@@ -32,7 +32,7 @@ td.fc-list-event-graphic {
 <div class="row">
 <div class="col-sm-9">
 <header>
-<h2>Pastafarian Holy Days 🙏 🏴‍☠️ 🍝</h2>
+<h2>Pastafarian Holidays 🍝 🙏 🏴‍☠️</h2>
 </header>
 <p class="lead"><time datetime="<%=today.format('YYYY-MM-DD')%>"><%=today.format('dddd, MMMM D, YYYY')%></time>
 &middot; <a href="<%=ev.url%>"><%=ev.emoji%>&nbsp;<%=ev.subject%>&nbsp;<%=ev.emoji%></a></p>
