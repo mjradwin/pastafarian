@@ -3,6 +3,8 @@
 const compress = require('koa-compress');
 const dayjs = require('dayjs');
 const error = require('koa-error');
+const conditional = require('koa-conditional-get');
+const etag = require('koa-etag');
 const Koa = require('koa');
 const koaLogger = require('koa-pino-logger');
 const path = require('path');
@@ -26,6 +28,8 @@ const transport = pino.transport({
 */
 
 app.use(koaLogger());
+app.use(conditional());
+app.use(etag());
 
 app.use(compress({
   gzip: true,
