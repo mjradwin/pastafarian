@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@hebcal/core": "^3.33.3",
-    "@hebcal/icalendar": "^4.15.3",
+    "@hebcal/icalendar": "^4.15.4",
     "dayjs": "^1.10.8",
     "ejs": "^3.1.6",
     "http-errors": "^2.0.0",
