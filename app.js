@@ -12,7 +12,7 @@ const render = require('koa-ejs');
 const serve = require('koa-static');
 const zlib = require('zlib');
 const {basename} = require('path');
-const {makeEvents, makeEvent, eventDetail, eventJsonLD} = require('./events');
+const {makeEvents, makeEvent, eventDetail, eventJsonLD, holidays} = require('./events');
 const {icalFeed} = require('./feed');
 const {sitemap} = require('./sitemap');
 
@@ -92,6 +92,11 @@ app.use(async function router(ctx, next) {
     const page = basename(rpath);
     ctx.set('Cache-Control', 'public');
     return ctx.render(page);
+  } else if (rpath.startsWith('/holidays.json')) {
+    ctx.lastModified = new Date();
+    ctx.set('Cache-Control', 'public, max-age=604800'); // 7 days
+    ctx.body = holidays;
+    return;
   } else if (rpath.startsWith('/events.json')) {
     ctx.lastModified = new Date();
     ctx.set('Cache-Control', 'public, max-age=604800'); // 7 days
