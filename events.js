@@ -64,6 +64,7 @@ function makeEvent(d) {
   const [subject, emoji] = cleanStr(rawSubject);
   const event = {
     start: ymd,
+    title: emoji ? `${emoji} ${subject}` : subject,
     url: '/' + makeAnchor(subject) + '-' + ymd,
     subject,
     emoji,
@@ -149,8 +150,15 @@ function eventJsonLD(ev) {
   };
 }
 
+const holidays = [];
+for (const [monthDay, rawSubject] of Object.entries(pastafarian)) {
+  const [subject, emoji] = cleanStr(rawSubject);
+  holidays.push({day: monthDay, value: subject, emoji});
+}
+
 exports.isoDateStringToDate = isoDateStringToDate;
 exports.makeEvents = makeEvents;
 exports.makeEvent = makeEvent;
 exports.eventDetail = eventDetail;
 exports.eventJsonLD = eventJsonLD;
+exports.holidays = holidays;
