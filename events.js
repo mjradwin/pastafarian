@@ -64,7 +64,6 @@ function makeEvent(d) {
   const [subject, emoji] = cleanStr(rawSubject);
   const event = {
     start: ymd,
-    title: emoji ? `${emoji} ${subject}` : subject,
     url: '/' + makeAnchor(subject) + '-' + ymd,
     subject,
     emoji,
@@ -115,10 +114,9 @@ function makeAnchor(s) {
 async function eventDetail(ctx, isoDateStr) {
   const d = isoDateStringToDate(isoDateStr);
   const ev = makeEvent(d);
-  const titleDate = d.format('MMM D, YYYY');
   ctx.set('Cache-Control', 'public');
   return ctx.render('event', {
-    title: `${ev.title} | ${titleDate} | Pastafarian Calendar`,
+    title: `${ev.subject} ${d.format('YYYY')} | Pastafarian Holidays`,
     d,
     ev,
     prev: makeEvent(d.add(-1, 'day')),
@@ -135,10 +133,11 @@ async function eventDetail(ctx, isoDateStr) {
 function eventJsonLD(ev) {
   const d = ev.d;
   const url = 'https://www.pastafariancalendar.com' + ev.url;
+  const name = ev.subject + ' ' + d.format('YYYY') + ' ' + ev.emoji;
   return {
     '@context': 'https://schema.org',
     '@type': 'Event',
-    'name': ev.title + ' ' + d.format('YYYY'),
+    'name': name.trim(),
     'startDate': d.format('YYYY-MM-DD'),
     'endDate': d.format('YYYY-MM-DD'),
     'description': `Pastafarian Holy Day of ${ev.subject} observed by the Church of the Flying Spaghetti Monster`,
