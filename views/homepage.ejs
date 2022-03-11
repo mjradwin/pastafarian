@@ -3,33 +3,7 @@
 }) -%>
 <meta name="description" content="<%=ev.subject%> on <%=today.format('dddd, MMMM D, YYYY')%>. Perpetual calendar of Pastafarian holidays, observed by adherents of the Church of the Flying Spaghetti Monster">
 <meta name="author" content="Michael J. Radwin">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/bootstrap5@5.10.2/main.min.css">
 <style>
-.fc-event {
-  color: #000;
-  border: unset;
-  background-color: #fff;
-}
-.fc-event .fc-event-title {
-  color: #000;
-  background-color: #fff;
-  font-size: 1.25em;
-}
-.fc-event-time, .fc-event-title {
-  padding: 0 1px;
-  white-space: normal;
-}
-td.fc-list-event-time,
-td.fc-list-event-graphic {
-  display: none;
-}
-.fc .fc-daygrid-day.fc-day-today,
-.fc .fc-event.fc-event-today .fc-event-main,
-.fc .fc-event.fc-event-today .fc-event-title {
-  background-color: #ffc;
-}
 span.twitter-typeahead .tt-menu,
 span.twitter-typeahead .tt-dropdown-menu {
   cursor: pointer;
@@ -168,7 +142,7 @@ supports iCalendar (.ics) files.</p>
   <svg class="icon align-top"><use xlink:href="/i/sprite2.svg#clippy"></use></svg>
   Copy
   </button>
-  </div><!-- .input-group -->    
+  </div><!-- .input-group -->
 </div>
 </div><!-- .col -->
 <div class="col-sm-3 mb-2 d-print-none">
@@ -193,17 +167,17 @@ supports iCalendar (.ics) files.</p>
 
 <div class="row mt-4">
 <div class="col">
-<div id='calendar-container'>
-<div id='calendar'></div>
-</div>
+<h4>Holiday Calendar</h4>
+<a class="btn btn-primary" href="/holidays"><%= new Date().getFullYear() %> Holidays &raquo;</a>
 </div><!-- .col -->
 </div><!-- .row -->
+
+
 </div><!-- #content -->
 <%- await include('partials/footer.ejs') _%>
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/bootstrap5@5.10.2/main.global.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
 <script>
+document.addEventListener('DOMContentLoaded', function() {
 var clipboard = new ClipboardJS('#grabBtn', {});
 var grabBtn = document.querySelector('#grabBtn');
 var tooltipBtn=new bootstrap.Tooltip(grabBtn, {trigger:'manual'});
@@ -218,35 +192,12 @@ clipboard.on('error', function(e) {
   e.trigger.setAttribute('data-bs-original-title',fallbackMsg);
   tooltipBtn.show();
 });
-</script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  var calendarEl = document.getElementById('calendar');
-  var calendar = new FullCalendar.Calendar(calendarEl, {
-    timeZone: 'UTC',
-    themeSystem: 'bootstrap5',
-    initialView: window.outerWidth < 768 ? 'listMonth' : 'dayGridMonth',
-    headerToolbar: {
-      left: 'title',
-      right: 'today prev next',
-    },
-    events: '/events.json',
-  });
-  calendar.render();
-  document.addEventListener('keydown', function(e) {
-    if (e.keyCode == 37) {
-      calendar.prev();
-    } else if (e.keyCode == 39) {
-      calendar.next();
-    }
-  });
-  window['pastaFullCalendar'] = calendar;
-  // calendar.changeView('dayGridMonth');
 });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/corejs-typeahead@1.3.1/dist/typeahead.bundle.min.js"></script>
 <script>
+document.addEventListener('DOMContentLoaded', function() {
 var bloodhound = new Bloodhound({
   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
   queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -274,6 +225,7 @@ $('#search .typeahead').typeahead({
   limit: 8,
 }).bind('typeahead:select', function(ev, suggestion, name) {
   document.location = '/' + makeAnchor(suggestion.subject) + '-' + todayYear + '-' + suggestion.day;
+});
 });
 </script>
 </body>

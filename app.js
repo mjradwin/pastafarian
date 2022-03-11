@@ -88,15 +88,15 @@ app.use(async function router(ctx, next) {
       ev,
       jsonLD,
     });
-  } else if (rpath === '/privacy' || rpath === '/about') {
-    const page = basename(rpath);
-    ctx.set('Cache-Control', 'public');
-    return ctx.render(page);
   } else if (rpath.startsWith('/holidays.json')) {
     ctx.lastModified = new Date();
     ctx.set('Cache-Control', 'public, max-age=604800'); // 7 days
     ctx.body = holidays;
     return;
+  } else if (rpath === '/privacy' || rpath === '/about' || rpath === '/holidays') {
+    const page = basename(rpath);
+    ctx.set('Cache-Control', 'public');
+    return ctx.render(page);
   } else if (rpath.startsWith('/events.json')) {
     ctx.lastModified = new Date();
     ctx.set('Cache-Control', 'public, max-age=604800'); // 7 days
