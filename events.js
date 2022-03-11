@@ -32,21 +32,33 @@ function isoDateStringToDate(str) {
 }
 
 /**
- * @param {string} start
- * @param {string} end
+ * @param {dayjs.Dayjs} startDt
+ * @param {dayjs.Dayjs} endDt0
  * @return {any[]}
  */
-function makeEvents(start, end) {
-  const startDt = start ? isoDateStringToDate(start) : dayjs();
-  const endDt0 = end ? isoDateStringToDate(end) : dayjs();
+function makeEvents(startDt, endDt0) {
   const endDt = endDt0.add(1, 'day');
   const events = [];
   for (let d = startDt; d.isBefore(endDt); d = d.add(1, 'day')) {
     const event = makeEvent(d);
+    events.push(event);
+  }
+  return events;
+}
+
+/**
+ * @param {string} start
+ * @param {string} end
+ * @return {any[]}
+ */
+function makeEventsFullCalendar(start, end) {
+  const startDt = start ? isoDateStringToDate(start) : dayjs();
+  const endDt0 = end ? isoDateStringToDate(end) : dayjs();
+  const events = makeEvents(startDt, endDt0);
+  for (const event of events) {
     delete event.emoji;
     delete event.subject;
     delete event.d;
-    events.push(event);
   }
   return events;
 }
@@ -181,6 +193,7 @@ for (const [monthDay, rawSubject] of Object.entries(pastafarian)) {
 
 exports.isoDateStringToDate = isoDateStringToDate;
 exports.makeEvents = makeEvents;
+exports.makeEventsFullCalendar = makeEventsFullCalendar;
 exports.makeEvent = makeEvent;
 exports.eventDetail = eventDetail;
 exports.eventJsonLD = eventJsonLD;

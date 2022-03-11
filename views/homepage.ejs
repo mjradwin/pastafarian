@@ -145,9 +145,14 @@ supports iCalendar (.ics) files.</p>
   </div><!-- .input-group -->
 </div>
 <div class="mb-4">
-  <h4 class="mt-4">Holiday Calendar</h4>
-  <p><a class="btn btn-primary" href="/holidays"><%= new Date().getFullYear() %> Holidays &raquo;</a></p>
-  </div>
+  <h4 class="mt-4">Upcoming Holy Days</h4>
+  <ul class="list-unstyled lh-lg">
+<% for (const ev of upcoming) { -%>
+  <li><time class="me-2" datetime="<%=ev.d.format('YYYY-MM-DD')%>"><%=ev.d.format('dddd, MMMM D')%></time>
+   <a href="<%=ev.url%>"><%=ev.subject%><%-ev.emoji ? '&nbsp;' + ev.emoji : ''%></a></li>
+<% } -%>
+  </ul>
+  <p><a class="btn btn-primary" href="/holidays"><%= new Date().getFullYear() %> Holiday Calendar &raquo;</a></p>
   <h4 class="mt-4">Find a Pastafarian Holy Day</h4>
   <div id="search" class="input-group mb-3">
   <input class="typeahead form-control" type="text" placeholder="Holiday name or date">

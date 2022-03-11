@@ -12,7 +12,7 @@ const render = require('koa-ejs');
 const serve = require('koa-static');
 const zlib = require('zlib');
 const {basename} = require('path');
-const {makeEvents, makeEvent, eventDetail, eventJsonLD, holidays} = require('./events');
+const {makeEvents, makeEventsFullCalendar, eventDetail, eventJsonLD, holidays} = require('./events');
 const {icalFeed} = require('./feed');
 const {sitemap} = require('./sitemap');
 
@@ -76,7 +76,8 @@ app.use(async function router(ctx, next) {
     // let serve() handle this file
   } else if (rpath === '/') {
     const today = dayjs();
-    const events = [today, today.add(1, 'day'), today.add(2, 'day')].map((d) => makeEvent(d));
+    const upcoming = makeEvents(today, today.add(7, 'd'));
+    const events = upcoming.slice(0, 3);
     const ev = events[0];
     const jsonLD = events.map(eventJsonLD);
     for (const item of jsonLD) {
@@ -87,6 +88,7 @@ app.use(async function router(ctx, next) {
       today,
       ev,
       jsonLD,
+      upcoming: upcoming.slice(1),
     });
   } else if (rpath.startsWith('/holidays.json')) {
     ctx.lastModified = new Date();
@@ -101,7 +103,7 @@ app.use(async function router(ctx, next) {
     ctx.lastModified = new Date();
     ctx.set('Cache-Control', 'public, max-age=604800'); // 7 days
     const q = ctx.request.query;
-    ctx.body = makeEvents(q.start, q.end);
+    ctx.body = makeEventsFullCalendar(q.start, q.end);
     return;
   } else if (rpath.startsWith('/sitemap')) {
     return sitemap(ctx);
