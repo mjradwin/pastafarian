@@ -146,12 +146,9 @@ supports iCalendar (.ics) files.</p>
 <div class="mb-4">
   <h4 class="mt-4">Upcoming Holy Days</h4>
   <table class="table">
-  <colgroup>
-    <col style="width:220px"><col>
-  </colgroup>
   <tbody>
   <% for (const ev of upcoming) { -%>
-   <tr><td><time class="me-2" datetime="<%=ev.d.format('YYYY-MM-DD')%>"><%=ev.d.format('dddd, MMMM D')%></time></td>
+   <tr><td><time class="me-2" datetime="<%=ev.d.format('YYYY-MM-DD')%>"><%=ev.d.format('dddd')%>, <span class="text-nowrap"><%=ev.d.format('MMMM D')%></span></time></td>
    <td><a href="<%=ev.url%>"><%=ev.subject%><%-ev.emoji ? '&nbsp;' + ev.emoji : ''%></a>
    <script type="application/ld+json"><%-JSON.stringify(ev.jsonLD)%></script></td></tr>
 <% } -%>
