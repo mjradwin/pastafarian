@@ -144,6 +144,14 @@ supports iCalendar (.ics) files.</p>
   </button>
   </div><!-- .input-group -->
 </div>
+<div class="mb-4">
+  <h4 class="mt-4">Holiday Calendar</h4>
+  <p><a class="btn btn-primary" href="/holidays"><%= new Date().getFullYear() %> Holidays &raquo;</a></p>
+  </div>
+  <h4 class="mt-4">Find a Pastafarian Holy Day</h4>
+  <div id="search" class="input-group mb-3">
+  <input class="typeahead form-control" type="text" placeholder="Holiday name or date">
+  </div>
 </div><!-- .col -->
 <div class="col-sm-3 mb-2 d-print-none">
 <a target="_blank" title="The Gospel of the Flying Spaghetti Monster" rel="sponsored" href="https://www.amazon.com/gp/product/0812976568/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0812976568&linkCode=as2&tag=pastafsm-20&linkId=1c88397d25788ac3c2701ccb3f337cb6">
@@ -155,23 +163,6 @@ supports iCalendar (.ics) files.</p>
 </div><!-- .card-body -->
 </div><!-- .col -->
 </div><!-- .row -->
-
-<div class="row mt-3">
-<div class="col">
-<h4>Find a Pastafarian Holy Day</h4>
-<div id="search" class="input-group mb-3">
-<input class="typeahead form-control" type="text" placeholder="Holiday name or date">
-</div>
-</div><!-- .col -->
-</div><!-- .row -->
-
-<div class="row mt-4">
-<div class="col">
-<h4>Holiday Calendar</h4>
-<a class="btn btn-primary" href="/holidays"><%= new Date().getFullYear() %> Holidays &raquo;</a>
-</div><!-- .col -->
-</div><!-- .row -->
-
 
 </div><!-- #content -->
 <%- await include('partials/footer.ejs') _%>
