@@ -77,17 +77,15 @@ app.use(async function router(ctx, next) {
   } else if (rpath === '/') {
     const today = dayjs();
     const upcoming = makeEvents(today, today.add(7, 'd'));
-    const events = upcoming.slice(0, 3);
-    const ev = events[0];
-    const jsonLD = events.map(eventJsonLD);
-    for (const item of jsonLD) {
-      delete item.description;
+    for (const ev of upcoming) {
+      ev.jsonLD = eventJsonLD(ev);
+      delete ev.jsonLD.description;
     }
+    const ev = upcoming[0];
     ctx.set('Cache-Control', 'private');
     return ctx.render('homepage', {
       today,
       ev,
-      jsonLD,
       upcoming: upcoming.slice(1),
     });
   } else if (rpath.startsWith('/holidays.json')) {

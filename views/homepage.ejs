@@ -103,7 +103,6 @@ p.tt-suggestion.tt-selectable {
   margin-bottom: 0.3rem;
 }
 </style>
-<script type="application/ld+json"><%-JSON.stringify(jsonLD, null, 1)%></script>
 </head>
 <body>
 <div class="container">
@@ -146,12 +145,18 @@ supports iCalendar (.ics) files.</p>
 </div>
 <div class="mb-4">
   <h4 class="mt-4">Upcoming Holy Days</h4>
-  <ul class="list-unstyled lh-lg">
-<% for (const ev of upcoming) { -%>
-  <li><time class="me-2" datetime="<%=ev.d.format('YYYY-MM-DD')%>"><%=ev.d.format('dddd, MMMM D')%></time>
-   <a href="<%=ev.url%>"><%=ev.subject%><%-ev.emoji ? '&nbsp;' + ev.emoji : ''%></a></li>
+  <table class="table">
+  <colgroup>
+    <col style="width:220px"><col>
+  </colgroup>
+  <tbody>
+  <% for (const ev of upcoming) { -%>
+   <tr><td><time class="me-2" datetime="<%=ev.d.format('YYYY-MM-DD')%>"><%=ev.d.format('dddd, MMMM D')%></time></td>
+   <td><a href="<%=ev.url%>"><%=ev.subject%><%-ev.emoji ? '&nbsp;' + ev.emoji : ''%></a>
+   <script type="application/ld+json"><%-JSON.stringify(ev.jsonLD)%></script></td></tr>
 <% } -%>
-  </ul>
+  </tbody>
+  </table>
   <p><a class="btn btn-primary" href="/holidays"><%= new Date().getFullYear() %> Holiday Calendar &raquo;</a></p>
   <h4 class="mt-4">Find a Pastafarian Holy Day</h4>
   <div id="search" class="input-group mb-3">
