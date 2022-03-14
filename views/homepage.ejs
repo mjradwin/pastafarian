@@ -1,7 +1,7 @@
 <%- await include('partials/header.ejs', {
   title: 'Pastafarian Holiday Calendar 🍝',
 }) -%>
-<meta name="description" content="<%=ev.subject%> on <%=today.format('dddd, MMMM D, YYYY')%>. Perpetual calendar of Pastafarian holidays, observed by adherents of the Church of the Flying Spaghetti Monster">
+<meta name="description" content="Perpetual calendar of Pastafarian holy days (Church of the Flying Spaghetti Monster); <%=ev.subject%> is on <%=today.format('dddd, MMMM D, YYYY')%>">
 <meta name="author" content="Michael J. Radwin">
 <style>
 span.twitter-typeahead .tt-menu,
@@ -134,7 +134,7 @@ supports iCalendar (.ics) files.</p>
   <svg class="icon icon-sm align-top"><use xlink:href="/i/sprite2.svg#icon-microsoftoutlook"></use></svg> Outlook.com</a>
 </div>
 <div>
-  <div class="input-group input-group-sm mb-3">
+  <div class="input-group mb-3">
   <input type="text" class="form-control" id="grabLink"
   value="https://www.pastafariancalendar.com/feed.ics">
   <button id="grabBtn" class="btn btn-secondary" data-clipboard-target="#grabLink">
