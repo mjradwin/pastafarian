@@ -2,13 +2,12 @@
 <div class="row">
 <div class="col">
 <ul class="bullet-list-inline text-center">
-<li><time datetime="<%= new Date().toISOString() %>"><%= new Intl.DateTimeFormat('en-US', {
+<li><time datetime="<%= new Date().toISOString() %>" class="text-muted"><%= new Intl.DateTimeFormat('en-US', {
   year: 'numeric', month: 'long', day: 'numeric' }).format(new Date())%></time></li>
 <li><a href="/about">About</a></li>
 <li><a href="/privacy">Privacy</a></li>
 </ul>
-<p class="small">Pastafarian holy day reference: <a href="https://pastafarians.org.au/pastafarianism/holidays/">Church
-of the Flying Spaghetti Monster Australia</a></p>
+<p class="small text-muted text-center">Reference: <a href="https://pastafariancolander.com/">Holy Pastafarian Colander</a></p>
 </div><!-- .col -->
 </div><!-- .row -->
 </footer>
