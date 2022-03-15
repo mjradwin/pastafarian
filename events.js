@@ -166,42 +166,12 @@ function eventJsonLD(ev) {
   };
 }
 
-const months = ['',
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
-const holidays = [];
-for (const [monthDay, rawSubject] of Object.entries(pastafarian)) {
-  const [subject, emoji] = cleanStr(rawSubject);
-  const [month, day] = monthDay.split('-');
-  const monthStr = months[parseInt(month, 10)];
-  const dayNum = parseInt(day, 10);
-  const value = `${monthStr} ${dayNum} - ${subject}`;
-  holidays.push({
-    day: monthDay,
-    value: emoji ? value + ' ' + emoji : value,
-    subject,
-    emoji,
-  });
-}
-
 exports.isoDateStringToDate = isoDateStringToDate;
 exports.makeEvents = makeEvents;
 exports.makeEventsFullCalendar = makeEventsFullCalendar;
 exports.makeEvent = makeEvent;
 exports.eventDetail = eventDetail;
 exports.eventJsonLD = eventJsonLD;
-exports.holidays = holidays;
 exports.rawEvents = pastafarian;
 exports.makeAnchor = makeAnchor;
 exports.cleanStr = cleanStr;

@@ -12,7 +12,8 @@ const render = require('koa-ejs');
 const serve = require('koa-static');
 const zlib = require('zlib');
 const {basename} = require('path');
-const {makeEvents, makeEventsFullCalendar, eventDetail, eventJsonLD, holidays} = require('./events');
+const {makeEvents, makeEventsFullCalendar, eventDetail, eventJsonLD} = require('./events');
+const {makeHolidays} = require('./holidays');
 const {icalFeed} = require('./feed');
 const {sitemap} = require('./sitemap');
 
@@ -88,7 +89,8 @@ app.use(async function router(ctx, next) {
       ev,
       upcoming: upcoming.slice(1),
     });
-  } else if (rpath.startsWith('/holidays.json')) {
+  } else if (rpath.startsWith('/holidays2.json')) {
+    const holidays = makeHolidays();
     ctx.lastModified = new Date();
     ctx.set('Cache-Control', 'public, max-age=604800'); // 7 days
     ctx.body = holidays;

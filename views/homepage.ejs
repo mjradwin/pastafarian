@@ -200,7 +200,7 @@ var bloodhound = new Bloodhound({
   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
   queryTokenizer: Bloodhound.tokenizers.whitespace,
   identify: function(obj) { return obj.day },
-  prefetch: '/holidays.json'
+  prefetch: '/holidays2.json'
 });
 
 function makeAnchor(s) {
@@ -212,8 +212,6 @@ function makeAnchor(s) {
       .replace(/-$/g, '');
 }
 
-var today = new Date();
-var todayYear = today.getFullYear();
 $('#search .typeahead').typeahead({
   autoselect: true,
 }, {
@@ -222,7 +220,7 @@ $('#search .typeahead').typeahead({
   source: bloodhound,
   limit: 8,
 }).bind('typeahead:select', function(ev, suggestion, name) {
-  document.location = '/' + makeAnchor(suggestion.subject) + '-' + todayYear + '-' + suggestion.day;
+  document.location = '/' + makeAnchor(suggestion.subject) + '-' + suggestion.day;
 });
 });
 </script>
