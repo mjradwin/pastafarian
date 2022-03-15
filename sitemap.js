@@ -23,9 +23,12 @@ function sitemapIndex() {
 `;
   const now = new Date();
   const lastmod = now.toISOString();
-  const startYear = now.getFullYear();
-  const endYear = startYear + 5;
+  const startYear = 2016;
+  const endYear = now.getFullYear();
   for (let year = startYear; year <= endYear; year++) {
+    if (year === 2017) {
+      continue;
+    }
     body += `<sitemap>
   <loc>${baseUrl}/sitemap-${year}.xml</loc>
   <lastmod>${lastmod}</lastmod>
@@ -51,6 +54,9 @@ function sitemapYear(page) {
 `;
   for (let d = startDt; d.isBefore(endDt); d = d.add(1, 'day')) {
     const event = makeEvent(d);
+    if (!event) {
+      continue;
+    }
     body += `<url>\n <loc>https://www.pastafariancalendar.com${event.url}</loc>\n`;
     body += ` <lastmod>${lastmod}</lastmod>\n`;
     body += '</url>\n';
