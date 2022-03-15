@@ -130,7 +130,16 @@ function makeAnchor(s) {
  */
 async function eventDetail(ctx, isoDateStr) {
   const d = isoDateStringToDate(isoDateStr);
+  const today = dayjs();
   const ev = makeEvent(d);
+  if (!ev) {
+    ctx.set('Cache-Control', 'private');
+    return ctx.render('tbd', {
+      title: `Unknown Pastafarian Holy Day on ${d.format('MMMM D, YYYY')}`,
+      d,
+      today,
+    });
+  }
   ctx.set('Cache-Control', 'public');
   return ctx.render('event', {
     title: `${ev.subject} ${d.format('YYYY')} | Pastafarian Holidays`,
@@ -139,7 +148,7 @@ async function eventDetail(ctx, isoDateStr) {
     prev: makeEvent(d.add(-1, 'day')),
     next: makeEvent(d.add(1, 'day')),
     jsonLD: eventJsonLD(ev),
-    today: dayjs(),
+    today,
   });
 }
 

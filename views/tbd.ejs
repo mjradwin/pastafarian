@@ -1,0 +1,28 @@
+<%- await include('partials/header.ejs') -%>
+<meta name="robots" content="noindex">
+<body>
+<%- await include('partials/navbar.ejs') -%>
+<div class="container">
+<div id="content" class="mt-3">
+<div class="row">
+<div class="col">
+<header>
+<h2>🗓️ Unknown Holiday 🗓️
+<small class="text-muted">&middot; <time datetime="<%=d.format('YYYY-MM-DD')%>" class="text-nowrap"><%=d.format('MMMM D')%></time></small></h2>
+</header>
+<p class="lead">Every day is special, so there definitely
+  <%=d.isBefore(today, 'day') ? 'was' : 'will be'%> a Pastafarian Holy Day on
+<time datetime="<%=d.format('YYYY-MM-DD')%>" class="text-nowrap text-success"><%=d.format('dddd, MMMM D, YYYY')%></time>.</p>
+<p class="lead">Sorry, we don't happen to know the name of the holiday right now.</p>
+<p>Pastafarian holidays are observed by adherents of Pastafarianism,
+a social movement that promotes a light-hearted view of religion.&nbsp;<sup><a
+title="Flying Spaghetti Monster from Wikipedia, the free encyclopedia"
+href="https://en.wikipedia.org/wiki/Flying_Spaghetti_Monster">[1]</a></sup></p>
+<p>R’amen!</p>
+</div><!-- .col -->
+</div><!-- .row -->
+</div><!-- #content -->
+<%- await include('partials/footer.ejs') _%>
+</body>
+</html>
+<!-- generated <%= new Date().toISOString() %> -->
