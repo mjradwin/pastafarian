@@ -1,7 +1,8 @@
 <%- await include('partials/header.ejs') -%>
-<script type="application/ld+json"><%-JSON.stringify(jsonLD, null, 1)%></script>
+<link rel="canonical" href="https://www.pastafariancalendar.com<%=ev.url%>">
 <% if (typeof prev === 'object' && prev !== null) { %><link rel="prev" href="<%=prev.url%>"><% } %>
 <% if (typeof next === 'object' && next !== null) { %><link rel="next" href="<%=next.url%>"><% } %>
+<script type="application/ld+json"><%-JSON.stringify(jsonLD, null, 1)%></script>
 </head>
 <body>
 <%- await include('partials/navbar.ejs') -%>
