@@ -49,8 +49,8 @@ var opts = {
   timeZone: 'UTC',
   initialView: window.outerWidth < 768 ? 'listMonth' : 'dayGridMonth',
   headerToolbar: {
-  left: 'title',
-  right: 'today prev next',
+    start: 'title',
+    end: 'prevYear,prev today next,nextYear',
   },
   events: '/events.json',
 };

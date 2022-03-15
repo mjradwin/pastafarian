@@ -1,0 +1,15 @@
+{
+  "name": "pastafarian-parser",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-ical": "^0.14.1",
+    "yaml": "^1.10.2"
+  }
+}

@@ -41,7 +41,9 @@ function makeEvents(startDt, endDt0) {
   const events = [];
   for (let d = startDt; d.isBefore(endDt); d = d.add(1, 'day')) {
     const event = makeEvent(d);
-    events.push(event);
+    if (event !== null) {
+      events.push(event);
+    }
   }
   return events;
 }
@@ -70,9 +72,11 @@ const emojiRegex = /([\u0300-\uFFFF ]+)$/;
  * @return {any}
  */
 function makeEvent(d) {
-  const monthDay = d.format('MM-DD');
-  const rawSubject = pastafarian[monthDay];
   const ymd = d.format('YYYY-MM-DD');
+  const rawSubject = pastafarian[ymd];
+  if (!rawSubject) {
+    return null;
+  }
   const [subject, emoji] = cleanStr(rawSubject);
   const event = {
     start: ymd,
@@ -198,3 +202,4 @@ exports.makeEvent = makeEvent;
 exports.eventDetail = eventDetail;
 exports.eventJsonLD = eventJsonLD;
 exports.holidays = holidays;
+exports.rawEvents = pastafarian;

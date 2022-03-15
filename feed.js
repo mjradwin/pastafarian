@@ -6,29 +6,26 @@ Object.defineProperty(exports, '__esModule', {value: true});
 const dayjs = require('dayjs');
 const {Event, flags, HDate} = require('@hebcal/core');
 const {IcalEvent, icalEventsToString} = require('@hebcal/icalendar');
-const {makeEvent} = require('./events');
+const {makeEvent, rawEvents} = require('./events');
 
 async function icalFeed(ctx) {
   const now = new Date();
   const dtstamp = IcalEvent.makeDtstamp(now);
-  const options = {dtstamp};
-  const startDt = dayjs('2016-01-01');
-  const endDt = dayjs('2017-01-01');
   const icals = [];
-  for (let d = startDt; d.isBefore(endDt); d = d.add(1, 'day')) {
+  const options = {dtstamp};
+  const twoYearsAgo = dayjs(now).subtract(2, 'year');
+  const dates = Object.keys(rawEvents);
+  for (const date of dates) {
+    const d = dayjs(date);
+    if (d.isBefore(twoYearsAgo)) {
+      continue;
+    }
     const event = makeEvent(d);
     const title = event.emoji ?
       `${event.emoji} ${event.subject} ${event.emoji}` :
       event.subject;
     const ev = new PastaEvent(d, title, event);
     const ical = new IcalEvent(ev, options);
-    const lines = ical.getLongLines();
-    const alarmIdx = lines.findIndex((line) => line.startsWith('BEGIN:VALARM'));
-    const month = d.month() + 1;
-    lines.splice(alarmIdx, 0,
-        'CLASS:PUBLIC',
-        `RRULE:FREQ=YEARLY;INTERVAL=1;BYMONTH=${month}`,
-    );
     icals.push(ical);
   }
   ctx.lastModified = now;
@@ -36,8 +33,8 @@ async function icalFeed(ctx) {
   ctx.type = 'text/calendar; charset=utf-8';
   ctx.body = await icalEventsToString(icals, {
     title: 'Pastafarian Holy Days',
-    caldesc: 'Pastafarian Calendar of Special Days from pastafarians.org.au',
-    prodid: '-//pastafariancalendar.com/NONSGML Pastafarian Calendar v1.3//EN',
+    caldesc: 'The holy days of the year as divined by our Brother in the sauce Ned Bruce Gallagher',
+    prodid: '-//pastafariancalendar.com/NONSGML Pastafarian Calendar v2.0//EN',
     publishedTTL: 'PT14D',
     dtstamp,
   });
@@ -46,7 +43,7 @@ async function icalFeed(ctx) {
 class PastaEvent extends Event {
   constructor(d, desc, pastaEvent) {
     super(new HDate(d.toDate()), desc, flags.USER_EVENT);
-    this.uid = 'pastafarian-' + d.format('MM-DD');
+    this.uid = 'pastafarian-' + d.format('YYYY-MM-DD');
     this.locationName = 'Pastafarian Holy Day';
     this.alarm = 'P0DT9H0M0S';
     this.category = 'Holiday';
