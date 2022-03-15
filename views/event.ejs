@@ -1,5 +1,8 @@
 <%- await include('partials/header.ejs') -%>
 <script type="application/ld+json"><%-JSON.stringify(jsonLD, null, 1)%></script>
+<% if (typeof prev === 'object' && prev !== null) { %><link rel="prev" href="<%=prev.url%>"><% } %>
+<% if (typeof next === 'object' && next !== null) { %><link rel="next" href="<%=next.url%>"><% } %>
+</head>
 <body>
 <%- await include('partials/navbar.ejs') -%>
 <div class="container">
@@ -18,7 +21,7 @@ title="Flying Spaghetti Monster from Wikipedia, the free encyclopedia"
 href="https://en.wikipedia.org/wiki/Flying_Spaghetti_Monster">[1]</a></sup></p>
 <p>R’amen!</p>
 <div class="post-navigation d-flex justify-content-between">
-<% if (typeof prev === 'object' && prev.url) { %>
+<% if (typeof prev === 'object' && prev !== null) { %>
 <div class="pe-3">
   <a class="previous-post btn btn-outline-secondary" href="<%=prev.url%>" title="<%=prev.subject%>">
     <span class="arrow">←</span>
@@ -27,7 +30,7 @@ href="https://en.wikipedia.org/wiki/Flying_Spaghetti_Monster">[1]</a></sup></p>
   </a>
 </div>
 <% } %>
-<% if (typeof next === 'object' && next.url) { %>
+<% if (typeof next === 'object' && next !== null) { %>
 <div class="pb-3">
   <a class="next-post btn btn-outline-secondary" href="<%=next.url%>" title="<%=next.subject%>">
     <span class="title"><%=next.emoji%> <%=next.subject%></span>
