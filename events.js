@@ -203,3 +203,5 @@ exports.eventDetail = eventDetail;
 exports.eventJsonLD = eventJsonLD;
 exports.holidays = holidays;
 exports.rawEvents = pastafarian;
+exports.makeAnchor = makeAnchor;
+exports.cleanStr = cleanStr;
