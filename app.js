@@ -56,7 +56,7 @@ app.use(error({
   template: path.join(__dirname, 'views', 'error.ejs'),
 }));
 
-const CACHE_CONTROL_IMMUTABLE = 'public, max-age=31536000, s-maxage=31536000, immutable';
+const CACHE_CONTROL_IMMUTABLE = 'public, max-age=31536000, s-maxage=31536000';
 
 const reIsoDate = /^\d\d\d\d-\d\d-\d\d$/;
 
