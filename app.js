@@ -63,12 +63,10 @@ const reIsoDate = /^\d\d\d\d-\d\d-\d\d$/;
 app.use(async function router(ctx, next) {
   const rpath = ctx.request.path;
   if (rpath === '/robots.txt') {
+    ctx.set('Cache-Control', 'public');
     ctx.lastModified = ctx.launchDate;
     ctx.body = 'User-agent: *\nAllow: /\n';
     return;
-  } else if (rpath === '/ping') {
-    ctx.type = 'text/plain';
-    // let serve() handle this file
   } else if (rpath === '/i' || rpath === '/i/') {
     ctx.lastModified = ctx.launchDate;
     return ctx.render('dir-hidden');
