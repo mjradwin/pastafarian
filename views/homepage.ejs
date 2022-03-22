@@ -114,15 +114,12 @@ p.tt-suggestion.tt-selectable {
 <h1>Pastafarian holidays <span class="text-nowrap">🍝 🙏 🏴‍☠️</span></h1>
 </header>
 <p class="lead"><time datetime="<%=today.format('YYYY-MM-DD')%>"><%=today.format('dddd, MMMM D, YYYY')%></time>
-&middot; <a href="<%=ev.url%>"><%-ev.emoji ? ev.emoji + '&nbsp;' : ''%><%=ev.subject%><%-ev.emoji ? '&nbsp;' + ev.emoji : ''%></a></p>
-<p class="lead">Pastafarian holidays are observed by adherents of Pastafarianism,
+<br><a href="<%=ev.url%>"><%-ev.emoji ? ev.emoji + '&nbsp;' : ''%><%=ev.subject%><%-ev.emoji ? '&nbsp;' + ev.emoji : ''%></a></p>
+<p>Pastafarian holidays are observed by adherents of Pastafarianism,
 a social movement that promotes a light-hearted view of religion.&nbsp;<sup><a
 title="Flying Spaghetti Monster from Wikipedia, the free encyclopedia"
 href="https://en.wikipedia.org/wiki/Flying_Spaghetti_Monster">[1]</a></sup></p>
-<p>Subscribe to the Pastafarian Holy Days calendar feed for perpetual updates.
-Works on iPhone, iPad, Microsoft Outlook, Android (via Google Calendar),
-macOS Desktop Calendar, Windows 10 calendar, or to any desktop program that
-supports iCalendar (.ics) files.</p>
+<p>Subscribe to the Pastafarian Holy Days calendar feed for perpetual updates.</p>
 <div>
   <a class="btn btn-outline-primary btn-sm me-2 mb-2 download" title="Subscribe to Pastafarian Calendar for Apple iPhone, iPad, macOS" href="webcal://www.pastafariancalendar.com/feed.ics">
   <svg class="icon icon-sm align-top"><use xlink:href="/i/sprite2.svg#icon-appleinc"></use></svg> Apple</a>
@@ -142,6 +139,9 @@ supports iCalendar (.ics) files.</p>
   </button>
   </div><!-- .input-group -->
 </div>
+<p class="small">The calendar feed is available for iPhone, iPad, Microsoft Outlook,
+Android (via Google Calendar), macOS Desktop Calendar, Windows 10 calendar,
+any any desktop program that supports iCalendar (.ics) files.</p>
 <div class="mb-4">
   <h4 class="mt-4">Upcoming Holy Days</h4>
   <table class="table">
