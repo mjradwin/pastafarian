@@ -78,7 +78,6 @@ app.use(async function router(ctx, next) {
     const upcoming = makeEvents(today, today.add(7, 'd'));
     for (const ev of upcoming) {
       ev.jsonLD = eventJsonLD(ev);
-      delete ev.jsonLD.description;
     }
     const ev = upcoming[0];
     ctx.set('Cache-Control', 'private');

@@ -173,6 +173,19 @@ function eventJsonLD(ev) {
       '@type': 'VirtualLocation',
       'url': url,
     },
+    'offers': {
+      '@type': 'Offer',
+      'price': 0,
+      'priceCurrency': 'USD',
+      'availability': 'https://schema.org/InStock',
+      'validFrom': new Date().toISOString().substring(0, 16),
+    },
+    'organizer': {
+      '@type': 'Organization',
+      'name': 'Church of the Flying Spaghetti Monster',
+      'url': 'https://www.spaghettimonster.org/',
+    },
+
   };
 }
 
