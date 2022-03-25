@@ -168,6 +168,7 @@ function eventJsonLD(ev) {
     'endDate': d.format('YYYY-MM-DD'),
     'description': `Pastafarian Holy Day of ${ev.subject} observed by the Church of the Flying Spaghetti Monster`,
     'url': url,
+    'eventAttendanceMode': 'https://schema.org/OnlineEventAttendanceMode',
     'location': {
       '@type': 'VirtualLocation',
       'url': url,
