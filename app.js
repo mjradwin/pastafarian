@@ -91,12 +91,16 @@ app.use(async function router(ctx, next) {
     for (const ev of upcoming) {
       ev.jsonLD = eventJsonLD(ev);
     }
-    const ev = upcoming[0];
+    const ev = upcoming.shift();
+    const y1 = upcoming[0].d.year();
+    const y2 = upcoming[upcoming.length - 1].d.year();
+    const yearStr = y1 === y2 ? y1 : `${y1}-${y2}`;
     ctx.set('Cache-Control', 'private');
     return ctx.render('homepage', {
       today,
       ev,
-      upcoming: upcoming.slice(1),
+      yearStr,
+      upcoming,
     });
   } else if (rpath.startsWith('/holidays2.json')) {
     const holidays = makeHolidays();
