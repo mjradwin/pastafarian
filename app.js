@@ -58,6 +58,18 @@ app.use(error({
 
 const CACHE_CONTROL_IMMUTABLE = 'public, max-age=31536000, s-maxage=31536000';
 
+// favicon-like files in the directory root that should be cached for 365 days
+const rootDirStatic = new Set(`favicon.ico
+android-chrome-192x192.png
+android-chrome-512x512.png
+apple-touch-icon.png
+browserconfig.xml
+favicon-16x16.png
+favicon-32x32.png
+mstile-150x150.png
+safari-pinned-tab.svg
+site.webmanifest`.split('\n').map((s) => '/' + s));
+
 const reIsoDate = /^\d\d\d\d-\d\d-\d\d$/;
 
 app.use(async function router(ctx, next) {
@@ -70,7 +82,7 @@ app.use(async function router(ctx, next) {
   } else if (rpath === '/i' || rpath === '/i/') {
     ctx.lastModified = ctx.launchDate;
     return ctx.render('dir-hidden');
-  } else if (rpath === '/favicon.ico' || rpath.startsWith('/i/') || rpath.endsWith('.png')) {
+  } else if (rootDirStatic.has(rpath) || rpath.startsWith('/i/') || rpath.endsWith('.png')) {
     ctx.set('Cache-Control', CACHE_CONTROL_IMMUTABLE);
     // let serve() handle this file
   } else if (rpath === '/') {
