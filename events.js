@@ -10,6 +10,9 @@ const dayjs = require('dayjs');
 const yamlStr = fs.readFileSync('./data/pastafarian.yaml', 'utf8');
 const pastafarian = YAML.parse(yamlStr);
 
+const yamlStr2 = fs.readFileSync('./data/more.yaml', 'utf8');
+const moreInfo = YAML.parse(yamlStr2);
+
 const reIsoDate = /^\d\d\d\d-\d\d-\d\d/;
 
 /**
@@ -86,6 +89,11 @@ function makeEvent(d) {
     emoji,
     d,
   };
+  const extra = moreInfo[subject];
+  if (Array.isArray(extra)) {
+    event.desc = extra[0];
+    event.url2 = extra[1];
+  }
   return event;
 }
 
@@ -160,18 +168,20 @@ function eventJsonLD(ev) {
   const d = ev.d;
   const url = 'https://www.pastafariancalendar.com' + ev.url;
   const name = ev.subject + ' ' + d.format('YYYY') + ' ' + ev.emoji;
+  // eslint-disable-next-line max-len
+  const desc = ev.desc || `Pastafarian Holy Day of ${ev.subject} observed by the Church of the Flying Spaghetti Monster`;
   return {
     '@context': 'https://schema.org',
     '@type': 'Event',
     'name': name.trim(),
     'startDate': d.format('YYYY-MM-DD'),
     'endDate': d.format('YYYY-MM-DD'),
-    'description': `Pastafarian Holy Day of ${ev.subject} observed by the Church of the Flying Spaghetti Monster`,
+    'description': desc,
     'url': url,
     'eventAttendanceMode': 'https://schema.org/OnlineEventAttendanceMode',
     'location': {
       '@type': 'VirtualLocation',
-      'url': url,
+      'url': ev.url2 || url,
     },
     'offers': {
       '@type': 'Offer',

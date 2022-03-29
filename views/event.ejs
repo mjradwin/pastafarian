@@ -16,6 +16,7 @@
 </header>
 <p class="lead"><span class="text-nowrap"><%=ev.subject%></span> is a Pastafarian Holy Day which <%=d.isBefore(today, 'day') ? 'occurred' : 'occurs'%> on
 <time datetime="<%=d.format('YYYY-MM-DD')%>" class="text-nowrap text-success"><%=d.format('dddd, MMMM D, YYYY')%></time>.</p>
+<% if (ev.desc) { %><p><%=ev.desc%>&nbsp;<sup><a href="<%=ev.url2%>">[1]</a></sup></p><% } %>
 <p>Pastafarian <a href="/holidays">holidays</a> are observed by adherents of Pastafarianism,
 the world’s fastest-growing carbohydrate-based religion.</p>
 <p>R’amen!</p>
