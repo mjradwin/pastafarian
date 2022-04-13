@@ -25,6 +25,9 @@ async function icalFeed(ctx) {
       `${event.emoji} ${event.subject} ${event.emoji}` :
       event.subject;
     const ev = new PastaEvent(d, title, event);
+    if (event.desc) {
+      ev.memo = event.desc;
+    }
     const ical = new IcalEvent(ev, options);
     icals.push(ical);
   }
