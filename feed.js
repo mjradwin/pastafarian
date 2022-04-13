@@ -27,6 +27,9 @@ async function icalFeed(ctx) {
     const ev = new PastaEvent(d, title, event);
     if (event.desc) {
       ev.memo = event.desc;
+      if (event.url2) {
+        ev.memo += '\\n\\n' + event.url2;
+      }
     }
     const ical = new IcalEvent(ev, options);
     icals.push(ical);
