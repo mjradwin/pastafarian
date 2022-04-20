@@ -5,17 +5,23 @@ const dayjs = require('dayjs');
 const error = require('koa-error');
 const conditional = require('koa-conditional-get');
 const etag = require('koa-etag');
+const http = require('http');
 const Koa = require('koa');
 const koaLogger = require('koa-pino-logger');
+const mmh3 = require('murmurhash3');
 const path = require('path');
 const render = require('koa-ejs');
 const serve = require('koa-static');
+const util = require('util');
 const zlib = require('zlib');
 const {basename} = require('path');
 const {makeEvents, makeEventsFullCalendar, eventDetail, eventJsonLD} = require('./events');
 const {makeHolidays} = require('./holidays');
 const {icalFeed} = require('./feed');
 const {sitemap} = require('./sitemap');
+
+// return array that have 4 elements of 32bit integer
+const murmur128 = util.promisify(mmh3.murmur128);
 
 const app = new Koa();
 app.context.launchDate = new Date();
@@ -31,6 +37,8 @@ const transport = pino.transport({
 app.use(koaLogger());
 app.use(conditional());
 app.use(etag());
+
+app.use(googleAnalytics4('G-Y5E7QMMGP4'));
 
 app.use(compress({
   gzip: true,
@@ -95,6 +103,7 @@ app.use(async function router(ctx, next) {
     const y1 = upcoming[0].d.year();
     const y2 = upcoming[upcoming.length - 1].d.year();
     const yearStr = y1 === y2 ? y1 : `${y1}-${y2}`;
+    ctx.state.trackPageview = true;
     ctx.set('Cache-Control', 'private');
     return ctx.render('homepage', {
       today,
@@ -111,6 +120,7 @@ app.use(async function router(ctx, next) {
   } else if (rpath === '/privacy' || rpath === '/about' || rpath === '/holidays') {
     const page = basename(rpath);
     ctx.set('Cache-Control', 'public');
+    ctx.state.trackPageview = true;
     return ctx.render(page);
   } else if (rpath.startsWith('/events.json')) {
     ctx.lastModified = new Date();
@@ -125,6 +135,7 @@ app.use(async function router(ctx, next) {
   } else if (rpath.length > 10) {
     const tail = rpath.substring(rpath.length - 10);
     if (reIsoDate.test(tail)) {
+      ctx.state.trackPageview = true;
       return eventDetail(ctx, tail);
     }
   }
@@ -139,3 +150,116 @@ app.listen(port, () => {
   const msg = 'Koa server listening on port ' + port;
   console.log(msg);
 });
+
+
+/**
+* Middleware to track via Google Analytics only if
+* `ctx.state.trackPageview === true && ctx.status === 200`
+* @param {string} tid
+* @return {function}
+*/
+function googleAnalytics4(tid) {
+  return async function googleAnalytics4Pageview(ctx, next) {
+    const userAgent = ctx.get('user-agent');
+    const ipAddress = ctx.get('x-client-ip') || ctx.request.ip;
+    const visitorId = ctx.state.visitorId = await makeUuid(ipAddress, userAgent, ctx.get('accept-language'));
+    await next();
+    if (ctx.state.trackPageview && ctx.status === 200) {
+      const url = makeUrl(ctx);
+      const postParams = new URLSearchParams({
+        v: '2',
+        tid: ctx.state.trackingId || tid,
+        t: 'pageview',
+        cid: visitorId,
+        ua: userAgent,
+        uip: ipAddress,
+        dl: url,
+      });
+
+      const ref = ctx.get('referrer');
+      if (ref) {
+        postParams.set('dr', ref);
+      }
+
+      const postData = postParams.toString();
+
+      const options = {
+        hostname: 'www.google-analytics.com',
+        port: 80,
+        path: '/collect',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Length': postData.length,
+        },
+      };
+
+      await new Promise((resolve, reject) => {
+        const req = http.request(options, (res) => {
+          res.setEncoding('utf8');
+          let responseBody = '';
+          res.on('data', (chunk) => {
+            responseBody += chunk;
+          });
+          res.on('end', () => {
+            resolve(responseBody);
+          });
+        });
+        req.on('error', (err) => {
+          reject(err);
+        });
+
+        // write data to request body
+        req.write(postData);
+        req.end();
+      });
+    }
+  };
+}
+
+/**
+ * @private
+ * @param {*} ctx
+ * @return {string}
+ */
+function makeUrl(ctx) {
+  const rpath = ctx.request.path;
+  const proto = ctx.get('x-forwarded-proto') || 'http';
+  const host = ctx.get('host') || 'www.pastafariancalendar.com';
+  const qs = ctx.request.querystring;
+  let url = `${proto}://${host}${rpath}`;
+  if (qs && qs.length) {
+    url += `?${qs}`;
+  }
+  return url;
+}
+
+/**
+* @private
+* @param {string} ipAddress
+* @param {string} userAgent
+* @param {string} acceptLanguage
+* @return {string}
+*/
+async function makeUuid(ipAddress, userAgent, acceptLanguage) {
+  const raw = await murmur128(ipAddress + userAgent + acceptLanguage);
+  const buf32 = new Uint32Array(raw);
+  const bytes = new Uint8Array(buf32.buffer);
+  bytes[6] = (bytes[6] & 0x0f) | 0x40;
+  bytes[8] = (bytes[8] & 0x3f) | 0x80;
+  let digest = '';
+  for (let i = 0; i < 16; i++) {
+    digest += bytes[i].toString(16).padStart(2, '0');
+    switch (i) {
+      case 3:
+      case 5:
+      case 7:
+      case 9:
+        digest += '-';
+        break;
+      default:
+        break;
+    }
+  }
+  return digest;
+}

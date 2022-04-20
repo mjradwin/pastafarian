@@ -18,8 +18,8 @@
   "dependencies": {
     "@hebcal/core": "^3.34.1",
     "@hebcal/icalendar": "^4.15.4",
-    "dayjs": "^1.11.0",
-    "ejs": "^3.1.6",
+    "dayjs": "^1.11.1",
+    "ejs": "^3.1.7",
     "http-errors": "^2.0.0",
     "koa": "^2.13.4",
     "koa-compress": "^5.1.0",
@@ -30,6 +30,7 @@
     "koa-pino-logger": "^4.0.0",
     "koa-send": "^5.0.1",
     "koa-static": "^5.0.0",
-    "yaml": "^2.0.0"
+    "murmurhash3": "^0.5.0",
+    "yaml": "^2.0.1"
   }
 }
