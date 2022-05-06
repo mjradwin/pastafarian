@@ -103,9 +103,6 @@ function makeEvent(d) {
  */
 function cleanStr(s) {
   const s2 = s.trim().replace(/\.$/, '').replace(/\s+/g, ' ').trim();
-  if (s2 === '42 Day 4️⃣2️⃣') {
-    return ['42 Day', '4️⃣2️⃣'];
-  }
   const matches = emojiRegex.exec(s2);
   if (matches) {
     const s3 = s2.replace(emojiRegex, '');
