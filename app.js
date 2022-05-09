@@ -32,8 +32,6 @@ app.use(koaLogger());
 app.use(conditional());
 app.use(etag());
 
-app.use(googleAnalytics4('G-Y5E7QMMGP4'));
-
 app.use(compress({
   gzip: true,
   deflate: false,
