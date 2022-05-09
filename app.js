@@ -16,7 +16,6 @@ const {makeEvents, makeEventsFullCalendar, eventDetail, eventJsonLD} = require('
 const {makeHolidays} = require('./holidays');
 const {icalFeed} = require('./feed');
 const {sitemap} = require('./sitemap');
-const {googleAnalytics4} = require('./analytics');
 
 const app = new Koa();
 app.context.launchDate = new Date();
