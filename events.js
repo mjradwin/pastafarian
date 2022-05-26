@@ -6,6 +6,7 @@ const createError = require('http-errors');
 const fs = require('fs');
 const YAML = require('yaml');
 const dayjs = require('dayjs');
+const { Dayjs } = require('dayjs');
 
 const yamlStr = fs.readFileSync('./data/pastafarian.yaml', 'utf8');
 const pastafarian = YAML.parse(yamlStr);
@@ -130,13 +131,12 @@ function makeAnchor(s) {
 
 /**
  * @param {any} ctx
- * @param {string} isoDateStr
+ * @param {string} ev
+ * @param {Dayjs.dayjs} d
  * @return {any}
  */
-async function eventDetail(ctx, isoDateStr) {
-  const d = isoDateStringToDate(isoDateStr);
+async function eventDetail(ctx, ev, d) {
   const today = dayjs();
-  const ev = makeEvent(d);
   if (!ev) {
     ctx.set('Cache-Control', 'private');
     return ctx.render('tbd', {

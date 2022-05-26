@@ -12,10 +12,12 @@ const render = require('koa-ejs');
 const serve = require('koa-static');
 const zlib = require('zlib');
 const {basename} = require('path');
-const {makeEvents, makeEventsFullCalendar, eventDetail, eventJsonLD} = require('./events');
+const {makeEvent, makeEvents, isoDateStringToDate,
+  makeEventsFullCalendar, eventDetail, eventJsonLD} = require('./events');
 const {makeHolidays} = require('./holidays');
 const {icalFeed} = require('./feed');
 const {sitemap} = require('./sitemap');
+const {matomoTrack} = require('./analytics');
 
 const app = new Koa();
 app.context.launchDate = new Date();
@@ -95,7 +97,7 @@ app.use(async function router(ctx, next) {
     const y1 = upcoming[0].d.year();
     const y2 = upcoming[upcoming.length - 1].d.year();
     const yearStr = y1 === y2 ? y1 : `${y1}-${y2}`;
-    ctx.state.trackPageview = true;
+    await matomoTrack(ctx, 'Pastafarian Holiday Calendar');
     ctx.set('Cache-Control', 'private');
     return ctx.render('homepage', {
       today,
@@ -112,7 +114,7 @@ app.use(async function router(ctx, next) {
   } else if (rpath === '/privacy' || rpath === '/about' || rpath === '/holidays') {
     const page = basename(rpath);
     ctx.set('Cache-Control', 'public');
-    ctx.state.trackPageview = true;
+    await matomoTrack(ctx, rpath.substring(1));
     return ctx.render(page);
   } else if (rpath.startsWith('/events.json')) {
     ctx.lastModified = new Date();
@@ -127,8 +129,12 @@ app.use(async function router(ctx, next) {
   } else if (rpath.length > 10) {
     const tail = rpath.substring(rpath.length - 10);
     if (reIsoDate.test(tail)) {
-      ctx.state.trackPageview = true;
-      return eventDetail(ctx, tail);
+      const d = isoDateStringToDate(tail);
+      const ev = makeEvent(d);
+      const pageTitle = ev ? `${ev.subject} ${d.format('YYYY')}` : 'Unknown';
+      await eventDetail(ctx, ev, d);
+      await matomoTrack(ctx, pageTitle);
+      return;
     }
   }
   await next();

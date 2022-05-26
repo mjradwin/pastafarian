@@ -1,4 +1,4 @@
-const http = require('http');
+const https = require('node:https');
 const mmh3 = require('murmurhash3');
 const util = require('util');
 
@@ -6,115 +6,66 @@ const util = require('util');
 const murmur128 = util.promisify(mmh3.murmur128);
 
 /**
-* Middleware to track via Google Analytics only if
-* `ctx.state.trackPageview === true && ctx.status === 200`
-* @param {string} tid
-* @return {function}
-*/
-function googleAnalytics4(tid) {
-  return async function googleAnalytics4Pageview(ctx, next) {
-    const userAgent = ctx.get('user-agent');
-    const ipAddress = ctx.get('x-client-ip') || ctx.request.ip;
-    const visitorId = ctx.state.visitorId = await makeUuid(ipAddress, userAgent, ctx.get('accept-language'));
-    await next();
-    if (ctx.state.trackPageview && ctx.status === 200) {
-      const url = makeUrl(ctx);
-      const postParams = new URLSearchParams({
-        v: '2',
-        tid: ctx.state.trackingId || tid,
-        t: 'pageview',
-        cid: visitorId,
-        ua: userAgent,
-        uip: ipAddress,
-        dl: url,
-      });
-
-      const ref = ctx.get('referrer');
-      if (ref) {
-        postParams.set('dr', ref);
-      }
-
-      const postData = postParams.toString();
-
-      const options = {
-        hostname: 'www.google-analytics.com',
-        port: 80,
-        path: '/collect',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Content-Length': postData.length,
-        },
-      };
-
-      await new Promise((resolve, reject) => {
-        const req = http.request(options, (res) => {
-          res.setEncoding('utf8');
-          let responseBody = '';
-          res.on('data', (chunk) => {
-            responseBody += chunk;
-          });
-          res.on('end', () => {
-            resolve(responseBody);
-          });
-        });
-        req.on('error', (err) => {
-          reject(err);
-        });
-
-        // write data to request body
-        req.write(postData);
-        req.end();
-      });
-    }
+ * @param {*} ctx
+ * @param {string} pageTitle
+ * @param {*} [params={}]
+ */
+async function matomoTrack(ctx, pageTitle, params={}) {
+  const args = new URLSearchParams(params);
+  args.set('action_name', pageTitle);
+  args.set('idsite', '2');
+  args.set('rec', '1');
+  args.set('apiv', '1');
+  args.set('send_image', '0'); // prefer HTTP 204 instead of a GIF image
+  const pvId = await makePageviewId(ctx);
+  args.set('pv_id', pvId);
+  args.set('ua', ctx.get('user-agent'));
+  const lang = ctx.get('accept-language');
+  if (lang && lang.length) {
+    args.set('lang', lang);
+  }
+  const ref = ctx.get('referer');
+  if (ref && ref.length) {
+    args.set('urlref', ref);
+  }
+  const postData = args.toString();
+  const ip = ctx.get('x-client-ip') || ctx.request.ip;
+  const options = {
+    hostname: 'www.hebcal.com',
+    port: 443,
+    path: '/ma/ma.php',
+    method: 'POST',
+    headers: {
+      'Host': 'www.hebcal.com',
+      'X-Forwarded-For': ip,
+      'X-Forwarded-Proto': 'https',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Length': Buffer.byteLength(postData),
+    },
   };
+  console.log(`matomo: ${postData}`);
+  const req = https.request(options);
+  req.on('error', (err) => {
+    console.error(err);
+  });
+  req.write(postData);
+  req.end();
 }
 
 /**
- * @private
- * @param {*} ctx
+ * @param {any} ctx
  * @return {string}
  */
-function makeUrl(ctx) {
-  const rpath = ctx.request.path;
-  const proto = ctx.get('x-forwarded-proto') || 'http';
-  const host = ctx.get('host') || 'www.pastafariancalendar.com';
-  const qs = ctx.request.querystring;
-  let url = `${proto}://${host}${rpath}`;
-  if (qs && qs.length) {
-    url += `?${qs}`;
-  }
-  return url;
-}
-
-/**
-* @private
-* @param {string} ipAddress
-* @param {string} userAgent
-* @param {string} acceptLanguage
-* @return {string}
-*/
-async function makeUuid(ipAddress, userAgent, acceptLanguage) {
-  const raw = await murmur128(ipAddress + userAgent + acceptLanguage);
+async function makePageviewId(ctx) {
+  const userAgent = ctx.get('user-agent');
+  const ipAddress = ctx.get('x-client-ip') || ctx.request.ip;
+  const acceptLanguage = ctx.get('accept-language');
+  const raw = await murmur128(Date.now() + ipAddress + userAgent + acceptLanguage);
   const buf32 = new Uint32Array(raw);
   const bytes = new Uint8Array(buf32.buffer);
-  bytes[6] = (bytes[6] & 0x0f) | 0x40;
-  bytes[8] = (bytes[8] & 0x3f) | 0x80;
-  let digest = '';
-  for (let i = 0; i < 16; i++) {
-    digest += bytes[i].toString(16).padStart(2, '0');
-    switch (i) {
-      case 3:
-      case 5:
-      case 7:
-      case 9:
-        digest += '-';
-        break;
-      default:
-        break;
-    }
-  }
-  return digest;
+  const buff = Buffer.from(bytes);
+  const qs = buff.toString('base64');
+  return qs.replace(/[\+\/]/g, '').substring(0, 6);
 }
 
-exports.googleAnalytics4 = googleAnalytics4;
+exports.matomoTrack = matomoTrack;
