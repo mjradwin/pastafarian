@@ -17,6 +17,7 @@ async function matomoTrack(ctx, pageTitle, params={}) {
   args.set('rec', '1');
   args.set('apiv', '1');
   args.set('send_image', '0'); // prefer HTTP 204 instead of a GIF image
+  args.set('url', ctx.request.href);
   const pvId = await makePageviewId(ctx);
   args.set('pv_id', pvId);
   args.set('ua', ctx.get('user-agent'));
