@@ -30,7 +30,7 @@ async function matomoTrack(ctx, pageTitle, params={}) {
     args.set('urlref', ref);
   }
   const postData = args.toString();
-  const ip = ctx.get('x-client-ip') || ctx.request.ip;
+  const ip = ctx.get('x-forwarded-for') || ctx.request.ip;
   const options = {
     hostname: 'www.hebcal.com',
     port: 443,
@@ -59,7 +59,7 @@ async function matomoTrack(ctx, pageTitle, params={}) {
  */
 async function makePageviewId(ctx) {
   const userAgent = ctx.get('user-agent');
-  const ipAddress = ctx.get('x-client-ip') || ctx.request.ip;
+  const ipAddress = ctx.get('x-forwarded-for') || ctx.request.ip;
   const acceptLanguage = ctx.get('accept-language');
   const raw = await murmur128(Date.now() + ipAddress + userAgent + acceptLanguage);
   const buf32 = new Uint32Array(raw);
