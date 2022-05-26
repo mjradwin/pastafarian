@@ -5,12 +5,31 @@ const util = require('util');
 // return array that have 4 elements of 32bit integer
 const murmur128 = util.promisify(mmh3.murmur128);
 
+const knownRobots = {
+  'Mediapartners-Google': 1,
+  'Mozilla/5.0 (compatible; AhrefsBot/7.0; +http://ahrefs.com/robot/)': 1,
+  'Mozilla/5.0 (compatible; BLEXBot/1.0; +http://webmeup-crawler.com/)': 1,
+  'Mozilla/5.0 (compatible; DotBot/1.2; +https://opensiteexplorer.org/dotbot; help@moz.com)': 1,
+  'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)': 1,
+  'Mozilla/5.0 (compatible; SemrushBot/7~bl; +http://www.semrush.com/bot.html)': 1,
+  'Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)': 1,
+  'Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)': 1,
+  'Rainmeter WebParser plugin': 1,
+  'Varnish Health Probe': 1,
+  'check_http/v2.2 (monitoring-plugins 2.2)': 1,
+  'kube-probe/1.21': 1,
+};
+
 /**
  * @param {*} ctx
  * @param {string} pageTitle
  * @param {*} [params={}]
  */
 async function matomoTrack(ctx, pageTitle, params={}) {
+  const userAgent = ctx.get('user-agent');
+  if (knownRobots[userAgent]) {
+    return false;
+  }
   const args = new URLSearchParams(params);
   args.set('action_name', pageTitle);
   args.set('idsite', '2');
@@ -20,7 +39,7 @@ async function matomoTrack(ctx, pageTitle, params={}) {
   args.set('url', ctx.request.href);
   const pvId = await makePageviewId(ctx);
   args.set('pv_id', pvId);
-  args.set('ua', ctx.get('user-agent'));
+  args.set('ua', userAgent);
   const lang = ctx.get('accept-language');
   if (lang && lang.length) {
     args.set('lang', lang);
