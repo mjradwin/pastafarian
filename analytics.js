@@ -49,7 +49,9 @@ async function matomoTrack(ctx, pageTitle, params={}) {
     args.set('urlref', ref);
   }
   const postData = args.toString();
-  const ip = ctx.get('x-forwarded-for') || ctx.request.ip;
+  const xfwd = ctx.get('x-forwarded-for') || ctx.request.ip;
+  const ips = xfwd.split(',');
+  const ip = ips[0];
   const options = {
     hostname: 'www.hebcal.com',
     port: 443,
@@ -63,7 +65,7 @@ async function matomoTrack(ctx, pageTitle, params={}) {
       'Content-Length': Buffer.byteLength(postData),
     },
   };
-  console.log(`matomo: ${postData}`);
+  console.log(`matomo: ${postData}&clientIp=${ip}`);
   const req = https.request(options);
   req.on('error', (err) => {
     console.error(err);
