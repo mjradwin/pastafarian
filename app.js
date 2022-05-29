@@ -3,6 +3,7 @@
 const compress = require('koa-compress');
 const dayjs = require('dayjs');
 const error = require('koa-error');
+const xResponseTime = require('koa-better-response-time');
 const conditional = require('koa-conditional-get');
 const etag = require('koa-etag');
 const Koa = require('koa');
@@ -30,6 +31,7 @@ const transport = pino.transport({
 });
 */
 
+app.use(xResponseTime());
 app.use(koaLogger());
 app.use(conditional());
 app.use(etag());
