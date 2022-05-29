@@ -1,4 +1,4 @@
-const https = require('node:https');
+const http = require('node:http');
 const mmh3 = require('murmurhash3');
 const util = require('util');
 
@@ -54,12 +54,12 @@ async function matomoTrack(ctx, pageTitle, params={}) {
   const ipAddress = ips[0];
   const options = {
     hostname: 'www.hebcal.com',
-    port: 443,
+    port: 80,
     path: '/ma/ma.php',
     method: 'POST',
     headers: {
       'Host': 'www.hebcal.com',
-      'X-Forwarded-For': ipAddress,
+      'X-Forwarded-For': xfwd,
       'X-Client-IP': ipAddress,
       'X-Forwarded-Proto': 'https',
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -67,7 +67,7 @@ async function matomoTrack(ctx, pageTitle, params={}) {
     },
   };
   console.log(`matomo: ${postData}&clientIp=${ipAddress}`);
-  const req = https.request(options);
+  const req = http.request(options);
   req.on('error', (err) => {
     console.error(err);
   });
