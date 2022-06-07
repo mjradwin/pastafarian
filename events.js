@@ -6,7 +6,6 @@ const createError = require('http-errors');
 const fs = require('fs');
 const YAML = require('yaml');
 const dayjs = require('dayjs');
-const { Dayjs } = require('dayjs');
 
 const yamlStr = fs.readFileSync('./data/pastafarian.yaml', 'utf8');
 const pastafarian = YAML.parse(yamlStr);
@@ -90,7 +89,8 @@ function makeEvent(d) {
     emoji,
     d,
   };
-  const extra = moreInfo[subject];
+  const extra0 = moreInfo[subject];
+  const extra = typeof extra0 === 'string' ? moreInfo[extra0] : extra0;
   if (Array.isArray(extra)) {
     event.desc = extra[0];
     event.url2 = extra[1];
@@ -132,7 +132,7 @@ function makeAnchor(s) {
 /**
  * @param {any} ctx
  * @param {string} ev
- * @param {Dayjs.dayjs} d
+ * @param {dayjs.Dayjs} d
  * @return {any}
  */
 async function eventDetail(ctx, ev, d) {

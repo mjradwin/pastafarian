@@ -43,6 +43,21 @@ the world’s fastest-growing carbohydrate-based religion.</p>
 </div><!-- .col -->
 </div><!-- .row -->
 </div><!-- #content -->
+<script>
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowLeft') {
+    var linkEl = document.querySelector('link[rel=prev]');
+    if (linkEl) {
+      document.location.href = linkEl.href;
+    }
+  } else if (e.key === 'ArrowRight') {
+    var linkEl = document.querySelector('link[rel=next]');
+    if (linkEl) {
+      document.location.href = linkEl.href;
+    }
+  }
+});
+</script>
 <%- await include('partials/footer.ejs') _%>
 </body>
 </html>
