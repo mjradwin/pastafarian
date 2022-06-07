@@ -6,6 +6,7 @@ const createError = require('http-errors');
 const fs = require('fs');
 const YAML = require('yaml');
 const dayjs = require('dayjs');
+const {transliterate} = require('transliteration');
 
 const yamlStr = fs.readFileSync('./data/pastafarian.yaml', 'utf8');
 const pastafarian = YAML.parse(yamlStr);
@@ -121,7 +122,8 @@ function cleanStr(s) {
  * @return {string}
  */
 function makeAnchor(s) {
-  return s.toLowerCase()
+  return transliterate(s)
+      .toLowerCase()
       .replace(/'/g, '')
       .replace(/[^\w]/g, '-')
       .replace(/-+/g, '-')

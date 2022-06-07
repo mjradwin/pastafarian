@@ -32,6 +32,7 @@
     "koa-send": "^5.0.1",
     "koa-static": "^5.0.0",
     "murmurhash3": "^0.5.0",
+    "transliteration": "^2.2.0",
     "yaml": "^2.1.1"
   }
 }
