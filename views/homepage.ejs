@@ -206,17 +206,8 @@ var bloodhound = new Bloodhound({
   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
   queryTokenizer: Bloodhound.tokenizers.whitespace,
   identify: function(obj) { return obj.day },
-  prefetch: '/holidays2.json'
+  prefetch: '/holidays3.json'
 });
-
-function makeAnchor(s) {
-  return s.toLowerCase()
-      .replace(/'/g, '')
-      .replace(/[^\w]/g, '-')
-      .replace(/-+/g, '-')
-      .replace(/^-/g, '')
-      .replace(/-$/g, '');
-}
 
 $('#search .typeahead').typeahead({
   autoselect: true,
@@ -226,7 +217,7 @@ $('#search .typeahead').typeahead({
   source: bloodhound,
   limit: 8,
 }).bind('typeahead:select', function(ev, suggestion, name) {
-  document.location = '/' + makeAnchor(suggestion.subject) + '-' + suggestion.day;
+  document.location = suggestion.url;
 });
 });
 </script>

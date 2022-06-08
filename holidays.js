@@ -1,4 +1,4 @@
-const {rawEvents, cleanStr} = require('./events');
+const {rawEvents, cleanStr, makeAnchor} = require('./events');
 const dayjs = require('dayjs');
 
 const months = ['',
@@ -44,8 +44,11 @@ function makeHolidays() {
       day: date,
       value: emoji ? value + ' ' + emoji : value,
       subject,
-      emoji,
+      url: '/' + makeAnchor(subject) + '-' + date,
     };
+    if (emoji.length) {
+      holiday.emoji = emoji;
+    }
     m.set(subjLc, holiday);
     holidays.push(holiday);
   }

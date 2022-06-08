@@ -107,7 +107,7 @@ app.use(async function router(ctx, next) {
       yearStr,
       upcoming,
     });
-  } else if (rpath.startsWith('/holidays2.json')) {
+  } else if (rpath.startsWith('/holidays') && rpath.endsWith('.json')) {
     const holidays = makeHolidays();
     ctx.lastModified = new Date();
     ctx.set('Cache-Control', 'public, max-age=604800'); // 7 days
