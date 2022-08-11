@@ -1,6 +1,7 @@
 const http = require('node:http');
 const mmh3 = require('murmurhash3');
 const util = require('util');
+const pkg = require('./package.json');
 
 // return array that have 4 elements of 32bit integer
 const murmur128 = util.promisify(mmh3.murmur128);
@@ -62,6 +63,7 @@ async function matomoTrack(ctx, pageTitle, params={}) {
       'X-Forwarded-For': xfwd,
       'X-Client-IP': ipAddress,
       'X-Forwarded-Proto': 'https',
+      'User-Agent': pkg.name + '/' + pkg.version,
       'Content-Type': 'application/x-www-form-urlencoded',
       'Content-Length': Buffer.byteLength(postData),
     },
