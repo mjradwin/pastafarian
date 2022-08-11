@@ -53,20 +53,24 @@ async function matomoTrack(ctx, pageTitle, params={}) {
   const xfwd = ctx.get('x-forwarded-for') || ctx.request.ip;
   const ips = xfwd.split(',');
   const ipAddress = ips[0];
+  const headers = {
+    'Host': 'www.hebcal.com',
+    'X-Forwarded-For': xfwd,
+    'X-Client-IP': ipAddress,
+    'X-Forwarded-Proto': 'https',
+    'User-Agent': pkg.name + '/' + pkg.version,
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Content-Length': Buffer.byteLength(postData),
+  };
+  if (ref && ref.length) {
+    headers.Referer = ref;
+  }
   const options = {
     hostname: 'www.hebcal.com',
     port: 80,
     path: '/ma/ma.php',
     method: 'POST',
-    headers: {
-      'Host': 'www.hebcal.com',
-      'X-Forwarded-For': xfwd,
-      'X-Client-IP': ipAddress,
-      'X-Forwarded-Proto': 'https',
-      'User-Agent': pkg.name + '/' + pkg.version,
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Content-Length': Buffer.byteLength(postData),
-    },
+    headers: headers,
   };
   console.log(`matomo: ${postData}&clientIp=${ipAddress}`);
   const req = http.request(options);
