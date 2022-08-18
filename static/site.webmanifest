@@ -1,6 +1,8 @@
 {
-    "name": "",
-    "short_name": "",
+    "name": "Pastafarian Calendar",
+    "short_name": "Pastafarian holiday calendar",
+    "description": "Pastafarian holidays are observed by adherents of Pastafarianism, a social movement that promotes a light-hearted view of religion",
+    "start_url": "/",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
