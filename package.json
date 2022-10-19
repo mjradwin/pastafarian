@@ -12,12 +12,12 @@
   "author": "Michael J. Radwin (https://github.com/mjradwin)",
   "license": "BSD-2-Clause",
   "devDependencies": {
-    "eslint": "^8.22.0",
+    "eslint": "^8.25.0",
     "eslint-config-google": "^0.14.0"
   },
   "dependencies": {
-    "@hebcal/core": "^3.42.2",
-    "@hebcal/icalendar": "^4.18.0",
+    "@hebcal/core": "^3.45.3",
+    "@hebcal/icalendar": "^4.18.2",
     "dayjs": "^1.11.5",
     "ejs": "^3.1.8",
     "http-errors": "^2.0.0",
@@ -33,6 +33,6 @@
     "koa-static": "^5.0.0",
     "murmurhash3": "^0.5.0",
     "transliteration": "^2.3.5",
-    "yaml": "^2.1.1"
+    "yaml": "^2.1.3"
   }
 }
