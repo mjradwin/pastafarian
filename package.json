@@ -1,6 +1,6 @@
 {
   "name": "pastafarian-calendar",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "PastafarianCalendar.com web server",
   "scripts": {
     "start": "node app.js",
@@ -12,12 +12,12 @@
   "author": "Michael J. Radwin (https://github.com/mjradwin)",
   "license": "BSD-2-Clause",
   "devDependencies": {
-    "eslint": "^8.26.0",
+    "eslint": "^8.27.0",
     "eslint-config-google": "^0.14.0"
   },
   "dependencies": {
     "@hebcal/core": "^3.45.5",
-    "@hebcal/icalendar": "^4.18.2",
+    "@hebcal/icalendar": "^4.18.3",
     "dayjs": "^1.11.6",
     "ejs": "^3.1.8",
     "http-errors": "^2.0.0",

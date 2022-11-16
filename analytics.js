@@ -50,6 +50,13 @@ async function matomoTrack(ctx, pageTitle, params={}) {
     args.set('urlref', ref);
   }
   const postData = args.toString();
+  const postLen = Buffer.byteLength(postData);
+  let path = '/ma/ma.php';
+  let sendPostBody = true;
+  if (postLen < 4000) {
+    path += '?' + postData;
+    sendPostBody = false;
+  }
   const xfwd = ctx.get('x-forwarded-for') || ctx.request.ip;
   const ips = xfwd.split(',');
   const ipAddress = ips[0];
@@ -60,7 +67,7 @@ async function matomoTrack(ctx, pageTitle, params={}) {
     'X-Forwarded-Proto': 'https',
     'User-Agent': pkg.name + '/' + pkg.version,
     'Content-Type': 'application/x-www-form-urlencoded',
-    'Content-Length': Buffer.byteLength(postData),
+    'Content-Length': sendPostBody ? postLen : 0,
   };
   if (ref && ref.length) {
     headers.Referer = ref;
@@ -68,7 +75,7 @@ async function matomoTrack(ctx, pageTitle, params={}) {
   const options = {
     hostname: 'www.hebcal.com',
     port: 80,
-    path: '/ma/ma.php',
+    path: path,
     method: 'POST',
     headers: headers,
   };
@@ -77,7 +84,9 @@ async function matomoTrack(ctx, pageTitle, params={}) {
   req.on('error', (err) => {
     console.error(err);
   });
-  req.write(postData);
+  if (sendPostBody) {
+    req.write(postData);
+  }
   req.end();
 }
 
