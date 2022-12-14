@@ -120,9 +120,12 @@ app.use(async function router(ctx, next) {
     return ctx.render(page);
   } else if (rpath.startsWith('/events.json')) {
     ctx.lastModified = new Date();
-    ctx.set('Cache-Control', 'public, max-age=604800'); // 7 days
     const q = ctx.request.query;
-    ctx.body = makeEventsFullCalendar(q.start, q.end);
+    const events = makeEventsFullCalendar(q.start, q.end);
+    // 7 days if found, one hour if empty
+    const maxAge = events.length > 0 ? 604800 : 3600;
+    ctx.set('Cache-Control', `public, max-age=${maxAge}`);
+    ctx.body = events;
     return;
   } else if (rpath.startsWith('/sitemap')) {
     return sitemap(ctx);
