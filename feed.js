@@ -10,7 +10,7 @@ const {makeEvent, rawEvents} = require('./events');
 
 async function icalFeed(ctx) {
   const now = new Date();
-  const dtstamp = IcalEvent.makeDtstamp(now);
+const dtstamp = IcalEvent.makeDtstamp(now);
   const icals = [];
   const options = {dtstamp};
   const twoYearsAgo = dayjs(now).subtract(2, 'year');

@@ -198,7 +198,7 @@ clipboard.on('error', function(e) {
 });
 });
 </script>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/corejs-typeahead@1.3.1/dist/typeahead.bundle.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -206,7 +206,7 @@ var bloodhound = new Bloodhound({
   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
   queryTokenizer: Bloodhound.tokenizers.whitespace,
   identify: function(obj) { return obj.day },
-  prefetch: '/holidays3.json'
+  prefetch: '/holidays4.json'
 });
 
 $('#search .typeahead').typeahead({

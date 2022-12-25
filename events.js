@@ -7,6 +7,7 @@ const fs = require('fs');
 const YAML = require('yaml');
 const dayjs = require('dayjs');
 const {transliterate} = require('transliteration');
+const {distance, closest} = require('fastest-levenshtein');
 
 const yamlStr = fs.readFileSync('./data/pastafarian.yaml', 'utf8');
 const pastafarian = YAML.parse(yamlStr);
@@ -15,6 +16,19 @@ const yamlStr2 = fs.readFileSync('./data/more.yaml', 'utf8');
 const moreInfo = YAML.parse(yamlStr2);
 
 const reIsoDate = /^\d\d\d\d-\d\d-\d\d/;
+const emojiRegex = /([\u0300-\uFFFF ]+)$/;
+const emojiMap = new Map();
+
+for (const rawSubject of Object.values(pastafarian)) {
+  const [subject, emoji] = cleanStr(rawSubject);
+  const subjLc0 = subject.toLowerCase();
+  const subjLc = subjLc0.replace(' day', '').replace(/\d\d\d\d/, 'YYYY');
+  if (emoji && !emojiMap.has(subjLc)) {
+    emojiMap.set(subjLc, emoji);
+  }
+}
+
+const allSubjects = Array.from(emojiMap.keys());
 
 /**
  * Parse a string YYYY-MM-DD and return Date
@@ -69,8 +83,6 @@ function makeEventsFullCalendar(start, end) {
   return events;
 }
 
-const emojiRegex = /([\u0300-\uFFFF ]+)$/;
-
 /**
  * @param {dayjs.Dayjs} d
  * @return {any}
@@ -81,7 +93,17 @@ function makeEvent(d) {
   if (!rawSubject) {
     return null;
   }
-  const [subject, emoji] = cleanStr(rawSubject);
+  const [subject, emoji0] = cleanStr(rawSubject);
+  let emoji = emoji0;
+  if (!emoji0) {
+    const subjLc0 = subject.toLowerCase();
+    const subjLc = subjLc0.replace(' day', '').replace(/\d\d\d\d/, 'YYYY');
+    const candidate = closest(subjLc, allSubjects);
+    const editDist = distance(subjLc, candidate);
+    if (editDist < 3) {
+      emoji = emojiMap.get(candidate);
+    }
+  }
   const event = {
     start: ymd,
     title: emoji ? `${emoji} ${subject}` : subject,

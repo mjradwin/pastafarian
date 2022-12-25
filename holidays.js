@@ -1,20 +1,7 @@
-const {rawEvents, cleanStr, makeAnchor} = require('./events');
+const {rawEvents, makeAnchor} = require('./events');
 const dayjs = require('dayjs');
+const {makeEvent} = require('./events');
 
-const months = ['',
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
 const dates = Object.keys(rawEvents).reverse();
 
 // eslint-disable-next-line require-jsdoc
@@ -27,19 +14,15 @@ function makeHolidays() {
     if (d.isBefore(startDate)) {
       continue;
     }
-    const rawSubject = rawEvents[date];
-    const [subject, emoji] = cleanStr(rawSubject);
+    const event = makeEvent(d);
+    const subject = event.subject;
+    const emoji = event.emoji;
     const subjLc0 = subject.toLowerCase();
-    const subjLc = subjLc0.replace(' day', '');
+    const subjLc = subjLc0.replace(' day', '').replace(/\d\d\d\d/, 'YYYY');
     if (m.has(subjLc)) {
       continue;
     }
-    const monthDay = date.substring(5);
-    const year = date.substring(0, 4);
-    const [month, day] = monthDay.split('-');
-    const monthStr = months[parseInt(month, 10)];
-    const dayNum = parseInt(day, 10);
-    const value = `${monthStr} ${dayNum}, ${year} - ${subject}`;
+    const value = d.format('MMMM D, YYYY') + ' - ' + subject;
     const holiday = {
       day: date,
       value: emoji ? value + ' ' + emoji : value,
