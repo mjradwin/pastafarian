@@ -49,6 +49,8 @@ async function matomoTrack(ctx, pageTitle, params={}) {
   if (ref && ref.length) {
     args.set('urlref', ref);
   }
+  const duration = Date.now() - ctx.state.startTime;
+  args.set('pf_srv', duration);
   const postData = args.toString();
   const postLen = Buffer.byteLength(postData);
   let path = '/ma/ma.php';

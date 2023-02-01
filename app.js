@@ -32,6 +32,10 @@ const transport = pino.transport({
 */
 
 app.use(xResponseTime());
+app.use(async function myResponseTime(ctx, next) {
+  ctx.state.startTime = Date.now();
+  await next();
+});
 app.use(koaLogger());
 app.use(conditional());
 app.use(etag());
