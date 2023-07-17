@@ -3,17 +3,8 @@
 <meta charset="utf-8">
 <title><%= title %></title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+<link rel="stylesheet" href="/i/simple.min.css">
 <style>
-a {
-  color: #007bff;
-  text-decoration: none;
-  background-color: transparent;
-}
-a:hover {
-  color: #0056b3;
-  text-decoration: underline;
-}
 a:not([href]):not([tabindex]) {
   color: inherit;
   text-decoration: none;
@@ -38,8 +29,8 @@ a:not([href]):not([tabindex]):focus {
   height: 1rem;
 }
 .icon-md {
-  width: 1.8rem;
-  height: 1.8rem;
+  width: 2.25rem;
+  height: 2.25rem;
 }
 .bullet-list-inline {
   padding-left: 0;
@@ -53,4 +44,39 @@ a:not([href]):not([tabindex]):focus {
 }
 .bullet-list-inline li:after{content:"\00a0\00a0\00b7"}
 .bullet-list-inline li:last-child:after{content:""}
+.small {
+  font-size: 0.875em;
+}
+.text-nowrap {
+  white-space: nowrap;
+}
+.text-muted {
+  color: rgba(33, 37, 41, 0.75);
+}
+@media (prefers-color-scheme: dark) {
+  .text-muted {
+    color:rgba(173, 181, 189, 0.75);
+  }
+}
+.lead {
+  font-size: 1.25rem;
+  font-weight: 300;
+}
+.d-flex {
+  display: flex;
+}
+.justify-content-between {
+  justify-content: space-between;
+}
+.clearfix::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+.align-text-top {
+  vertical-align: text-top;
+}
+.d-inline-block {
+  display: inline-block;
+}
 </style>

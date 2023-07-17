@@ -110,44 +110,26 @@ p.tt-suggestion.tt-selectable {
 </style>
 </head>
 <body>
-<div class="container">
-<div id="content" class="mt-3">
-<div class="row">
-<div class="col-sm-9">
 <header class="clearfix">
-<img src="/i/fsm_calendar2.svg" alt="" width="72" height="72" class="img-fluid float-start me-3 mb-2">
-<h1>Pastafarian holidays <span class="text-nowrap">🍝 🙏 🏴‍☠️</span></h1>
+<h1>
+  <img src="/i/fsm_calendar2.svg" alt="" width="72" height="72" class="icon icon-md me-3 mb-2">
+  Pastafarian holidays <span class="text-nowrap">🍝 🙏 🏴‍☠️</span></h1>
 </header>
+<main>
 <p class="lead"><time datetime="<%=today.format('YYYY-MM-DD')%>"><%=today.format('dddd, MMMM D, YYYY')%></time>
 <br><a href="<%=ev.url%>"><%-ev.emoji ? ev.emoji + '&nbsp;' : ''%><%=ev.subject%><%-ev.emoji ? '&nbsp;' + ev.emoji : ''%></a>
 <script type="application/ld+json"><%-JSON.stringify(ev.jsonLD)%></script></p>
+<aside>
+<a target="_blank" title="The Gospel of the Flying Spaghetti Monster" rel="sponsored" href="https://www.amazon.com/gp/product/0812976568/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0812976568&linkCode=as2&tag=pastafsm-20&linkId=1c88397d25788ac3c2701ccb3f337cb6">
+  <img class="card-img-top" style="max-width: 160px; height: auto" alt="The Gospel of the Flying Spaghetti Monster" src="/i/51r2Bu475NL._SL250_.jpg" width="200" height="250">
+</a>
+<p class="card-text small"><a target="_blank" rel="sponsored" href="https://www.amazon.com/gp/product/0812976568/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0812976568&linkCode=as2&tag=pastafsm-20&linkId=7708b82e95707e1df60c40a480805efb">The Gospel of the Flying Spaghetti Monster</a>
+&middot; <em class="small text-muted text-nowrap">paid link</em></p>
+</aside>
 <p>Pastafarian holidays are observed by adherents of Pastafarianism,
 a social movement that promotes a light-hearted view of religion.&nbsp;<sup><a
 title="Flying Spaghetti Monster from Wikipedia, the free encyclopedia"
 href="https://en.wikipedia.org/wiki/Flying_Spaghetti_Monster">[1]</a></sup></p>
-<p>Subscribe to the Pastafarian Holy Days calendar feed for perpetual updates.</p>
-<div>
-  <a class="btn btn-outline-primary btn-sm me-2 mb-2 download" title="Subscribe to Pastafarian Calendar for Apple iPhone, iPad, macOS" href="webcal://www.pastafariancalendar.com/feed.ics">
-  <svg class="icon icon-sm align-top"><use xlink:href="/i/sprite2.svg#icon-appleinc"></use></svg> Apple</a>
-  <a class="btn btn-outline-primary btn-sm me-2 mb-2 download" title="Add Pastafarian Calendar to Google Calendar" href="https://www.google.com/calendar/render?cid=http%3A%2F%2Fwww.pastafariancalendar.com%2Ffeed.ics">
-  <svg class="icon icon-sm align-top"><use xlink:href="/i/sprite2.svg#icon-google"></use></svg> Google</a>
-  <a class="btn btn-outline-primary btn-sm me-2 mb-2 download" title="Subscribe to Pastafarian Calendar in Outlook.com"
-  href="https://outlook.live.com/calendar/addfromweb?url=https://www.pastafariancalendar.com/feed.ics&amp;name=Pastafarian%20Holy%20Days&amp;mkt=en-001">
-  <svg class="icon icon-sm align-top"><use xlink:href="/i/sprite2.svg#icon-microsoftoutlook"></use></svg> Outlook.com</a>
-</div>
-<div>
-  <div class="input-group mb-3">
-  <input type="text" class="form-control" id="grabLink"
-  value="https://www.pastafariancalendar.com/feed.ics">
-  <button id="grabBtn" class="btn btn-secondary" data-clipboard-target="#grabLink">
-  <svg class="icon align-top"><use xlink:href="/i/sprite2.svg#clippy"></use></svg>
-  Copy
-  </button>
-  </div><!-- .input-group -->
-</div>
-<p class="small">Our calendar feed is available for iPhone, iPad, Microsoft Outlook,
-Android (via Google Calendar), macOS Calendar, Windows 10 &amp; 11 Calendar,
-and any desktop program that supports iCalendar (.ics) files.</p>
 <div class="mb-4">
   <h4 class="mt-4">Upcoming <%=yearStr%> Holy Days</h4>
   <table class="table">
@@ -159,42 +141,50 @@ and any desktop program that supports iCalendar (.ics) files.</p>
 <% } -%>
   </tbody>
   </table>
-  <p><a class="btn btn-primary" href="/holidays"><%=yearStr%> Holiday Calendar &raquo;</a></p>
+  <p><a class="button" href="/holidays"><%=yearStr%> Holiday Calendar &raquo;</a></p>
   <h4 class="mt-4">Find a Pastafarian Holy Day</h4>
   <div id="search" class="input-group mb-3">
   <input class="typeahead form-control" type="text" placeholder="Holiday name or date">
   </div>
 </div><!-- .mb-4 -->
-</div><!-- .col-sm-9 -->
-<div class="col-sm-3 mb-2 d-print-none">
-<a target="_blank" title="The Gospel of the Flying Spaghetti Monster" rel="sponsored" href="https://www.amazon.com/gp/product/0812976568/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0812976568&linkCode=as2&tag=pastafsm-20&linkId=1c88397d25788ac3c2701ccb3f337cb6">
-  <img class="card-img-top" style="max-width: 200px; height: auto" alt="The Gospel of the Flying Spaghetti Monster" src="/i/51r2Bu475NL._SL250_.jpg" width="200" height="250">
-</a>
-<div class="card-body">
-  <p class="card-text small"><a target="_blank" rel="sponsored" href="https://www.amazon.com/gp/product/0812976568/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0812976568&linkCode=as2&tag=pastafsm-20&linkId=7708b82e95707e1df60c40a480805efb">The Gospel of the Flying Spaghetti Monster</a>
-  &middot; <em class="small text-muted text-nowrap">paid link</em></p>
-</div><!-- .card-body -->
-</div><!-- .col -->
-</div><!-- .row -->
-
-</div><!-- #content -->
+<p>Subscribe to the Pastafarian Holy Days calendar feed for perpetual updates.</p>
+<div>
+  <a class="button download" title="Subscribe to Pastafarian Calendar for Apple iPhone, iPad, macOS" href="webcal://www.pastafariancalendar.com/feed.ics">
+  <svg class="icon icon-sm align-top"><use xlink:href="/i/sprite2.svg#icon-appleinc"></use></svg> Apple</a>
+  <a class="button download" title="Add Pastafarian Calendar to Google Calendar" href="https://www.google.com/calendar/render?cid=http%3A%2F%2Fwww.pastafariancalendar.com%2Ffeed.ics">
+  <svg class="icon icon-sm align-top"><use xlink:href="/i/sprite2.svg#icon-google"></use></svg> Google</a>
+  <a class="button download" title="Subscribe to Pastafarian Calendar in Outlook.com"
+  href="https://outlook.live.com/calendar/addfromweb?url=https://www.pastafariancalendar.com/feed.ics&amp;name=Pastafarian%20Holy%20Days&amp;mkt=en-001">
+  <svg class="icon icon-sm align-top"><use xlink:href="/i/sprite2.svg#icon-microsoftoutlook"></use></svg> Outlook.com</a>
+</div>
+<div>
+  <div class="input-group mb-3">
+  <input type="text" class="form-control" id="grabLink"
+  value="https://www.pastafariancalendar.com/feed.ics">
+  <button id="grabBtn" data-clipboard-target="#grabLink">
+  <svg class="icon align-top"><use xlink:href="/i/sprite2.svg#clippy"></use></svg>
+  Copy
+  </button>
+  </div><!-- .input-group -->
+</div>
+<p class="small">Our calendar feed is available for iPhone, iPad, Microsoft Outlook,
+Android (via Google Calendar), macOS Calendar, Windows 10 &amp; 11 Calendar,
+and any desktop program that supports iCalendar (.ics) files.</p>
+</main>
 <%- await include('partials/footer.ejs') _%>
 <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 var clipboard = new ClipboardJS('#grabBtn', {});
 var grabBtn = document.querySelector('#grabBtn');
-var tooltipBtn=new bootstrap.Tooltip(grabBtn, {trigger:'manual'});
 clipboard.on('success', function(e) {
   e.trigger.setAttribute('data-bs-original-title','Copied!');
-  tooltipBtn.show();
   e.clearSelection();
 });
 clipboard.on('error', function(e) {
   var modifierKey=/mac/i.test(navigator.userAgent)?'\u2318':'Ctrl-';
   var fallbackMsg='Press '+modifierKey+'C to copy';
   e.trigger.setAttribute('data-bs-original-title',fallbackMsg);
-  tooltipBtn.show();
 });
 });
 </script>
