@@ -19,7 +19,7 @@ the world’s fastest-growing carbohydrate-based religion.</p>
 <p>R’amen!</p>
 <div class="post-navigation d-flex justify-content-between">
 <% if (typeof prev === 'object' && prev !== null) { %>
-<div class="pe-3">
+<div class="pe-2">
   <a class="button" href="<%=prev.url%>" title="<%=prev.subject%>">
     <span class="arrow">←</span>
     <span class="title"><%=prev.subject%> <%=prev.emoji%></span>
@@ -28,7 +28,7 @@ the world’s fastest-growing carbohydrate-based religion.</p>
 </div>
 <% } %>
 <% if (typeof next === 'object' && next !== null) { %>
-<div class="pb-3">
+<div class="ps-2">
   <a class="button" href="<%=next.url%>" title="<%=next.subject%>">
     <span class="title"><%=next.emoji%> <%=next.subject%></span>
     <span class="arrow">→</span>
