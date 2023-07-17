@@ -4,13 +4,13 @@
 <link rel="canonical" href="https://www.pastafariancalendar.com/holidays">
 <style>
 .fc-event {
-  color: #000;
+  color: var(--text);
   border: unset;
-  background-color: #fff;
+  background-color: var(--bg);
 }
 .fc-event .fc-event-title {
-  color: #000;
-  background-color: #fff;
+  color: var(--text);
+  background-color: var(--bg);
   font-size: 1.25em;
 }
 .fc-event-time, .fc-event-title {
@@ -24,7 +24,8 @@ td.fc-list-event-graphic {
 .fc .fc-daygrid-day.fc-day-today,
 .fc .fc-event.fc-event-today .fc-event-main,
 .fc .fc-event.fc-event-today .fc-event-title {
-  background-color: #ffc;
+  color: black;
+  background-color: var(--marked);
 }
 </style>
 </head>

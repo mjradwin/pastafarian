@@ -9,6 +9,28 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="msapplication-TileColor" content="#da532c">
 <style>
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+}
+.input-group {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 100%;
+}
+.input-group > .form-control {
+  position: relative;
+  flex: 1 1 auto;
+  width: 1%;
+  min-width: 0;
+}
+.input-group .btn {
+  position: relative;
+  z-index: 2;
+}
 span.twitter-typeahead .tt-menu,
 span.twitter-typeahead .tt-dropdown-menu {
   cursor: pointer;
@@ -147,6 +169,7 @@ href="https://en.wikipedia.org/wiki/Flying_Spaghetti_Monster">[1]</a></sup></p>
   <input class="typeahead form-control" type="text" placeholder="Holiday name or date">
   </div>
 </div><!-- .mb-4 -->
+<h4>Calendar Feed</h4>
 <p>Subscribe to the Pastafarian Holy Days calendar feed for perpetual updates.</p>
 <div>
   <a class="button download" title="Subscribe to Pastafarian Calendar for Apple iPhone, iPad, macOS" href="webcal://www.pastafariancalendar.com/feed.ics">
@@ -161,7 +184,7 @@ href="https://en.wikipedia.org/wiki/Flying_Spaghetti_Monster">[1]</a></sup></p>
   <div class="input-group mb-3">
   <input type="text" class="form-control" id="grabLink"
   value="https://www.pastafariancalendar.com/feed.ics">
-  <button id="grabBtn" data-clipboard-target="#grabLink">
+  <button id="grabBtn" class="btn" data-clipboard-target="#grabLink">
   <svg class="icon align-top"><use xlink:href="/i/sprite2.svg#clippy"></use></svg>
   Copy
   </button>
