@@ -11,18 +11,22 @@
   ],
   "author": "Michael J. Radwin (https://github.com/mjradwin)",
   "license": "BSD-2-Clause",
+  "type": "module",
+  "engines": {
+    "node": "20.x"
+  },
   "devDependencies": {
-    "eslint": "^8.49.0",
+    "eslint": "^8.56.0",
     "eslint-config-google": "^0.14.0"
   },
   "dependencies": {
-    "@hebcal/core": "^4.3.3",
-    "@hebcal/icalendar": "^4.21.0",
-    "dayjs": "^1.11.9",
+    "@hebcal/core": "^5.0.7",
+    "@hebcal/icalendar": "^5.0.2",
+    "dayjs": "^1.11.10",
     "ejs": "^3.1.9",
     "fastest-levenshtein": "^1.0.16",
     "http-errors": "^2.0.0",
-    "koa": "^2.14.2",
+    "koa": "^2.15.0",
     "koa-better-response-time": "^1.2.0",
     "koa-compress": "^5.1.1",
     "koa-conditional-get": "^3.0.0",
@@ -35,6 +39,6 @@
     "murmurhash3": "^0.5.0",
     "simpledotcss": "^2.2.1",
     "transliteration": "^2.3.5",
-    "yaml": "^2.3.2"
+    "yaml": "^2.3.4"
   }
 }

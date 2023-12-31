@@ -1,11 +1,10 @@
-const {rawEvents, makeAnchor} = require('./events');
-const dayjs = require('dayjs');
-const {makeEvent} = require('./events');
+import {rawEvents, makeEvent, makeAnchor} from './events.js';
+import dayjs from 'dayjs';
 
 const dates = Object.keys(rawEvents).reverse();
 
 // eslint-disable-next-line require-jsdoc
-function makeHolidays() {
+export function makeHolidays() {
   const holidays = [];
   const m = new Map();
   const startDate = dayjs().subtract(2, 'year');
@@ -37,5 +36,3 @@ function makeHolidays() {
   }
   return holidays.reverse();
 }
-
-exports.makeHolidays = makeHolidays;

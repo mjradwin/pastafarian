@@ -1,13 +1,9 @@
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {value: true});
-
-const createError = require('http-errors');
-const fs = require('fs');
-const YAML = require('yaml');
-const dayjs = require('dayjs');
-const {transliterate} = require('transliteration');
-const {distance, closest} = require('fastest-levenshtein');
+import createError from 'http-errors';
+import fs from 'fs';
+import YAML from 'yaml';
+import dayjs from 'dayjs';
+import {transliterate} from 'transliteration';
+import {distance, closest} from 'fastest-levenshtein';
 
 const yamlStr = fs.readFileSync('./data/pastafarian.yaml', 'utf8');
 const pastafarian = YAML.parse(yamlStr);
@@ -35,7 +31,7 @@ const allSubjects = Array.from(emojiMap.keys());
  * @param {string} str
  * @return {dayjs.Dayjs}
  */
-function isoDateStringToDate(str) {
+export function isoDateStringToDate(str) {
   if (!reIsoDate.test(str)) {
     throw createError(400, `Date must match format YYYY-MM-DD: ${str}`);
   }
@@ -54,7 +50,7 @@ function isoDateStringToDate(str) {
  * @param {dayjs.Dayjs} endDt0
  * @return {any[]}
  */
-function makeEvents(startDt, endDt0) {
+export function makeEvents(startDt, endDt0) {
   const endDt = endDt0.add(1, 'day');
   const events = [];
   for (let d = startDt; d.isBefore(endDt); d = d.add(1, 'day')) {
@@ -71,7 +67,7 @@ function makeEvents(startDt, endDt0) {
  * @param {string} end
  * @return {any[]}
  */
-function makeEventsFullCalendar(start, end) {
+export function makeEventsFullCalendar(start, end) {
   const startDt = start ? isoDateStringToDate(start) : dayjs();
   const endDt0 = end ? isoDateStringToDate(end) : dayjs();
   const events = makeEvents(startDt, endDt0);
@@ -87,7 +83,7 @@ function makeEventsFullCalendar(start, end) {
  * @param {dayjs.Dayjs} d
  * @return {any}
  */
-function makeEvent(d) {
+export function makeEvent(d) {
   const ymd = d.format('YYYY-MM-DD');
   const rawSubject = pastafarian[ymd];
   if (!rawSubject) {
@@ -125,7 +121,7 @@ function makeEvent(d) {
  * @return {string[]}
  * @param {string} s
  */
-function cleanStr(s) {
+export function cleanStr(s) {
   const s2 = s.trim().replace(/\.$/, '').replace(/\s+/g, ' ').trim();
   const matches = emojiRegex.exec(s2);
   if (matches) {
@@ -143,7 +139,7 @@ function cleanStr(s) {
  * @param {string} s
  * @return {string}
  */
-function makeAnchor(s) {
+export function makeAnchor(s) {
   return transliterate(s)
       .toLowerCase()
       .replace(/'/g, '')
@@ -159,7 +155,7 @@ function makeAnchor(s) {
  * @param {dayjs.Dayjs} d
  * @return {any}
  */
-async function eventDetail(ctx, ev, d) {
+export async function eventDetail(ctx, ev, d) {
   const today = dayjs();
   if (!ev) {
     ctx.set('Cache-Control', 'private');
@@ -185,7 +181,7 @@ async function eventDetail(ctx, ev, d) {
  * @param {any} ev
  * @return {any}
  */
-function eventJsonLD(ev) {
+export function eventJsonLD(ev) {
   const d = ev.d;
   const url = 'https://www.pastafariancalendar.com' + ev.url;
   const name = ev.subject + ' ' + d.format('YYYY') + ' ' + ev.emoji;
@@ -220,12 +216,4 @@ function eventJsonLD(ev) {
   };
 }
 
-exports.isoDateStringToDate = isoDateStringToDate;
-exports.makeEvents = makeEvents;
-exports.makeEventsFullCalendar = makeEventsFullCalendar;
-exports.makeEvent = makeEvent;
-exports.eventDetail = eventDetail;
-exports.eventJsonLD = eventJsonLD;
-exports.rawEvents = pastafarian;
-exports.makeAnchor = makeAnchor;
-exports.cleanStr = cleanStr;
+export {pastafarian as rawEvents};

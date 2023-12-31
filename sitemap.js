@@ -1,15 +1,11 @@
-'use strict';
 /* eslint-disable require-jsdoc */
-
-Object.defineProperty(exports, '__esModule', {value: true});
-
-const dayjs = require('dayjs');
-const {basename} = require('path');
-const {makeEvent} = require('./events');
+import dayjs from 'dayjs';
+import {basename} from 'path';
+import {makeEvent} from './events.js';
 
 const baseUrl = 'https://www.pastafariancalendar.com';
 
-async function sitemap(ctx) {
+export async function sitemap(ctx) {
   const page = basename(ctx.request.path);
   ctx.body = (page === 'sitemap.xml') ? sitemapIndex() : sitemapYear(page);
   ctx.lastModified = new Date();
@@ -64,5 +60,3 @@ function sitemapYear(page) {
   body += '</urlset>\n';
   return body;
 }
-
-exports.sitemap = sitemap;

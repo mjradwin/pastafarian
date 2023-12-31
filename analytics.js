@@ -1,7 +1,7 @@
-const http = require('node:http');
-const mmh3 = require('murmurhash3');
-const util = require('util');
-const pkg = require('./package.json');
+import http from 'node:http';
+import mmh3 from 'murmurhash3';
+import util from 'util';
+import pkg from './package.json' assert {type: "json"};
 
 // return array that have 4 elements of 32bit integer
 const murmur128 = util.promisify(mmh3.murmur128);
@@ -26,7 +26,7 @@ const knownRobots = {
  * @param {string} pageTitle
  * @param {*} [params={}]
  */
-async function matomoTrack(ctx, pageTitle, params={}) {
+export async function matomoTrack(ctx, pageTitle, params={}) {
   const userAgent = ctx.get('user-agent');
   if (knownRobots[userAgent]) {
     return false;
@@ -107,5 +107,3 @@ async function makePageviewId(ctx) {
   const qs = buff.toString('base64');
   return qs.replace(/[\+\/]/g, '').substring(0, 6);
 }
-
-exports.matomoTrack = matomoTrack;

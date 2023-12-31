@@ -1,24 +1,26 @@
-'use strict';
+import compress from 'koa-compress';
+import dayjs from 'dayjs';
+import error from 'koa-error';
+import xResponseTime from 'koa-better-response-time';
+import conditional from 'koa-conditional-get';
+import etag from 'koa-etag';
+import Koa from 'koa';
+import koaLogger from 'koa-pino-logger';
+import path from 'path';
+import {fileURLToPath} from 'url';
+import render from 'koa-ejs';
+import serve from 'koa-static';
+import zlib from 'zlib';
+import {basename} from 'path';
+import {makeEvent, makeEvents, isoDateStringToDate,
+  makeEventsFullCalendar, eventDetail, eventJsonLD} from './events.js';
+import {makeHolidays} from './holidays.js';
+import {icalFeed} from './feed.js';
+import {sitemap} from './sitemap.js';
+import {matomoTrack} from './analytics.js';
 
-const compress = require('koa-compress');
-const dayjs = require('dayjs');
-const error = require('koa-error');
-const xResponseTime = require('koa-better-response-time');
-const conditional = require('koa-conditional-get');
-const etag = require('koa-etag');
-const Koa = require('koa');
-const koaLogger = require('koa-pino-logger');
-const path = require('path');
-const render = require('koa-ejs');
-const serve = require('koa-static');
-const zlib = require('zlib');
-const {basename} = require('path');
-const {makeEvent, makeEvents, isoDateStringToDate,
-  makeEventsFullCalendar, eventDetail, eventJsonLD} = require('./events');
-const {makeHolidays} = require('./holidays');
-const {icalFeed} = require('./feed');
-const {sitemap} = require('./sitemap');
-const {matomoTrack} = require('./analytics');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = new Koa();
 app.context.launchDate = new Date();
