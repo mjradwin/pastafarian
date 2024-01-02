@@ -1,15 +1,19 @@
 {
   "name": "pastafarian-similar",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "fastest-levenshtein": "^1.0.12",
-    "yaml": "^1.10.2"
+    "fastest-levenshtein": "^1.0.16",
+    "yaml": "^2.3.4"
   }
 }
