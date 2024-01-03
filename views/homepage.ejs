@@ -13,9 +13,6 @@
 a {
   text-decoration: none;
 }
-a:hover {
-  text-decoration: underline;
-}
 .form-control {
   display: block;
   width: 100%;
@@ -200,24 +197,16 @@ Android (via Google Calendar), macOS Calendar, Windows 10 &amp; 11 Calendar,
 and any desktop program that supports iCalendar (.ics) files.</p>
 </main>
 <%- await include('partials/footer.ejs') _%>
-<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An/QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-var clipboard = new ClipboardJS('#grabBtn', {});
-var grabBtn = document.querySelector('#grabBtn');
-clipboard.on('success', function(e) {
-  e.trigger.setAttribute('data-bs-original-title','Copied!');
-  e.clearSelection();
-});
-clipboard.on('error', function(e) {
-  var modifierKey=/mac/i.test(navigator.userAgent)?'\u2318':'Ctrl-';
-  var fallbackMsg='Press '+modifierKey+'C to copy';
-  e.trigger.setAttribute('data-bs-original-title',fallbackMsg);
-});
+var btnId = '#grabBtn';
+var clipboard = new ClipboardJS(btnId, {});
+var grabBtn = document.querySelector(btnId);
 });
 </script>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/corejs-typeahead@1.3.1/dist/typeahead.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js" integrity="sha384-1H217gwSVyLSIfaLxHbE7dRb3v4mYCKbpQvzx0cegeju1MVsGrX5xXxAvs/HgeFs" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/corejs-typeahead@1.3.1/dist/typeahead.bundle.min.js" integrity="sha384-crU1Ke3UJ5nZVX3oXPWcDYb4FU9BSwBvrrXt2vCgj+9Jkn8qXl2SoEKB9xEzJ7ds" crossorigin="anonymous"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 var bloodhound = new Bloodhound({
