@@ -53,7 +53,7 @@ export async function matomoTrack(ctx, pageTitle, params={}) {
   args.set('pf_srv', duration);
   const postData = args.toString();
   const postLen = Buffer.byteLength(postData);
-  let path = '/ma/ma.php';
+  let path = '/ma/matomo.php';
   let sendPostBody = true;
   if (postLen < 4000) {
     path += '?' + postData;
