@@ -15,6 +15,8 @@
   --text-light: #585858;
   --border: #898EA4;
   --accent: #0d47a1;
+  --accent-hover: #1266e2;
+  --accent-text: var(--bg);
   --code: #d81b60;
   --preformatted: #444;
   --marked: #ffdd33;
@@ -31,6 +33,8 @@
     --text: #dcdcdc;
     --text-light: #ababab;
     --accent: #ffb300;
+    --accent-hover: #ffe099;
+    --accent-text: var(--bg);
     --code: #f06292;
     --preformatted: #ccc;
     --disabled: #111;
@@ -86,6 +90,10 @@ body > header {
   grid-column: 1 / -1;
 }
 
+body > header > *:only-child {
+  margin-block-start: 2rem;
+}
+
 body > header h1 {
   max-width: 1200px;
   margin: 1rem auto;
@@ -137,6 +145,10 @@ h6 {
   font-size: 0.96rem;
 }
 
+p {
+  margin: 1.5rem 0;
+}
+
 /* Prevent long strings from overflowing container */
 p, h1, h2, h3, h4, h5, h6 {
   overflow-wrap: break-word;
@@ -179,41 +191,29 @@ a:hover {
 }
 
 button,
-[role="button"],
+.button,
+a.button, /* extra specificity to override a */
 input[type="submit"],
 input[type="reset"],
 input[type="button"],
 label[type="button"] {
-  border: none;
-  border-radius: var(--standard-border-radius);
+  border: 1px solid var(--accent);
   background-color: var(--accent);
-  font-size: 1rem;
-  color: var(--bg);
-  padding: 0.7rem 0.9rem;
-  margin: 0.5rem 0;
-
-  /* Ensure buttons use correct font */
-  font-family: inherit;
+  color: var(--accent-text);
+  padding: 0.5rem 0.9rem;
+  text-decoration: none;
+  line-height: normal;
 }
 
-button[disabled],
-[role="button"][aria-disabled="true"],
-input[type="submit"][disabled],
-input[type="reset"][disabled],
-input[type="button"][disabled],
-input[type="checkbox"][disabled],
-input[type="radio"][disabled],
-select[disabled] {
-  cursor: not-allowed;
-}
-
+.button[aria-disabled="true"], 
 input:disabled,
 textarea:disabled,
 select:disabled,
 button[disabled] {
   cursor: not-allowed;
   background-color: var(--disabled);
-  color: var(--text-light)
+  border-color: var(--disabled);
+  color: var(--text-light);
 }
 
 input[type="range"] {
@@ -228,16 +228,18 @@ abbr[title] {
 }
 
 button:enabled:hover,
-[role="button"]:not([aria-disabled="true"]):hover,
+.button:not([aria-disabled="true"]):hover,
 input[type="submit"]:enabled:hover,
 input[type="reset"]:enabled:hover,
 input[type="button"]:enabled:hover,
 label[type="button"]:hover {
-  filter: brightness(1.4);
+  background-color: var(--accent-hover);
+  border-color: var(--accent-hover);
   cursor: pointer;
 }
 
-button:focus-visible:where(:enabled, [role="button"]:not([aria-disabled="true"])),
+.button:focus-visible,
+button:focus-visible:where(:enabled),
 input:enabled:focus-visible:where(
   [type="submit"],
   [type="reset"],
@@ -286,7 +288,8 @@ header > nav a:visited {
 }
 
 header > nav a:hover,
-header > nav a.current {
+header > nav a.current,
+header > nav a[aria-current="page"] {
   border-color: var(--accent);
   color: var(--accent);
   cursor: pointer;
@@ -391,6 +394,10 @@ table {
   margin: 1.5rem 0;
 }
 
+figure > table {
+  width: max-content;
+}
+
 td,
 th {
   border: 1px solid var(--border);
@@ -416,18 +423,24 @@ table caption {
 /* Format forms */
 textarea,
 select,
-input {
+input,
+button,
+.button {
   font-size: inherit;
   font-family: inherit;
   padding: 0.5rem;
   margin-bottom: 0.5rem;
-  color: var(--text);
-  background-color: var(--bg);
-  border: 1px solid var(--border);
   border-radius: var(--standard-border-radius);
   box-shadow: none;
   max-width: 100%;
   display: inline-block;
+}
+textarea,
+select,
+input {
+  color: var(--text);
+  background-color: var(--bg);
+  border: 1px solid var(--border);
 }
 label {
   display: block;
@@ -532,6 +545,10 @@ mark {
   border-radius: var(--standard-border-radius);
   background-color: var(--marked);
   color: black;
+}
+
+mark a {
+  color: #0d47a1;
 }
 
 img,
@@ -656,30 +673,26 @@ dialog::backdrop {
   }
 }
 
-/* Classes for buttons and notices */
-.button,
-.button:visited {
-  display: inline-block;
-  text-decoration: none;
-  border: none;
-  border-radius: 5px;
-  background: var(--accent);
-  font-size: 1rem;
-  color: var(--bg);
-  padding: 0.7rem 0.9rem;
-  margin: 0.5rem 0;
+/* Superscript & Subscript */
+/* Prevent scripts from affecting line-height. */
+sup, sub {
+  vertical-align: baseline;
+  position: relative;
 }
 
-.button:hover,
-.button:focus {
-  filter: brightness(1.4);
-  cursor: pointer;
+sup {
+  top: -0.4em;
 }
 
+sub { 
+  top: 0.3em; 
+}
+
+/* Classes for notices */
 .notice {
   background: var(--accent-bg);
   border: 2px solid var(--border);
-  border-radius: 5px;
+  border-radius: var(--standard-border-radius);
   padding: 1.5rem;
   margin: 2rem 0;
 }
