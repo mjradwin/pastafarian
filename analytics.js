@@ -1,7 +1,7 @@
 import http from 'node:http';
 import mmh3 from 'murmurhash3';
 import util from 'util';
-import pkg from './package.json' assert {type: "json"};
+import pkg from './package.json' with {type: "json"};
 
 // return array that have 4 elements of 32bit integer
 const murmur128 = util.promisify(mmh3.murmur128);
