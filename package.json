@@ -1,6 +1,6 @@
 {
   "name": "pastafarian-calendar",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "PastafarianCalendar.com web server",
   "scripts": {
     "start": "node app.js",
@@ -13,14 +13,14 @@
   "license": "BSD-2-Clause",
   "type": "module",
   "engines": {
-    "node": "20.x"
+    "node": ">=20.x"
   },
   "devDependencies": {
     "eslint": "^8.57.0",
     "eslint-config-google": "^0.14.0"
   },
   "dependencies": {
-    "@hebcal/core": "^5.4.0",
+    "@hebcal/core": "^5.4.5",
     "@hebcal/icalendar": "^5.0.6",
     "dayjs": "^1.11.11",
     "ejs": "^3.1.10",
@@ -39,6 +39,6 @@
     "murmurhash3": "^0.5.0",
     "simpledotcss": "^2.3.1",
     "transliteration": "^2.3.5",
-    "yaml": "^2.4.2"
+    "yaml": "^2.4.5"
   }
 }
