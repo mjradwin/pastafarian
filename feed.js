@@ -36,7 +36,7 @@ export async function icalFeed(ctx) {
   ctx.body = await icalEventsToString(icals, {
     title: 'Pastafarian Holy Days',
     caldesc: 'The holy days of the year as divined by our Brother in the sauce Ned Bruce Gallagher',
-    prodid: '-//pastafariancalendar.com/NONSGML Pastafarian Calendar v2.1//EN',
+    prodid: '-//pastafariancalendar.com/NONSGML Pastafarian Calendar v2.2//EN',
     publishedTTL: 'PT7D',
     dtstamp,
   });
