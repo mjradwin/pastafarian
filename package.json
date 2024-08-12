@@ -33,7 +33,7 @@
     "koa-send": "^5.0.1",
     "koa-static": "^5.0.0",
     "murmurhash3": "^0.5.0",
-    "simpledotcss": "^2.3.1",
+    "simpledotcss": "^2.3.2",
     "transliteration": "^2.3.5",
     "yaml": "^2.5.0"
   }
