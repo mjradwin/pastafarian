@@ -8,7 +8,11 @@ export async function icalFeed(ctx) {
   const now = new Date();
   const dtstamp = IcalEvent.makeDtstamp(now);
   const icals = [];
-  const options = {dtstamp};
+  const options = {
+    dtstamp,
+    utmSource: 'ical',
+    utmMedium: 'ical',
+  };
   const twoYearsAgo = dayjs(now).subtract(2, 'year');
   const dates = Object.keys(rawEvents);
   for (const date of dates) {
@@ -39,6 +43,7 @@ export async function icalFeed(ctx) {
     prodid: '-//pastafariancalendar.com/NONSGML Pastafarian Calendar v2.2//EN',
     publishedTTL: 'PT7D',
     dtstamp,
+    url: true,
   });
 }
 
@@ -50,6 +55,8 @@ class PastaEvent extends Event {
     this.alarm = 'P0DT9H0M0S';
     this.category = 'Holiday';
     this.pastaEvent = pastaEvent;
-    // this.memo = 'https://www.pastafariancalendar.com' + this.pastaEvent.url;
+  }
+  url() {
+    return 'https://www.pastafariancalendar.com' + this.pastaEvent.url;
   }
 }

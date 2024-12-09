@@ -51,6 +51,10 @@ export async function matomoTrack(ctx, pageTitle, params={}) {
   }
   const duration = Date.now() - ctx.state.startTime;
   args.set('pf_srv', duration);
+  const utmSource = ctx.request?.query?.utm_source;
+  if (utmSource) {
+    args.set('_rcn', utmSource);
+  }
   const postData = args.toString();
   const postLen = Buffer.byteLength(postData);
   let path = '/ma/matomo.php';
