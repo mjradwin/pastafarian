@@ -16,7 +16,7 @@
     "node": ">=20.x"
   },
   "dependencies": {
-    "@hebcal/core": "^5.8.6",
+    "@hebcal/core": "^5.8.8",
     "@hebcal/icalendar": "^6.1.2",
     "dayjs": "^1.11.13",
     "ejs": "^3.1.10",
