@@ -18,6 +18,9 @@ for (const [date, rawSubject] of Object.entries(pastafarian)) {
 
 const events = ical.sync.parseFile('basic.ics');
 for (const event of Object.values(events)) {
+  if (event.type !== 'VEVENT') {
+    continue;
+  }
   const dt = event.start.toISOString().substring(0, 10);
   let summary = event.summary.trim();
   const subjLc = summary.toLowerCase();

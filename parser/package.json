@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "node-ical": "^0.14.1",
-    "yaml": "^1.10.2"
+    "node-ical": "^0.20.1",
+    "yaml": "^2.7.0"
   }
 }
