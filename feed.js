@@ -9,9 +9,14 @@ export async function icalFeed(ctx) {
   const dtstamp = IcalEvent.makeDtstamp(now);
   const icals = [];
   const options = {
+    title: 'Pastafarian Holy Days',
+    caldesc: 'The holy days of the year as divined by our Brother in the sauce Ned Bruce Gallagher',
+    prodid: '-//pastafariancalendar.com/NONSGML Pastafarian Calendar v2.2//EN',
+    publishedTTL: 'PT7D',
     dtstamp,
     utmSource: 'ical',
     utmMedium: 'ical',
+    url: true,
   };
   const twoYearsAgo = dayjs(now).subtract(2, 'year');
   const dates = Object.keys(rawEvents);
@@ -37,14 +42,7 @@ export async function icalFeed(ctx) {
   ctx.lastModified = now;
   ctx.set('Cache-Control', 'public, max-age=604800'); // 7 days
   ctx.type = 'text/calendar; charset=utf-8';
-  ctx.body = await icalEventsToString(icals, {
-    title: 'Pastafarian Holy Days',
-    caldesc: 'The holy days of the year as divined by our Brother in the sauce Ned Bruce Gallagher',
-    prodid: '-//pastafariancalendar.com/NONSGML Pastafarian Calendar v2.2//EN',
-    publishedTTL: 'PT7D',
-    dtstamp,
-    url: true,
-  });
+  ctx.body = await icalEventsToString(icals, options);
 }
 
 class PastaEvent extends Event {

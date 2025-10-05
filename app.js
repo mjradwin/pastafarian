@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import error from 'koa-error';
 import xResponseTime from 'koa-better-response-time';
 import conditional from 'koa-conditional-get';
-import etag from 'koa-etag';
+import etag from '@koa/etag';
 import Koa from 'koa';
 import koaLogger from 'koa-pino-logger';
 import path from 'path';
@@ -39,8 +39,6 @@ app.use(async function myResponseTime(ctx, next) {
   await next();
 });
 app.use(koaLogger());
-app.use(conditional());
-app.use(etag());
 
 app.use(compress({
   gzip: true,
@@ -52,6 +50,9 @@ app.use(compress({
     },
   },
 }));
+
+app.use(conditional());
+app.use(etag());
 
 render(app, {
   root: path.join(__dirname, 'views'),

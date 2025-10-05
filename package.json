@@ -16,25 +16,25 @@
     "node": ">=20.x"
   },
   "dependencies": {
-    "@hebcal/core": "^5.8.11",
-    "@hebcal/icalendar": "^6.1.2",
-    "dayjs": "^1.11.13",
+    "@hebcal/core": "^5.10.1",
+    "@hebcal/icalendar": "^6.1.4",
+    "@koa/etag": "^5.0.1",
+    "dayjs": "^1.11.18",
     "ejs": "^3.1.10",
     "fastest-levenshtein": "^1.0.16",
     "http-errors": "^2.0.0",
-    "koa": "^2.15.3",
+    "koa": "^3.0.1",
     "koa-better-response-time": "^1.3.0",
     "koa-compress": "^5.1.1",
     "koa-conditional-get": "^3.0.0",
     "koa-ejs": "^4.3.0",
     "koa-error": "^3.2.0",
-    "koa-etag": "^4.0.0",
     "koa-pino-logger": "^4.0.0",
     "koa-send": "^5.0.1",
     "koa-static": "^5.0.0",
     "murmurhash3": "^0.5.0",
-    "simpledotcss": "^2.3.3",
+    "simpledotcss": "^2.3.7",
     "transliteration": "^2.3.5",
-    "yaml": "^2.7.0"
+    "yaml": "^2.8.1"
   }
 }
