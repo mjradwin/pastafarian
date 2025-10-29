@@ -1,12 +1,12 @@
 /* Global variables. */
-:root,
-::backdrop {
+:root {
   /* Set sans-serif & mono fonts */
   --sans-font: -apple-system, BlinkMacSystemFont, "Avenir Next", Avenir,
     "Nimbus Sans L", Roboto, "Noto Sans", "Segoe UI", Arial, Helvetica,
     "Helvetica Neue", sans-serif;
   --mono-font: Consolas, Menlo, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
   --standard-border-radius: 5px;
+  --border-width: 1px;
 
   /* Default (light) theme */
   --bg: #fff;
@@ -25,8 +25,7 @@
 
 /* Dark theme */
 @media (prefers-color-scheme: dark) {
-  :root,
-  ::backdrop {
+  :root {
     color-scheme: dark;
     --bg: #212121;
     --accent-bg: #2b2b2b;
@@ -84,7 +83,7 @@ body > * {
 /* Make the header bg full width, but the content inline with body */
 body > header {
   background-color: var(--accent-bg);
-  border-bottom: 1px solid var(--border);
+  border-bottom: var(--border-width) solid var(--border);
   text-align: center;
   padding: 0 0.5rem 2rem 0.5rem;
   grid-column: 1 / -1;
@@ -104,7 +103,7 @@ body > header p {
   margin: 1rem auto;
 }
 
-/* Add a little padding to ensure spacing is correct between content and header > nav */
+/* Add a little padding to ensure spacing is correct between content and header nav */
 main {
   padding-top: 1.5rem;
 }
@@ -115,7 +114,7 @@ body > footer {
   color: var(--text-light);
   font-size: 0.9rem;
   text-align: center;
-  border-top: 1px solid var(--border);
+  border-top: var(--border-width) solid var(--border);
 }
 
 /* Format headers */
@@ -195,9 +194,8 @@ button,
 a.button, /* extra specificity to override a */
 input[type="submit"],
 input[type="reset"],
-input[type="button"],
-label[type="button"] {
-  border: 1px solid var(--accent);
+input[type="button"] {
+  border: var(--border-width) solid var(--accent);
   background-color: var(--accent);
   color: var(--accent-text);
   padding: 0.5rem 0.9rem;
@@ -231,8 +229,7 @@ button:enabled:hover,
 .button:not([aria-disabled="true"]):hover,
 input[type="submit"]:enabled:hover,
 input[type="reset"]:enabled:hover,
-input[type="button"]:enabled:hover,
-label[type="button"]:hover {
+input[type="button"]:enabled:hover {
   background-color: var(--accent-hover);
   border-color: var(--accent-hover);
   cursor: pointer;
@@ -250,15 +247,15 @@ input:enabled:focus-visible:where(
 }
 
 /* Format navigation */
-header > nav {
+header nav {
   font-size: 1rem;
   line-height: 2;
   padding: 1rem 0 0 0;
 }
 
 /* Use flexbox to allow items to wrap, as needed */
-header > nav ul,
-header > nav ol {
+header nav ul,
+header nav ol {
   align-content: space-around;
   align-items: center;
   display: flex;
@@ -271,15 +268,15 @@ header > nav ol {
 }
 
 /* List items are inline elements, make them behave more like blocks */
-header > nav ul li,
-header > nav ol li {
+header nav ul li,
+header nav ol li {
   display: inline-block;
 }
 
-header > nav a,
-header > nav a:visited {
+header nav a,
+header nav a:visited {
   margin: 0 0.5rem 1rem 0.5rem;
-  border: 1px solid var(--border);
+  border: var(--border-width) solid var(--border);
   border-radius: var(--standard-border-radius);
   color: var(--text);
   display: inline-block;
@@ -287,10 +284,10 @@ header > nav a:visited {
   text-decoration: none;
 }
 
-header > nav a:hover,
-header > nav a.current,
-header > nav a[aria-current="page"],
-header > nav a[aria-current="true"] {
+header nav a:hover,
+header nav a.current,
+header nav a[aria-current="page"],
+header nav a[aria-current="true"] {
   border-color: var(--accent);
   color: var(--accent);
   cursor: pointer;
@@ -298,7 +295,7 @@ header > nav a[aria-current="true"] {
 
 /* Reduce nav side on mobile */
 @media only screen and (max-width: 720px) {
-  header > nav a {
+  header nav a {
     border: none;
     padding: 0;
     text-decoration: underline;
@@ -309,7 +306,7 @@ header > nav a[aria-current="true"] {
 /* Consolidate box styling */
 aside, details, pre, progress {
   background-color: var(--accent-bg);
-  border: 1px solid var(--border);
+  border: var(--border-width) solid var(--border);
   border-radius: var(--standard-border-radius);
   margin-bottom: 1rem;
 }
@@ -335,7 +332,7 @@ aside {
 }
 
 article, fieldset, dialog {
-  border: 1px solid var(--border);
+  border: var(--border-width) solid var(--border);
   padding: 1rem;
   border-radius: var(--standard-border-radius);
   margin-bottom: 1rem;
@@ -349,8 +346,8 @@ section h3:first-child {
 }
 
 section {
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  border-top: var(--border-width) solid var(--border);
+  border-bottom: var(--border-width) solid var(--border);
   padding: 2rem 1rem;
   margin: 3rem 0;
 }
@@ -408,7 +405,7 @@ figure > table {
 
 td,
 th {
-  border: 1px solid var(--border);
+  border: var(--border-width) solid var(--border);
   text-align: start;
   padding: 0.5rem;
 }
@@ -436,7 +433,7 @@ button,
 .button {
   font-size: inherit;
   font-family: inherit;
-  padding: 0.5rem;
+  padding: 0.5em;
   margin-bottom: 0.5rem;
   border-radius: var(--standard-border-radius);
   box-shadow: none;
@@ -448,7 +445,7 @@ select,
 input {
   color: var(--text);
   background-color: var(--bg);
-  border: 1px solid var(--border);
+  border: var(--border-width) solid var(--border);
 }
 label {
   display: block;
@@ -495,12 +492,12 @@ input[type="radio"]:checked {
 input[type="checkbox"]:checked::after {
   /* Creates a rectangle with colored right and bottom borders which is rotated to look like a check mark */
   content: " ";
-  width: 0.18em;
-  height: 0.32em;
+  width: 0.2em;
+  height: 0.4em;
   border-radius: 0;
   position: absolute;
-  top: 0.05em;
-  left: 0.17em;
+  top: 0.04em;
+  left: 0.18em;
   background-color: transparent;
   border-right: solid var(--bg) 0.08em;
   border-bottom: solid var(--bg) 0.08em;
@@ -510,14 +507,14 @@ input[type="checkbox"]:checked::after {
 input[type="radio"]:checked::after {
   /* creates a colored circle for the checked radio button  */
   content: " ";
-  width: 0.25em;
-  height: 0.25em;
+  width: 0.3em;
+  height: 0.3em;
   border-radius: 100%;
   position: absolute;
   top: 0.125em;
   background-color: var(--bg);
   left: 0.125em;
-  font-size: 32px;
+  font-size: 1.8em;
 }
 
 /* Makes input fields wider on smaller screens */
@@ -543,7 +540,7 @@ input[type="file"] {
 /* Misc body elements */
 hr {
   border: none;
-  height: 1px;
+  height: var(--border-width);
   background: var(--border);
   margin: 1rem auto;
 }
@@ -579,6 +576,8 @@ figure > picture > img {
 }
 
 figcaption {
+  position: sticky;
+  left: 0;
   text-align: center;
   font-size: 0.9rem;
   color: var(--text-light);
@@ -617,7 +616,7 @@ samp {
 
 kbd {
   color: var(--preformatted);
-  border: 1px solid var(--preformatted);
+  border: var(--border-width) solid var(--preformatted);
   border-bottom: 3px solid var(--preformatted);
   border-radius: var(--standard-border-radius);
   padding: 0.1rem 0.4rem;
@@ -671,6 +670,7 @@ progress:indeterminate::-moz-progress-bar {
 }
 
 dialog {
+  background-color: var(--bg);
   max-width: 40rem;
   margin: auto;
 }
@@ -682,8 +682,7 @@ dialog::backdrop {
 
 @media only screen and (max-width: 720px) {
   dialog {
-    max-width: 100%;
-    margin: auto 1em;
+    max-width: calc(100vw - 2rem);
   }
 }
 
@@ -705,8 +704,54 @@ sub {
 /* Classes for notices */
 .notice {
   background: var(--accent-bg);
-  border: 2px solid var(--border);
+  border: var(--border-width) solid var(--border);
   border-radius: var(--standard-border-radius);
   padding: 1.5rem;
   margin: 2rem 0;
+}
+
+/* Print */
+@media print {
+  @page {
+    margin: 1cm;
+  }
+  body {
+    display: block;
+  }
+  body > header {
+    background-color: unset;
+  }
+  body > header nav,
+  body > footer {
+    display: none;
+  }
+  article {
+    border: none;
+    padding: 0;
+  }
+  a[href^="http"]::after {
+    content: " <" attr(href) ">";
+  }
+  abbr[title]:after {
+    content: " (" attr(title) ")";
+  }
+  a {
+    text-decoration: none;
+  }
+  p {
+    widows: 3;
+    orphans: 3;
+  }
+  hr {
+    border-top: var(--border-width) solid var(--border);
+  }
+  mark {
+    border: var(--border-width) solid var(--border);
+  }
+  pre, table, figure, img, svg {
+    break-inside: avoid;
+  }
+  pre code {
+    white-space: pre-wrap;
+  }
 }

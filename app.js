@@ -8,7 +8,7 @@ import Koa from 'koa';
 import koaLogger from 'koa-pino-logger';
 import path from 'path';
 import {fileURLToPath} from 'url';
-import render from 'koa-ejs';
+import render from '@koa/ejs';
 import serve from 'koa-static';
 import zlib from 'zlib';
 import {basename} from 'path';

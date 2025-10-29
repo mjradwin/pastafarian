@@ -11,8 +11,8 @@ export async function icalFeed(ctx) {
   const options = {
     title: 'Pastafarian Holy Days',
     caldesc: 'The holy days of the year as divined by our Brother in the sauce Ned Bruce Gallagher',
-    prodid: '-//pastafariancalendar.com/NONSGML Pastafarian Calendar v2.2//EN',
-    publishedTTL: 'PT7D',
+    prodid: '-//pastafariancalendar.com/NONSGML Pastafarian Calendar v2.3//EN',
+    publishedTTL: 'P7D',
     dtstamp,
     utmSource: 'ical',
     utmMedium: 'ical',
