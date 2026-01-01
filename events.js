@@ -1,5 +1,5 @@
 import createError from 'http-errors';
-import fs from 'fs';
+import fs from 'node:fs';
 import YAML from 'yaml';
 import dayjs from 'dayjs';
 import {transliterate} from 'transliteration';
@@ -122,7 +122,7 @@ export function makeEvent(d) {
  * @param {string} s
  */
 export function cleanStr(s) {
-  const s2 = s.trim().replace(/\.$/, '').replace(/\s+/g, ' ').trim();
+  const s2 = s.trim().replace(/\.$/, '').replaceAll(/\s+/g, ' ').trim();
   const matches = emojiRegex.exec(s2);
   if (matches) {
     const s3 = s2.replace(emojiRegex, '');
@@ -142,11 +142,11 @@ export function cleanStr(s) {
 export function makeAnchor(s) {
   return transliterate(s)
       .toLowerCase()
-      .replace(/'/g, '')
-      .replace(/[^\w]/g, '-')
-      .replace(/-+/g, '-')
-      .replace(/^-/g, '')
-      .replace(/-$/g, '');
+      .replaceAll('\'', '')
+      .replaceAll(/[^\w]/g, '-')
+      .replaceAll(/-+/g, '-')
+      .replace(/^-/, '')
+      .replace(/-$/, '');
 }
 
 /**

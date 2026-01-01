@@ -1,6 +1,6 @@
 import http from 'node:http';
 import mmh3 from 'murmurhash3';
-import util from 'util';
+import util from 'node:util';
 import pkg from './package.json' with {type: "json"};
 
 // return array that have 4 elements of 32bit integer
@@ -42,11 +42,11 @@ export async function matomoTrack(ctx, pageTitle, params={}) {
   args.set('pv_id', pvId);
   args.set('ua', userAgent);
   const lang = ctx.get('accept-language');
-  if (lang && lang.length) {
+  if (lang?.length) {
     args.set('lang', lang);
   }
   const ref = ctx.get('referer');
-  if (ref && ref.length) {
+  if (ref?.length) {
     args.set('urlref', ref);
   }
   const duration = Date.now() - ctx.state.startTime;
@@ -75,7 +75,7 @@ export async function matomoTrack(ctx, pageTitle, params={}) {
     'Content-Type': 'application/x-www-form-urlencoded',
     'Content-Length': sendPostBody ? postLen : 0,
   };
-  if (ref && ref.length) {
+  if (ref?.length) {
     headers.Referer = ref;
   }
   const options = {
@@ -98,7 +98,7 @@ export async function matomoTrack(ctx, pageTitle, params={}) {
 
 /**
  * @param {any} ctx
- * @return {string}
+ * @return {Promise<string>}
  */
 async function makePageviewId(ctx) {
   const userAgent = ctx.get('user-agent');
@@ -109,5 +109,5 @@ async function makePageviewId(ctx) {
   const bytes = new Uint8Array(buf32.buffer);
   const buff = Buffer.from(bytes);
   const qs = buff.toString('base64');
-  return qs.replace(/[\+\/]/g, '').substring(0, 6);
+  return qs.replaceAll(/[\+\/]/g, '').substring(0, 6);
 }

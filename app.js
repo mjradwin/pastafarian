@@ -6,12 +6,11 @@ import conditional from 'koa-conditional-get';
 import etag from '@koa/etag';
 import Koa from 'koa';
 import koaLogger from 'koa-pino-logger';
-import path from 'path';
-import {fileURLToPath} from 'url';
+import path, {basename} from 'node:path';
+import {fileURLToPath} from 'node:url';
 import render from '@koa/ejs';
 import serve from 'koa-static';
-import zlib from 'zlib';
-import {basename} from 'path';
+import zlib from 'node:zlib';
 import {makeEvent, makeEvents, isoDateStringToDate,
   makeEventsFullCalendar, eventDetail, eventJsonLD} from './events.js';
 import {makeHolidays} from './holidays.js';
@@ -104,7 +103,7 @@ app.use(async function router(ctx, next) {
     }
     const ev = upcoming.shift();
     const y1 = upcoming[0].d.year();
-    const y2 = upcoming[upcoming.length - 1].d.year();
+    const y2 = upcoming.at(-1).d.year();
     const yearStr = y1 === y2 ? y1 : `${y1}-${y2}`;
     await matomoTrack(ctx, 'Pastafarian Holiday Calendar');
     ctx.set('Cache-Control', 'private');
