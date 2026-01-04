@@ -4,8 +4,10 @@ import YAML from 'yaml';
 import dayjs from 'dayjs';
 import {transliterate} from 'transliteration';
 import {distance, closest} from 'fastest-levenshtein';
+import {murmur128SyncBase64} from './hash.js';
 
 const yamlStr = fs.readFileSync('./data/pastafarian.yaml', 'utf8');
+export const holidayHash = murmur128SyncBase64(yamlStr);
 const pastafarian = YAML.parse(yamlStr);
 
 const yamlStr2 = fs.readFileSync('./data/more.yaml', 'utf8');
@@ -58,23 +60,6 @@ export function makeEvents(startDt, endDt0) {
     if (event !== null) {
       events.push(event);
     }
-  }
-  return events;
-}
-
-/**
- * @param {string} start
- * @param {string} end
- * @return {any[]}
- */
-export function makeEventsFullCalendar(start, end) {
-  const startDt = start ? isoDateStringToDate(start) : dayjs();
-  const endDt0 = end ? isoDateStringToDate(end) : dayjs();
-  const events = makeEvents(startDt, endDt0);
-  for (const event of events) {
-    delete event.emoji;
-    delete event.subject;
-    delete event.d;
   }
   return events;
 }
@@ -148,34 +133,6 @@ export function makeAnchor(s) {
       .replaceAll(/-+/g, '-')
       .replace(/^-/, '')
       .replace(/-$/, '');
-}
-
-/**
- * @param {any} ctx
- * @param {string} ev
- * @param {dayjs.Dayjs} d
- * @return {any}
- */
-export async function eventDetail(ctx, ev, d) {
-  const today = dayjs();
-  if (!ev) {
-    ctx.set('Cache-Control', 'private');
-    return ctx.render('tbd', {
-      title: `Unknown Pastafarian Holy Day on ${d.format('MMMM D, YYYY')}`,
-      d,
-      today,
-    });
-  }
-  ctx.set('Cache-Control', 'public');
-  return ctx.render('event', {
-    title: `${ev.subject} ${d.format('YYYY')} | Pastafarian Holidays`,
-    d,
-    ev,
-    prev: makeEvent(d.add(-1, 'day')),
-    next: makeEvent(d.add(1, 'day')),
-    jsonLD: eventJsonLD(ev),
-    today,
-  });
 }
 
 /**

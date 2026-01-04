@@ -1,16 +1,25 @@
 /* eslint-disable require-jsdoc */
 import dayjs from 'dayjs';
-import {basename} from 'path';
-import {makeEvent} from './events.js';
+import {basename} from 'node:path';
+import {makeEvent, holidayHash} from './events.js';
+import {makeETag} from './etag.js';
 
 const baseUrl = 'https://www.pastafariancalendar.com';
 
 export async function sitemap(ctx) {
   const page = basename(ctx.request.path);
-  ctx.body = (page === 'sitemap.xml') ? sitemapIndex() : sitemapYear(page);
-  ctx.lastModified = new Date();
   ctx.set('Cache-Control', 'public, max-age=604800'); // 7 days
   ctx.type = 'text/xml; charset=utf-8';
+  ctx.response.etag = makeETag(ctx, {
+    year: new Date().getFullYear(),
+    holidayHash,
+  });
+  ctx.status = 200;
+  if (ctx.fresh) {
+    ctx.status = 304;
+    return;
+  }
+  ctx.body = (page === 'sitemap.xml') ? sitemapIndex() : sitemapYear(page);
 }
 
 function sitemapIndex() {

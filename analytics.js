@@ -1,10 +1,5 @@
 import http from 'node:http';
-import mmh3 from 'murmurhash3';
-import util from 'node:util';
 import pkg from './package.json' with {type: "json"};
-
-// return array that have 4 elements of 32bit integer
-const murmur128 = util.promisify(mmh3.murmur128);
 
 const knownRobots = {
   'Mediapartners-Google': 1,
@@ -26,7 +21,7 @@ const knownRobots = {
  * @param {string} pageTitle
  * @param {*} [params={}]
  */
-export async function matomoTrack(ctx, pageTitle, params={}) {
+export function matomoTrack(ctx, pageTitle, params={}) {
   const userAgent = ctx.get('user-agent');
   if (knownRobots[userAgent]) {
     return false;
@@ -38,8 +33,6 @@ export async function matomoTrack(ctx, pageTitle, params={}) {
   args.set('apiv', '1');
   args.set('send_image', '0'); // prefer HTTP 204 instead of a GIF image
   args.set('url', ctx.request.href);
-  const pvId = await makePageviewId(ctx);
-  args.set('pv_id', pvId);
   args.set('ua', userAgent);
   const lang = ctx.get('accept-language');
   if (lang?.length) {
@@ -94,20 +87,4 @@ export async function matomoTrack(ctx, pageTitle, params={}) {
     req.write(postData);
   }
   req.end();
-}
-
-/**
- * @param {any} ctx
- * @return {Promise<string>}
- */
-async function makePageviewId(ctx) {
-  const userAgent = ctx.get('user-agent');
-  const ipAddress = ctx.get('x-forwarded-for') || ctx.request.ip;
-  const acceptLanguage = ctx.get('accept-language');
-  const raw = await murmur128(Date.now() + ipAddress + userAgent + acceptLanguage);
-  const buf32 = new Uint32Array(raw);
-  const bytes = new Uint8Array(buf32.buffer);
-  const buff = Buffer.from(bytes);
-  const qs = buff.toString('base64');
-  return qs.replaceAll(/[\+\/]/g, '').substring(0, 6);
 }

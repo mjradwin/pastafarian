@@ -2,16 +2,28 @@
 import dayjs from 'dayjs';
 import {Event, flags, HDate} from '@hebcal/core';
 import {IcalEvent, icalEventsToString} from '@hebcal/icalendar';
-import {makeEvent, rawEvents} from './events.js';
+import {makeEvent, rawEvents, holidayHash} from './events.js';
+import {makeETag} from './etag.js';
 
 export async function icalFeed(ctx) {
+  ctx.set('Cache-Control', 'public, max-age=604800'); // 7 days
+  ctx.type = 'text/calendar; charset=utf-8';
   const now = new Date();
+  ctx.response.etag = makeETag(ctx, {
+    today: IcalEvent.formatYYYYMMDD(now),
+    holidayHash,
+  });
+  ctx.status = 200;
+  if (ctx.fresh) {
+    ctx.status = 304;
+    return;
+  }
   const dtstamp = IcalEvent.makeDtstamp(now);
   const icals = [];
   const options = {
     title: 'Pastafarian Holy Days',
     caldesc: 'The holy days of the year as divined by our Brother in the sauce Ned Bruce Gallagher',
-    prodid: '-//pastafariancalendar.com/NONSGML Pastafarian Calendar v2.3//EN',
+    prodid: '-//pastafariancalendar.com/NONSGML Pastafarian Calendar v2.4//EN',
     publishedTTL: 'P7D',
     dtstamp,
     utmSource: 'ical',
@@ -39,9 +51,6 @@ export async function icalFeed(ctx) {
     const ical = new IcalEvent(ev, options);
     icals.push(ical);
   }
-  ctx.lastModified = now;
-  ctx.set('Cache-Control', 'public, max-age=604800'); // 7 days
-  ctx.type = 'text/calendar; charset=utf-8';
   ctx.body = await icalEventsToString(icals, options);
 }
 

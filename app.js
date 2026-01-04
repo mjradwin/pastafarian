@@ -1,9 +1,7 @@
 import compress from 'koa-compress';
-import dayjs from 'dayjs';
 import error from 'koa-error';
 import xResponseTime from 'koa-better-response-time';
 import conditional from 'koa-conditional-get';
-import etag from '@koa/etag';
 import Koa from 'koa';
 import koaLogger from 'koa-pino-logger';
 import path, {basename} from 'node:path';
@@ -11,18 +9,19 @@ import {fileURLToPath} from 'node:url';
 import render from '@koa/ejs';
 import serve from 'koa-static';
 import zlib from 'node:zlib';
-import {makeEvent, makeEvents, isoDateStringToDate,
-  makeEventsFullCalendar, eventDetail, eventJsonLD} from './events.js';
-import {makeHolidays} from './holidays.js';
+import {homepage} from './homepage.js';
+import {eventsFcJsonApp} from './fullcalendar.js';
+import {eventDetailApp} from './eventDetail.js';
+import {holidaysJsonApp} from './holidays.js';
 import {icalFeed} from './feed.js';
 import {sitemap} from './sitemap.js';
 import {matomoTrack} from './analytics.js';
+import {makeETag} from './etag.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = new Koa();
-app.context.launchDate = new Date();
 
 /*
 const transport = pino.transport({
@@ -51,7 +50,6 @@ app.use(compress({
 }));
 
 app.use(conditional());
-app.use(etag());
 
 render(app, {
   root: path.join(__dirname, 'views'),
@@ -86,53 +84,30 @@ app.use(async function router(ctx, next) {
   const rpath = ctx.request.path;
   if (rpath === '/robots.txt') {
     ctx.set('Cache-Control', 'public');
-    ctx.lastModified = ctx.launchDate;
     ctx.body = 'User-agent: *\nAllow: /\n';
     return;
   } else if (rpath === '/i' || rpath === '/i/') {
-    ctx.lastModified = ctx.launchDate;
     return ctx.render('dir-hidden');
   } else if (rootDirStatic.has(rpath) || rpath.startsWith('/i/') || rpath.endsWith('.png')) {
     ctx.set('Cache-Control', CACHE_CONTROL_IMMUTABLE);
     // let serve() handle this file
   } else if (rpath === '/') {
-    const today = dayjs();
-    const upcoming = makeEvents(today, today.add(7, 'd'));
-    for (const ev of upcoming) {
-      ev.jsonLD = eventJsonLD(ev);
-    }
-    const ev = upcoming.shift();
-    const y1 = upcoming[0].d.year();
-    const y2 = upcoming.at(-1).d.year();
-    const yearStr = y1 === y2 ? y1 : `${y1}-${y2}`;
-    await matomoTrack(ctx, 'Pastafarian Holiday Calendar');
-    ctx.set('Cache-Control', 'private');
-    return ctx.render('homepage', {
-      today,
-      ev,
-      yearStr,
-      upcoming,
-    });
+    return homepage(ctx);
   } else if (rpath.startsWith('/holidays') && rpath.endsWith('.json')) {
-    const holidays = makeHolidays();
-    ctx.lastModified = new Date();
-    ctx.set('Cache-Control', 'public, max-age=604800'); // 7 days
-    ctx.body = holidays;
-    return;
+    return holidaysJsonApp(ctx);
   } else if (rpath === '/privacy' || rpath === '/about' || rpath === '/holidays') {
     const page = basename(rpath);
     ctx.set('Cache-Control', 'public');
-    await matomoTrack(ctx, rpath.substring(1));
+    matomoTrack(ctx, rpath.substring(1));
+    ctx.response.etag = makeETag(ctx, {});
+    ctx.status = 200;
+    if (ctx.fresh) {
+      ctx.status = 304;
+      return;
+    }
     return ctx.render(page);
   } else if (rpath.startsWith('/events.json')) {
-    ctx.lastModified = new Date();
-    const q = ctx.request.query;
-    const events = makeEventsFullCalendar(q.start, q.end);
-    // 7 days if found, one hour if empty
-    const maxAge = events.length > 0 ? 604800 : 3600;
-    ctx.set('Cache-Control', `public, max-age=${maxAge}`);
-    ctx.body = events;
-    return;
+    return eventsFcJsonApp(ctx);
   } else if (rpath.startsWith('/sitemap')) {
     return sitemap(ctx);
   } else if (rpath.startsWith('/feed.ics')) {
@@ -140,12 +115,7 @@ app.use(async function router(ctx, next) {
   } else if (rpath.length > 10) {
     const tail = rpath.substring(rpath.length - 10);
     if (reIsoDate.test(tail)) {
-      const d = isoDateStringToDate(tail);
-      const ev = makeEvent(d);
-      const pageTitle = ev ? `${ev.subject} ${d.format('YYYY')}` : 'Unknown';
-      await eventDetail(ctx, ev, d);
-      await matomoTrack(ctx, pageTitle);
-      return;
+      return eventDetailApp(ctx);
     }
   }
   await next();

@@ -1,7 +1,24 @@
-import {rawEvents, makeEvent, makeAnchor} from './events.js';
+import {rawEvents, makeEvent, makeAnchor, holidayHash} from './events.js';
+import {makeETag} from './etag.js';
 import dayjs from 'dayjs';
 
 const dates = Object.keys(rawEvents).reverse();
+
+export function holidaysJsonApp(ctx) {
+  ctx.set('Cache-Control', 'public, max-age=604800'); // 7 days
+  ctx.type = 'application/json; charset=utf-8';
+  ctx.response.etag = makeETag(ctx, {
+    today: dayjs().format('YYYYMMDD'),
+    holidayHash,
+  });
+  ctx.status = 200;
+  if (ctx.fresh) {
+    ctx.status = 304;
+    return;
+  }
+  const holidays = makeHolidays();
+  ctx.body = holidays;
+}
 
 // eslint-disable-next-line require-jsdoc
 export function makeHolidays() {

@@ -1,25 +1,13 @@
-import {murmur128Sync} from 'murmurhash3';
+import {murmur128SyncBase64} from './hash.js';
 import pkg from './package.json' with {type: "json"};
 
-function murmur128SyncBase64(str) {
-  const arr4 = murmur128Sync(str);
-  const int32Array = new Uint32Array(arr4);
-  const buffer = Buffer.from(int32Array.buffer);
-  const base64String = buffer.toString('base64url');
-  return base64String;
-}
-
 /**
- * @private
  * @param {any} ctx
- * @param {Object.<string,string>} options
  * @param {Object.<string,string>} attrs
  * @return {string}
  */
-
-export function makeETag(ctx, options, attrs) {
-  const vers = {web: pkg.version};
-  const etagObj = {...vers, ...options, ...attrs, path: ctx.request.path};
+export function makeETag(ctx, attrs) {
+  const etagObj = {web: pkg.version, ...attrs, path: ctx.request.path};
   const utm = Object.keys(etagObj).filter((k) => k.startsWith('utm_'));
   for (const key of utm) {
     delete etagObj[key];
@@ -36,3 +24,4 @@ export function makeETag(ctx, options, attrs) {
   const base64String = murmur128SyncBase64(str);
   return `W/"${base64String}"`;
 }
+
