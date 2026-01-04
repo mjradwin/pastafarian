@@ -108,7 +108,8 @@ export function makeEvent(d) {
     emoji,
     d,
   };
-  const extra0 = moreInfo[subject];
+  const subjPlainApos = subject.replaceAll('’', '\'');
+  const extra0 = moreInfo[subjPlainApos];
   const extra = typeof extra0 === 'string' ? moreInfo[extra0] : extra0;
   if (Array.isArray(extra)) {
     event.desc = extra[0];
@@ -122,7 +123,7 @@ export function makeEvent(d) {
  * @param {string} s
  */
 export function cleanStr(s) {
-  const s2 = s.trim().replace(/\.$/, '').replaceAll(/\s+/g, ' ').trim();
+  const s2 = s.trim().replaceAll('\'', '’').replace(/\.$/, '').replaceAll(/\s+/g, ' ').trim();
   const matches = emojiRegex.exec(s2);
   if (matches) {
     const s3 = s2.replace(emojiRegex, '');

@@ -19,7 +19,7 @@
     "@hebcal/core": "^6.0.8",
     "@hebcal/icalendar": "^6.3.3",
     "@koa/ejs": "^5.1.0",
-    "@koa/etag": "^5.0.1",
+    "@koa/etag": "^5.0.2",
     "dayjs": "^1.11.19",
     "ejs": "^3.1.10",
     "fastest-levenshtein": "^1.0.16",
